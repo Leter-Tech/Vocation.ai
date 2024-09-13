@@ -8,9 +8,6 @@ Empowering rural India's youth through AI driven education and employment soluti
 - **Assets**: Images, PDFs, audio files, and other assets have been removed due to file size limitations. As a result, the project will not be fully functional in a local environment.
 - **Codebase Access**: Despite these removals, the full codebase is available for thorough review.
 
-# Prototype
-[Try Out >](https://vocation-ai.web.app/)
-
 # Technology
 ```mermaid
     %%{init: {'theme': 'neutral', 'themeVariables': { 'primaryColor': '#830C4F', 'primaryTextColor': '#fff', 'primaryBorderColor': '#6a0a3f', 'lineColor': '#830C4F', 'secondaryColor': '#006100', 'tertiaryColor': '#fff'}}}%%
