@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="static/vocational (1).png">
+    <title>Vocation.ai - Learning Path Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="REMOVED"
+    src="REMOVED"
+    type="text/javascript">
+  </script>
+      <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  
+  <script>
+      const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+      };
+      firebase.initializeApp(firebaseConfig);
+    
+    
+        const database = firebase.database();
+      
+        function formatDateToGMT530(date) {
+    const options = {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    };
+    return date.toLocaleString('en-IN', options).replace(',', '');
+  }
+  
+        document.addEventListener('click', function(event) {
+          const element = event.target;
+          const email = Clerk.user.emailAddresses[0]?.emailAddress
+  
+          const clickData = {
+            tagName: element.tagName,
+            id: element.id || null,
+            classList: Array.from(element.classList).join(' ') || null,
+            textContent: element.textContent.trim() || null,
+            timestamp: formatDateToGMT530(new Date()),
+            userInfo: email, page: document.title
+          };
+          database.ref('clicks').push(clickData)
+        });
+      </script>
+      <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "https://vocation-ai.web.app/mobile";
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f2e1eb;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            margin: 0;
+        }
+        @font-face {
+            font-family: Gidiff;
+            src: url("static/GlacialIndifference-Regular.otf") format("opentype");
+        }
+
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #830c4f;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            color: black;
+            flex-grow: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #830c4f;
+            border-radius: 25px 0 0 25px;
+            outline: none;
+        }
+        button {
+            background-color: #830c4f;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 0 25px 25px 0;
+            outline: none;
+        }
+        button:hover {
+            background-color: #6a0a40;
+            box-shadow: 0 4px 6px rgba(131, 12, 79, 0.1);
+        }
+        .loader {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .loader::after {
+            content: "";
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 5px solid #f2e1eb;
+            border-top: 5px solid #830c4f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .learning-path {
+            margin-top: 30px;
+        }
+        .topic {
+            font-size: 32px;
+            font-weight: bold;
+            background-color: #830c4f;
+            margin-bottom: 30px;
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(131, 12, 79, 0.1);
+            border: 2px solid #f2e1eb;
+        }
+        .subtopics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .subtopic {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(131, 12, 79, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #e6c5d6;
+        }
+        .subtopic:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(131, 12, 79, 0.5);
+            border-color: #830c4f;
+        }
+        .subtopic h3 {
+            margin: 0 0 10px 0;
+            color: #830c4f;
+            font-size: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #830c4f;
+            padding-bottom: 10px;
+        }
+        .subtopic-content {
+            display: block;
+            margin-top: 15px;
+        }
+        .further-subtopics {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .further-subtopics li {
+            background-color: #f2e1eb;
+            color: black;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .further-subtopics li:hover {
+            background-color: #e6c5d6;
+        }
+        .learn-button {
+            background-color: #830c4f;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 20px;
+            outline: none;
+        }
+        .learn-button:hover {
+            background-color: #6a0a40;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(131, 12, 79, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <script>
+        window.addEventListener("load", async function () {
+            await Clerk.load();
+            function pam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        const redirectUrl = pam('redirect_url');
+
+
+            if (!Clerk.user) {
+                if (redirectUrl) {
+                    setTimeout(() => {
+                        window.location.href = 'authentication';
+                    }, 12000);
+                }
+
+                else{
+                    window.location.href = 'authentication';
+                } 
+            }
+
+            else {
+                document.getElementById("app").innerHTML = `
+                    <div id="user-button"></div>
+                `;
+
+                const userButtonDiv = document.getElementById("user-button");
+
+                Clerk.mountUserButton(userButtonDiv);
+            }
+        });
+    </script>
+                <style>
+                    .cl-userButtonPopoverCard {
+                        background-color: #9b0158;
+                        color: white !important;
+                    }
+                    .cl-navbar{
+                        background-color: #f2e1eb;
+                        border-radius: 16px;
+                    }
+                    .cl-internal-rx251b{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-pageScrollBox{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-userButtonPopoverActionButtonText{
+                        color: white;
+                    }
+                    .cl-internal-60laz0{
+                        border-right: 1px solid rgb(131, 12, 79, 0.5);
+                    }
+                    .cl-internal-1yejcov{
+                        color: white !important;
+                    }
+                    .cl-userPreviewSecondaryIdentifier{
+                        color: white;
+                    }
+                    .cl-userButtonPopoverFooter{
+                        display: none;
+                    }
+                    .cl-internal-b3fm6y{
+                        display: none;
+                    }
+                    .cl-userButtonTrigger:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-headerTitle{
+                        color: #830c4f;
+                    }
+                    .cl-internal-1e71drn{
+                        color: #830c4f;
+                    }
+                    .cl-internal-141wpcl{
+                        color: #830c4f;
+                    }
+                    .cl-scrollBox{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-internal-1xg0u4s{
+                        border-bottom: 1px solid rgb(131, 12, 79, 0.6);
+                    }
+                    .cl-profileSectionPrimaryButton{
+                        color: #830c4f;
+                    }
+                    .cl-profileSectionPrimaryButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-profileSectionPrimaryButton:active{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-profileSectionPrimaryButton:hover{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-navbarButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-accordionTriggerButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-badge{
+                        color: #830c4f;
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-formButtonPrimary{
+                        background-color: #830c4f;
+                    }
+                    .cl-formButtonPrimary .cl-formButtonReset{
+                        background-color: #830c4f;
+                    }
+                    .cl-formButtonReset:hover{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-formButtonReset{
+                        color: #830c4f;
+                    }
+                    .cl-formButtonPrimary:hover{
+                        background-color: #460429;
+                    }
+                    .cl-formButtonPrimary:active{
+                        background-color: #460429;
+                    }
+                    .cl-formButtonReset:active{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-profileSectionPrimaryButton:active{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-avatarImageActionsUpload{
+                        color: #830c4f;
+                    }
+                    .cl-avatarImageActionsRemove{
+                        color: #600639;
+                    }
+                    .cl-avatarImageActionsUpload:focus .cl-avatarImageActionsRemove:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formFieldInput:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-internal-1sf6rji{
+                        color: #830c4f
+                    }
+                    .cl-internal-1sf6rji:hover{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-internal-f7yy9s:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-modalCloseButton{
+                        color: #830c4f;
+                    }
+                    .cl-modalCloseButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formButtonReset:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formButtonPrimary:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formFieldInput{
+                        accent-color: #830c4f;
+                    }
+                    .cl-internal-1sf6rji:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-internal-1sf6rji:active{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-breadcrumbsItem:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-userPreviewSecondaryIdentifier{
+                        color: #d1b2c2;
+                    }
+                </style>
+    <div style="display: flex; justify-content: right; align-items: center;">
+        <div style="margin: 8px;" id="app"></div>
+        </div>
+    <div class="container">
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <img onclick="window.location.href='https://vocation-ai.web.app'" src="static/vocational (1).png" style="width: 20%; height: 20%; cursor: pointer;">
+            </div>
+            <a style="text-decoration: none;" href="https://vocation-ai.web.app/"><h1 style="margin-top: 0px; font-family: Gidiff; font-size: 60px; margin-bottom: 10px; text-align: center;">Vocation.ai</h1></a>
+            <h1 style="margin-top: 0px; font-size: 30px; color: var(--text-color); text-align: center;">Learning Path Generator</h1>
+        <div class="input-group">
+            <input type="text" id="topicInput" placeholder="Enter a topic you want to learn...">
+            <button onclick="generateLearningPath()">Generate <i style="margin-left: 3px;" class="fas fa-wand-magic-sparkles"></i></button>
+        </div>
+        <div id="loader" class="loader"></div>
+        <div id="learningPath" class="learning-path"></div>
+    </div>
+
+    <div style="display: flex; align-items: center; justify-content: center;">
+        <button id="downloadButton" style="display: none; margin-top: 20px; color: #fff; border: none; padding: 12px 25px; font-size: 16px; cursor: pointer; transition: all 0.3s ease; border-radius: 25px; outline: none;">
+            Download Learning Path <i style="margin-left: 3px;" class="fas fa-download"></i>
+        </button>
+
+    </div>
+
+<style>
+    #downloadButton {
+        background-color: #830c4f;
+    }
+
+    #downloadButton:hover{
+        background-color: #6a0a40;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(131, 12, 79, 0.2);
+    }
+</style>
+
+
+    <script>
+
+document.getElementById('downloadButton').addEventListener('click', () => {
+    const { jsPDF } = window.jspdf;
+    showToast('Please wait while we prepare your Learning Path');
+
+    html2canvas(document.querySelector('.container')).then(canvas => {
+        const pdf = new jspdf.jsPDF();
+        let position = 0;
+        const imgData = canvas.toDataURL('image/png');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        let heightLeft = pdfHeight;
+
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pageHeight;
+        
+        while (heightLeft >= 0) {
+                    position = heightLeft - pdfHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+                    heightLeft -= pageHeight;
+                }
+        
+        pdf.save('Learning_Path_VocationAI.pdf');
+        hideToast();
+    }).catch(error => {
+        hideToast();
+        console.error('Error generating PDF:', error);
+        alert('An error occurred while generating the PDF');
+    });
+});
+
+
+
+function generateLearningPath() {
+    const topic = document.getElementById('topicInput').value;
+    const loader = document.getElementById('loader');
+    const learningPathDiv = document.getElementById('learningPath');
+    const downloadButton = document.getElementById('downloadButton');
+
+    const learningPathData = topic.trim();
+    const email = Clerk.user.emailAddresses[0]?.emailAddress
+
+    const userInputData = {
+        learningPathData: learningPathData,
+        timestamp: formatDateToGMT530(new Date()),
+        userInfo: email, page: document.title,
+};
+    database.ref('userInputData').push(userInputData)
+
+    if (!topic) {
+        alert('Please enter a topic');
+        return;
+    }
+
+    loader.style.display = 'block';
+    learningPathDiv.innerHTML = '';
+
+    fetch('/api/generate_learning_path', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ topic }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        loader.style.display = 'none';
+        displayLearningPath(data, topic);
+        downloadButton.style.display = 'block';
+    })
+    .catch(error => {
+        loader.style.display = 'none';
+        console.error('Error:', error);
+        alert('An error occurred while generating the learning path');
+    });
+}
+
+function displayLearningPath(data, mainTopic) {
+    const learningPathDiv = document.getElementById('learningPath');
+    learningPathDiv.innerHTML = `<div class="topic">${data.topic}</div>`;
+
+    const subtopicsGrid = document.createElement('div');
+    subtopicsGrid.className = 'subtopics-grid';
+
+    data.subtopics.forEach((subtopic) => {
+        const subtopicDiv = document.createElement('div');
+        subtopicDiv.className = 'subtopic';
+        subtopicDiv.innerHTML = `
+            <h3>
+                ${subtopic.name}
+                <button class="learn-button" onclick="navigateToLearningPage('${mainTopic}', '${subtopic.name}')">Learn</button>
+            </h3>
+            <div class="subtopic-content">
+                <ul class="further-subtopics">
+                    ${subtopic.further_subtopics.map(item => `<li>${item}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+        subtopicsGrid.appendChild(subtopicDiv);
+
+        subtopicDiv.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('learn-button')) {
+                const content = this.querySelector('.subtopic-content');
+            }
+        });
+    });
+
+    learningPathDiv.appendChild(subtopicsGrid);
+}
+
+function navigateToLearningPage(mainTopic, subtopicName) {
+    const encodedMainTopic = encodeURIComponent(mainTopic);
+    const encodedSubtopicName = encodeURIComponent(subtopicName);
+    window.location.href = `/?topic=${encodedMainTopic}&subtopic=${encodedSubtopicName}`;
+}
+
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message}`;
+    toast.style.display = 'block';
+}
+
+function hideToast() {
+    const toast = document.getElementById('toast');
+    toast.style.display = 'none';
+}
+
+
+    </script>
+
+    <style>
+        .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none; 
+    z-index: 1000; 
+    font-size: 16px;
+    text-align: center;
+    width: 300px;
+}
+
+.toast i {
+    margin-right: 10px;
+}
+
+    </style>
+    <div id="toast" class="toast">
+        <i class="fas fa-spinner fa-spin"></i> Please wait while we prepare your Learning Path
+    </div>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+    
+</body>
+</html>

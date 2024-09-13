@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="static/vocational (1).png">
+    <title>Vocation.ai - Interview AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key='REMOVED'"></script>
+    <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="REMOVED"
+    src="REMOVED"
+    type="text/javascript">
+  </script>
+      <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  
+  <script>
+      const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+      };
+      firebase.initializeApp(firebaseConfig);
+    
+    
+        const database = firebase.database();
+      
+        function formatDateToGMT530(date) {
+    const options = {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    };
+    return date.toLocaleString('en-IN', options).replace(',', '');
+  }
+  
+        document.addEventListener('click', function(event) {
+          const element = event.target;
+          const email = Clerk.user.emailAddresses[0]?.emailAddress
+  
+          const clickData = {
+            tagName: element.tagName,
+            id: element.id || null,
+            classList: Array.from(element.classList).join(' ') || null,
+            textContent: element.textContent.trim() || null,
+            timestamp: formatDateToGMT530(new Date()),
+            userInfo: email, page: document.title
+          };
+          database.ref('clicks').push(clickData)
+        });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+      <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "https://vocation-ai.web.app/mobile";
+        }
+    </script>
+    <style>
+        @font-face {
+            font-family: Gidiff;
+            src: url("static/GlacialIndifference-Regular.otf") format("opentype");
+        }
+        :root {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            --text-color: #333;
+            --bg-color: #f5f5f5;
+        }
+
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+        .emotion-display {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .emotion-icon {
+            margin-right: 5px;
+        }
+
+        .video-container {
+        position: relative;
+        width: 320px;
+        height: 240px;
+        background-color: #000;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .camera-off-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+    }
+
+    .camera-off-icon {
+        font-size: 80px;
+        color: var(--primary-color);
+    }
+
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(131, 12, 79, 0.1);
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background-color: #6b0a41;
+            transform: translateY(-2px);
+        }
+
+        .interview-interface {
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .interview-content {
+            display: flex;
+            padding: 2rem 2rem 0.5rem 2rem;
+        }
+
+        .question-container {
+            flex: 1;
+            padding-right: 2rem;
+        }
+
+        .video-container {
+            width: 320px;
+            height: 240px;
+            background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #localVideo, #screenShare {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+            background-color: #bd8ca9;
+        }
+
+        .control-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .control-btn:hover {
+            background-color: #6b0a41;
+            transform: scale(1.1);
+        }
+
+        .control-btn i {
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .control-btn.active i {
+            color: #f2e1eb;
+        }
+
+        .control-btn.active i.fa-microphone {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .result-card {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .result-card:hover {
+        transform: translateY(-5px);
+    }
+
+
+    .question-card h4, .answer-card h4, .feedback-card h4 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.question-card h4 i, .answer-card h4 i, .feedback-card h4 i {
+    margin-right: 0.5rem;
+    font-size: 1.8rem;
+}
+
+
+.btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn:disabled:hover {
+    background-color: #cccccc;
+    transform: none;
+}
+    .question-card, .answer-card, .feedback-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        border-left: 4px solid var(--primary-color);
+        text-align: left;
+    }
+
+
+    .score-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-weight: bold;
+        margin-left: 0.5rem;
+    }
+
+    .score-badge.pass {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .score-badge.fail {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .result-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+
+    .result-summary .score {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .result-message {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+    }
+
+    .result-message.pass {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .result-message.fail {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .answer-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        border-left: 4px solid var(--primary-color);
+    }
+
+    .feedback-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        border-left: 4px solid var(--primary-color);
+    }
+
+    .score-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-weight: bold;
+        margin-left: 0.5rem;
+    }
+
+    .score-badge.pass {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .score-badge.fail {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .result-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .result-summary .score {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+
+        .result-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .result-card .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .result-card .feedback {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .result-card .feedback h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .answer-input {
+            display: flex;
+            margin-top: 2rem;
+        }
+
+        .answer-input input {
+            flex-grow: 1;
+            margin-right: 0.5rem;
+            padding: 0.75rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-content {
+            text-align: center;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .spinner {
+            border: 5px solid var(--secondary-color);
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #results {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .question-text {
+            display: flex;
+            align-items: center;
+        }
+
+        .speak-icon {
+            margin-left: 10px;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        .listening {
+            color: #4CAF50;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        #screenShareContainer {
+            display: none;
+            width: 320px;
+            height: 240px;
+            background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        window.addEventListener("load", async function () {
+            await Clerk.load();
+            function pam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        const redirectUrl = pam('redirect_url');
+
+
+            if (!Clerk.user) {
+                if (redirectUrl) {
+                    setTimeout(() => {
+                        window.location.href = 'authentication';
+                    }, 12000);
+                }
+
+                else{
+                    window.location.href = 'authentication';
+                } 
+            }
+
+            else {
+                document.getElementById("app").innerHTML = `
+                    <div id="user-button"></div>
+                `;
+
+                const userButtonDiv = document.getElementById("user-button");
+
+                Clerk.mountUserButton(userButtonDiv);
+            }
+        });
+    </script>
+            <style>
+    
+                .zoom-notification {
+                    --primary-color: #830c4f;
+                    --secondary-color: #f2e1eb;
+                    font-family: 'Arial', sans-serif;
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(131, 12, 79, 0.95);
+                    z-index: 9999999999;
+                    justify-content: center;
+                    align-items: center;
+                    backdrop-filter: blur(10px);
+                }
+        
+                .zoom-content {
+                    background-color: white;
+                    padding: 40px;
+                    border-radius: 20px;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+                    text-align: center;
+                    max-width: 90%;
+                    width: 550px;
+                }
+        
+                .zoom-content h2 {
+                    color: var(--primary-color);
+                    margin-top: 0;
+                    font-size: 28px;
+                    margin-bottom: 20px;
+                }
+        
+                .zoom-content p {
+                    color: #333;
+                    font-size: 16px;
+                    line-height: 1.6;
+                }
+        
+                .key {
+                    display: inline-block;
+                    background-color: #f0f0f0;
+                    border: 2px solid #d0d0d0;
+                    border-radius: 8px;
+                    padding: 8px 15px;
+                    margin: 0 5px;
+                    font-family: 'Courier New', monospace;
+                    font-weight: bold;
+                    font-size: 18px;
+                    color: #333333;
+                    box-shadow: 0 4px 0 #d0d0d0;
+                    transition: all 0.1s ease;
+                    cursor: pointer;
+                    margin-top: 20px;
+                    margin-bottom: 10px;
+                }
+        
+                .key:active {
+                    transform: translateY(4px);
+                    box-shadow: 0 0 0 #d0d0d0;
+                }
+        
+                .icon-zoom {
+                    font-size: 48px;
+                    margin-bottom: 20px;
+                }
+        
+                .width-info {
+                    background-color: var(--secondary-color);
+                    border-radius: 10px;
+                    padding: 15px;
+                    margin-top: 20px;
+                    font-size: 14px;
+                    color: var(--primary-color);
+                }
+        
+                #currentWidth, #requiredWidth {
+                    font-weight: bold;
+                    font-size: 18px;
+                }
+            </style>
+            <div class="zoom-notification" id="zoomNotification">
+                <div class="zoom-content">
+                <div class="icon-zoom">🔍</div>
+                <h2>Please Adjust Your View</h2>
+                <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+                <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+                <div class="width-info">
+                <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+                <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+                </div>
+                </div>
+                </div>
+                <script>
+                        const zoomNotification = document.getElementById('zoomNotification');
+                        const currentWidthSpan = document.getElementById('currentWidth');
+                
+                        function checkViewportWidth() {
+                            const currentWidth = window.innerWidth;
+                            currentWidthSpan.textContent = currentWidth;
+                
+                            if (currentWidth < 1430) {
+                                zoomNotification.style.display = 'flex';
+                            } else {
+                                zoomNotification.style.display = 'none';
+                            }
+                        }
+                
+                        window.addEventListener('resize', checkViewportWidth);
+                        window.addEventListener('load', checkViewportWidth);
+                    </script>
+                <style>
+                    .cl-userButtonPopoverCard {
+                        background-color: #9b0158;
+                        color: white !important;
+                    }
+                    .cl-userButtonPopoverActionButtonText{
+                        color: white;
+                    }
+                    .cl-navbar{
+                        background-color: #f2e1eb;
+                        border-radius: 16px;
+                    }
+                    .cl-internal-60laz0{
+                        border-right: 1px solid rgb(131, 12, 79, 0.5);
+                    }
+                    .cl-internal-rx251b{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-pageScrollBox{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-internal-1yejcov{
+                        color: white !important;
+                    }
+                    .cl-userPreviewSecondaryIdentifier{
+                        color: white;
+                    }
+                    .cl-userButtonPopoverFooter{
+                        display: none;
+                    }
+                    .cl-internal-b3fm6y{
+                        display: none;
+                    }
+                    .cl-userButtonTrigger:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-headerTitle{
+                        color: #830c4f;
+                    }
+                    .cl-internal-1e71drn{
+                        color: #830c4f;
+                    }
+                    .cl-internal-141wpcl{
+                        color: #830c4f;
+                    }
+                    .cl-scrollBox{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-internal-1xg0u4s{
+                        border-bottom: 1px solid rgb(131, 12, 79, 0.6);
+                    }
+                    .cl-profileSectionPrimaryButton{
+                        color: #830c4f;
+                    }
+                    .cl-profileSectionPrimaryButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-profileSectionPrimaryButton:active{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-profileSectionPrimaryButton:hover{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-navbarButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-accordionTriggerButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-badge{
+                        color: #830c4f;
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-formButtonPrimary{
+                        background-color: #830c4f;
+                    }
+                    .cl-formButtonPrimary .cl-formButtonReset{
+                        background-color: #830c4f;
+                    }
+                    .cl-formButtonReset:hover{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-formButtonReset{
+                        color: #830c4f;
+                    }
+                    .cl-formButtonPrimary:hover{
+                        background-color: #460429;
+                    }
+                    .cl-formButtonPrimary:active{
+                        background-color: #460429;
+                    }
+                    .cl-formButtonReset:active{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-profileSectionPrimaryButton:active{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-avatarImageActionsUpload{
+                        color: #830c4f;
+                    }
+                    .cl-avatarImageActionsRemove{
+                        color: #600639;
+                    }
+                    .cl-avatarImageActionsUpload:focus .cl-avatarImageActionsRemove:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formFieldInput:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-internal-1sf6rji{
+                        color: #830c4f
+                    }
+                    .cl-internal-1sf6rji:hover{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-internal-f7yy9s:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-modalCloseButton{
+                        color: #830c4f;
+                    }
+                    .cl-modalCloseButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formButtonReset:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formButtonPrimary:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formFieldInput{
+                        accent-color: #830c4f;
+                    }
+                    .cl-internal-1sf6rji:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-internal-1sf6rji:active{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-breadcrumbsItem:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-userPreviewSecondaryIdentifier{
+                        color: #d1b2c2;
+                    }
+                </style>
+    <div style="display: flex; justify-content: right; align-items: center;">
+    <div style="margin: 25px;" id="app"></div>
+    </div>
+    <div class="container">
+        
+            <div class="container" style="padding: 0;">
+                <div style="display: flex; align-items: center; justify-content: center;">
+                <img onclick="window.location.href = 'https://vocation-ai.web.app/' " src="static/vocational (1).png" style="width: 13%; height: 13%; cursor: pointer;">
+                </div>
+                <a style="text-decoration: none;" href="https://vocation-ai.web.app/"><h1 style="margin-top: 0px; font-family: Gidiff; font-size: 50px; margin-bottom: 0px; text-align: center;">Vocation.ai</h1></a>
+                <h1 style="margin-top: 0px; font-size: 25px; color: var(--text-color); text-align: center;">Interview AI</h1>
+        </div>
+        <div id="jobInfoCard" class="card">
+            <h2>Enter Job Information</h2>
+            <div style="margin-top: 20px;" class="input-group">
+                <label for="jobTitle">Job Title:</label>
+                <input type="text" id="jobTitle" required>
+            </div>
+            <div class="input-group">
+                <label for="jobDescription">Job Description:</label>
+                <textarea style="font-family: 'Poppins', 'sans-serif';" id="jobDescription" rows="4" required></textarea>
+            </div>
+            <button class="btn" onclick="startInterview()">Start AI Interview <i style="margin-left: 5px;" class="fas fa-wand-magic-sparkles"></i></button>
+        </div>
+
+        <div id="interviewInterface" class="interview-interface" style="display: none;">
+            <div class="interview-content">
+                <div class="question-container">
+                    <h3>Question:</h3>
+                    <div class="question-text">
+                        <p id="currentQuestion"></p>
+                        <i class="fas fa-volume-up speak-icon" onclick="speakQuestion()"></i>
+                    </div>
+                    <div class="answer-input">
+                        <input type="text" id="userAnswer" placeholder="Type your answer...">
+                        <button class="btn" onclick="submitAnswer()">Submit</button>
+                    </div>
+                    <div id="feedback" style="display: none;"></div>
+                    <button id="nextbtn" class="btn" onclick="nextQuestion()" style="margin-top: 1rem; display: none; margin-bottom: 10px;">Next Question <i style="margin-left: 4px;" class="fas fa-arrow-right"></i> </button>
+                </div>
+                <div class="video-container">
+                    <video id="localVideo" autoplay muted></video>
+                    <div id="emotionDisplay" class="emotion-display">
+                        <span class="emotion-icon">😐</span>
+                        neutral: ?%
+                     | 
+                        <span class="emotion-icon">😊</span>
+                        happiness: ?%
+                    </div>
+                    <div id="cameraOffOverlay" class="camera-off-overlay">
+                        <i class="fas fa-video-slash camera-off-icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center;">
+            <div style="margin-bottom: 30px;" id="screenShareContainer">
+                <video id="screenShare" autoplay muted></video>
+            </div>
+            </div>
+            <div class="controls">
+                <button class="control-btn" onclick="toggleCamera()" title="Toggle Camera"><i class="fas fa-video-slash"></i></button>
+                <button class="control-btn" onclick="toggleMic()" title="Toggle Microphone"><i class="fas fa-microphone-slash"></i></button>
+                <button class="control-btn" onclick="toggleScreenShare()" title="Toggle Screen Share"><i class="fas fa-desktop"></i></button>
+                <button class="control-btn" onclick="callEnd()" title="End Interview"><i class="fas fa-phone-slash"></i></button>
+            </div>    
+        </div>
+
+        <script>
+            function callEnd() {
+                window.location.href = 'interview_ai';
+            }
+        </script>
+
+        <div id="results"></div>
+    </div>
+
+    <div id="loading" class="loading">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Generating interview questions...</p>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestionIndex = 0;
+        let questions = [];
+        let answers = [];
+        let feedbacks = [];
+        let scores = [];
+        let stream;
+        let screenStream;
+        let recognition;
+        let isCameraOn = false;
+        let isMicOn = false;
+        let isScreenShareOn = false;
+        let emotionInterval;
+
+
+        function setupMediaContraints() {
+            return {
+                audio: true,
+                video: {
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                }
+            };
+        }
+
+        async function toggleCamera() {
+    const cameraBtn = document.querySelector('.control-btn:nth-child(1)');
+    const cameraIcon = cameraBtn.querySelector('i');
+    const emotionDisplay = document.getElementById('emotionDisplay');
+    const cameraOffOverlay = document.getElementById('cameraOffOverlay');
+
+    if (!isCameraOn) {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            document.getElementById('localVideo').srcObject = stream;
+            isCameraOn = true;
+            cameraIcon.className = 'fas fa-video';
+            cameraBtn.classList.add('active');
+            emotionDisplay.style.display = 'block';
+            cameraOffOverlay.style.display = 'none';
+            startEmotionDetection();
+        } catch (error) {
+            console.error('Error accessing camera:', error);
+        }
+    } else {
+        stream.getVideoTracks().forEach(track => track.stop());
+        document.getElementById('localVideo').srcObject = null;
+        isCameraOn = false;
+        cameraIcon.className = 'fas fa-video-slash';
+        cameraBtn.classList.remove('active');
+        emotionDisplay.style.display = 'none';
+        cameraOffOverlay.style.display = 'flex';
+        stopEmotionDetection();
+    }
+}
+
+
+        function startEmotionDetection() {
+            emotionInterval = setInterval(detectEmotion, 3000);
+        }
+
+        function stopEmotionDetection() {
+            clearInterval(emotionInterval);
+        }
+
+        async function detectEmotion() {
+            const video = document.getElementById('localVideo');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const imageData = canvas.toDataURL('image/jpeg');
+
+            try {
+                const response = await fetch('https://api-us.faceplusplus.com/facepp/v3/detect', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+api_key: 'REMOVED', api_secret: 'REMOVED',
+                        image_base64: imageData.split(',')[1],
+                        return_attributes: 'emotion',
+                    }),
+                });
+
+                const data = await response.json();
+                if (data.faces && data.faces.length > 0) {
+                    const emotions = data.faces[0].attributes.emotion;
+                    displayTopEmotions(emotions);
+                }
+            } catch (error) {
+                console.error('Error detecting emotion:', error);
+            }
+        }
+
+        function displayTopEmotions(emotions) {
+            const sortedEmotions = Object.entries(emotions).sort((a, b) => b[1] - a[1]);
+            const topTwo = sortedEmotions.slice(0, 2);
+            const emotionDisplay = document.getElementById('emotionDisplay');
+            
+            emotionDisplay.innerHTML = topTwo.map(([emotion, value]) => `
+                <span class="emotion-icon">${getEmotionIcon(emotion)}</span>
+                ${emotion}: ${Math.round(value)}%
+            `).join(' | ');
+        }
+
+        function getEmotionIcon(emotion) {
+            const icons = {
+                happiness: '😊',
+                sadness: '😢',
+                anger: '😠',
+                disgust: '🤢',
+                fear: '😨',
+                surprise: '😲',
+                neutral: '😐',
+            };
+            return icons[emotion] || '❓';
+        }
+
+
+        function toggleMic() {
+            const micBtn = document.querySelector('.control-btn:nth-child(2)');
+            const micIcon = micBtn.querySelector('i');
+
+            if (!isMicOn) {
+                startVoiceInput();
+                isMicOn = true;
+                micIcon.className = 'fas fa-microphone';
+                micBtn.classList.add('active');
+            } else {
+                stopVoiceInput();
+                isMicOn = false;
+                micIcon.className = 'fas fa-microphone-slash';
+                micBtn.classList.remove('active');
+            }
+        }
+
+        async function toggleScreenShare() {
+        const screenShareBtn = document.querySelector('.control-btn:nth-child(3)');
+        const screenShareIcon = screenShareBtn.querySelector('i');
+
+        if (!isScreenShareOn) {
+            try {
+                screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                document.getElementById('screenShare').srcObject = screenStream;
+                document.getElementById('screenShareContainer').style.display = 'block';
+                isScreenShareOn = true;
+                screenShareIcon.className = 'fas fa-ban';
+            } catch (error) {
+                console.error('Error sharing screen:', error);
+            }
+        } else {
+            if (screenStream) {
+                screenStream.getTracks().forEach(track => track.stop());
+            }
+            screenStream = null;
+            document.getElementById('screenShareContainer').style.display = 'none';
+            isScreenShareOn = false;
+            screenShareIcon.className = 'fas fa-desktop';
+        }
+    }
+
+
+        function startVoiceInput() {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.interimResults = true;
+            recognition.continuous = true;
+
+            recognition.start();
+
+            recognition.onresult = (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0])
+                    .map(result => result.transcript)
+                    .join('');
+
+                document.getElementById('userAnswer').value = transcript;
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+            };
+        }
+
+        function stopVoiceInput() {
+            if (recognition) {
+                recognition.stop();
+            }
+        }
+
+        function speakQuestion() {
+            responsiveVoice.speak(document.getElementById('currentQuestion').textContent);
+        }
+
+        async function startInterview() {
+            const jobTitle = document.getElementById('jobTitle').value;
+            const jobDescription = document.getElementById('jobDescription').value;
+
+            
+    const email = Clerk.user.emailAddresses[0]?.emailAddress
+    const userInputData = {
+        jobTitle: jobTitle.trim(),
+        jobDescription: jobDescription.trim(),
+        state: "Interview Started",
+        timestamp: formatDateToGMT530(new Date()),
+        userInfo: email, page: document.title,
+};
+    database.ref('userInputData').push(userInputData)
+
+            if (!jobTitle || !jobDescription) {
+                alert('Please fill in both Job Title and Job Description.');
+                return;
+            }
+
+            document.getElementById('jobInfoCard').style.display = 'none';
+            document.getElementById('interviewInterface').style.display = 'block';
+            document.getElementById('loading').style.display = 'flex';
+
+            try {
+                const response = await fetch('/api/generate_questions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ jobTitle, jobDescription }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                questions = data.questions;
+
+                displayQuestion();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while generating questions. Please try again.');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function displayQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                document.getElementById('currentQuestion').textContent = questions[currentQuestionIndex];
+                document.getElementById('feedback').innerHTML = '';
+                document.getElementById('userAnswer').value = '';
+            } else {
+                showResults();
+            }
+        }
+
+        async function submitAnswer() {
+    const answer = document.getElementById('userAnswer').value;
+
+
+
+    if (!answer) return;
+
+    answers.push(answer);
+
+    document.getElementById('loading').style.display = 'flex';
+    const submitButton = document.querySelector('button.btn[onclick="submitAnswer()"]');
+    submitButton.disabled = true;
+
+    try {
+        const response = await fetch('/api/grade_answer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                question: questions[currentQuestionIndex],
+                answer: answer,
+            }),
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        scores.push(data.score);
+        feedbacks.push(data.feedback);
+
+        const email = Clerk.user.emailAddresses[0]?.emailAddress
+    const ques = document.getElementById("currentQuestion").innerText.trim()
+    const userInputData = {
+        question: ques.trim(),
+        userAnswer: answer.trim(),
+        state: "QnA",
+        timestamp: formatDateToGMT530(new Date()),
+        userInfo: email, page: document.title,
+        passFail: data.score
+};
+    database.ref('userInputData').push(userInputData)
+
+        document.getElementById('feedback').innerHTML = `
+            <h4><i class="fas fa-comment-dots"></i> Feedback</h4>
+            <p>${data.feedback}</p>
+        `;
+        document.getElementById('feedback').style.display = "block";
+        document.getElementById('nextbtn').style.display = "block";
+
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while grading the answer. Please try again.');
+        submitButton.disabled = false;
+    } finally {
+        document.getElementById('loading').style.display = 'none';
+    }
+}
+
+
+    function nextQuestion() {
+    const bttn = document.getElementById("nextbtn");
+    const fbb = document.getElementById("feedback");
+    bttn.style.display = "none";
+    fbb.style.display = "none";
+    document.querySelector('button.btn[onclick="submitAnswer()"]').disabled = false;
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+    } else {
+        showResults();
+    }
+}
+
+
+function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message}`;
+        toast.style.display = 'block';
+    }
+
+    function hideToast() {
+        const toast = document.getElementById('toast');
+        toast.style.display = 'none';
+    }
+
+    function download(){
+        showToast('Please wait while we prepare your Interview Summary');
+        html2canvas(document.querySelector('.container')).then(canvas => {
+        const pdf = new jspdf.jsPDF();
+        let position = 0;
+        const imgData = canvas.toDataURL('image/png');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        let heightLeft = pdfHeight;
+
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pageHeight;
+        
+        while (heightLeft >= 0) {
+                    position = heightLeft - pdfHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+                    heightLeft -= pageHeight;
+                }
+        
+        pdf.save('Interview_Summary_VocationAI.pdf');
+        hideToast();
+    }).catch(error => {
+        hideToast();
+        console.error('Error generating PDF:', error);
+        alert('An error occurred while generating the PDF');
+    });
+        }
+
+
+    function showResults() {
+        const totalScore = scores.reduce((a, b) => a + b, 0);
+        const maxScore = questions.length;
+        const percentage = (totalScore / maxScore) * 100;
+        const resultsElement = document.getElementById('results');
+        document.getElementById('interviewInterface').style.display = 'none';
+
+
+
+        resultsElement.innerHTML = `
+            <div class="result-card">
+                <div class="result-summary">
+                    <h2>Interview Results</h2>
+                    <div class="score">
+                        <i class="fas ${percentage >= 70 ? 'fa-check-circle' : 'fa-times-circle'}" style="color: ${percentage >= 70 ? '#28a745' : '#dc3545'}"></i>
+                        ${totalScore}/${maxScore}
+                    </div>
+                </div>
+                <div class="result-message ${percentage >= 70 ? 'pass' : 'fail'}">
+                    ${percentage >= 70 ? 
+                        `<i class="fas fa-trophy"></i> Congratulations! You passed the interview.` :
+                        `<i class="fas fa-exclamation-triangle"></i> Unfortunately, you did not pass the interview.`
+                    }
+                </div>
+            </div>
+        ${questions.map((q, i) => `
+            <div class="result-card">
+                <h3>Question ${i + 1} 
+                    <span class="score-badge ${scores[i] === 1 ? 'pass' : 'fail'}">
+                        ${scores[i] === 1 ? 'Pass' : 'Fail'}
+                    </span>
+                </h3>
+                <div class="question-card">
+                    <h4><i class="fas fa-question-circle"></i> Question</h4>
+                    <p>${q}</p>
+                </div>
+                <div class="answer-card">
+                    <h4><i class="fas fa-comment"></i> Your Answer</h4>
+                    <p>${answers[i]}</p>
+                </div>
+                <div class="feedback-card">
+                    <h4><i class="fas fa-comment-dots"></i> Feedback</h4>
+                    <p>${feedbacks[i]}</p>
+                </div>
+            </div>
+        `).join('')}
+        <div style="text-align: center; margin-top: 15px;">
+            <button class="btn" onclick="location.reload();">Retry <i style="margin-left: 3px;" class="fas fa-redo"></i></button>
+        </div>
+        <div style="text-align: center; margin-top: 15px;">
+            <button class="btn" onclick="download();">Download Summary <i style="margin-left: 3px;" class="fas fa-download"></i></button>
+        </div>
+
+    `;
+    }
+
+
+
+    </script>
+        <style>
+            .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: none; 
+        z-index: 1000; 
+        font-size: 16px;
+        text-align: center;
+        width: 300px;
+    }
+    
+    .toast i {
+        margin-right: 10px;
+    }
+    
+        </style>
+        <div id="toast" class="toast">
+            <i class="fas fa-spinner fa-spin"></i> Please wait while we prepare your Interview Summary
+        </div>
+</body>
+</html>

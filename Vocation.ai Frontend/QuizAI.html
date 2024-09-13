@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vocation.ai - Loading</title>
+        <link rel="icon" type="image/x-icon" href="vocational (1).png">
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+        };
+        firebase.initializeApp(firebaseConfig);
+      
+      
+          const database = firebase.database();
+        
+          function formatDateToGMT530(date) {
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      return date.toLocaleString('en-IN', options).replace(',', '');
+    }
+    
+          document.addEventListener('click', function(event) {
+            const element = event.target;
+    
+            const clickData = {
+              tagName: element.tagName,
+              id: element.id || null,
+              classList: Array.from(element.classList).join(' ') || null,
+              textContent: element.textContent.trim() || null,
+              timestamp: formatDateToGMT530(new Date()), page: document.title
+            };
+            database.ref('clicks').push(clickData)
+          });
+        </script>
+        <script>
+            function isMobile() {
+                return /Mobi|Android/i.test(navigator.userAgent);
+            }
+    
+            if (isMobile()) {
+                window.location.href = "mobile.html";
+            }
+        </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        @font-face {
+            font-family: Gidiff;
+            src: url("GlacialIndifference-Regular.otf") format("opentype");
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2e1eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            width: 700px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f2e1eb;
+            border-top: 5px solid #830c4f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        .message { background-color: #f2e1eb; border-radius: 8px; padding: 1rem; margin-top: 1rem; font-size: 0.95rem; line-height: 1.5; color: #830C4F; }        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        h1 {
+            color: #830c4f;
+            margin-bottom: 1rem;
+        }
+
+        #timer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #830c4f;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        .progress {
+            width: 0%;
+            height: 100%;
+            background-color: #830c4f;
+            transition: width 1s linear;
+        }
+    </style>
+</head>
+<body>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+    <div class="container">
+        <a href="index.html" style="text-decoration: none;">
+        <img src="vocational (1).png" height="100px">
+        <h1 style="margin: 0; font-size: 40px; color: #830C4F; font-family: Gidiff;">Vocation.ai</h1></a>
+        <div class="loader" style="margin-top: 20px;"></div>
+        <h1 id="loading-text">Loading</h1>
+        <p class="updateText"><strong>Estimated Time Left</strong></p>
+        <p id="timer">150 seconds</p>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <br>
+        <div class="message">
+            <p>Hey there! 👋 Our AI is just waking up from its power nap. It needs a moment to stretch its digital muscles and get ready for your awesome questions. Hang tight - it'll be worth the wait!</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.location.replace("https://tutorai-huqg.onrender.com/quiz_ai")
+            const timerElement = document.getElementById('timer');
+            const progressElement = document.querySelector('.progress');
+            const loadingTextElement = document.getElementById('loading-text');
+            let secondsLeft = 151;
+            const totalTime = 151;
+
+            const updateTimer = () => {
+                
+                if (secondsLeft > 0) {
+                    secondsLeft--;
+                    timerElement.textContent = `${secondsLeft} second${secondsLeft !== 1 ? 's' : ''}`;
+                    const progressPercentage = ((totalTime - secondsLeft) / totalTime) * 100;
+                    progressElement.style.width = `${progressPercentage}%`;
+
+                    if (secondsLeft === 145) {
+                        loadingTextElement.textContent = 'Might take 1-2 mins to load';
+                    } else if (secondsLeft === 128) {
+                        loadingTextElement.textContent = 'Loading';
+                    } else if (secondsLeft === 90) {
+                        loadingTextElement.textContent = 'Almost done!';
+                    } else if (secondsLeft === 30) {
+                        loadingTextElement.textContent = 'Very Close!';
+                    } else if (secondsLeft === 5) {
+                        loadingTextElement.textContent = 'Loading';
+                    }
+
+                    setTimeout(updateTimer, 1000);
+                } else {
+                    timerElement.textContent = 'Please Wait!';
+                    loadingTextElement.textContent = 'Please Wait!';
+                    progressElement.style.width = '100%';
+                }
+            };
+
+            updateTimer();
+        });
+    </script>
+    </body>
+
+<!--<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="vocational (1).png">
+    <title>Vocation.ai - Quiz AI</title>
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #830c4f;
+            --secondary-color: #f39c12;
+            --text-color: #333;
+            --bg-color: #f2e1eb;
+            --card-bg: #ffffff;
+            --progress-bg: #e0e0e0;
+            --progress-fill: #0c8340;
+        }
+
+        .highlight {
+            padding: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+
+        .introjs-bullets ul li a.active {
+            background: var(--primary-color) !important;
+            box-shadow: 0 0 0 2px rgba(131, 12, 79, 0.3);
+        }
+
+        .introjs-bullets a {
+            background: #9f9b9b !important;
+            transition: background 0.3s ease;
+        }
+
+        .introjs-tooltip {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            color: #830c4f;
+            font-size: 18px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+            padding: 25px;
+            max-width: 350px;
+        }
+
+        .introjs-tooltiptext {
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        .introjs-tooltip h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #830c4f;
+        }
+
+        .introjs-tooltip p {
+            margin-bottom: 15px;
+        }
+
+        .introjs-button {
+            background-color: #830c4f;
+            color: #fff;
+            text-shadow: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            font-size: 14px;
+            border: 2px solid #830c4f;
+            margin: 5px;
+        }
+
+        .introjs-skipbutton {
+            color: #830c4f;
+            background-color: transparent;
+            border: 2px solid #830c4f;
+        }
+
+        .introjs-button:hover {
+            background-color: #f2e1eb;
+            color: #830c4f;
+            border: 2px solid #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-button:focus {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            color: #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+        }
+
+        .introjs-tooltip .introjs-skipbutton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 26px;
+            text-align: center;
+            border: 2px solid #830c4f;
+            background-color: transparent;
+            color: #830c4f;
+            transition: all 0.3s ease;
+        }
+
+        .introjs-tooltip .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .introjs-arrow {
+            border-color: #830c4f;
+        }
+
+        .introjs-floating {
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .quiz-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: #830c4f;
+            color: #333;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .quiz-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .quiz-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .topics-to-recover {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .topics-to-recover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+
+        .topics-to-recover h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .topics-to-recover ol {
+            color: #333;
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .topics-to-recover li {
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .topics-to-recover li:hover {
+            cursor: pointer;
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .topics-to-recover li::before {
+            content: '\2022';
+            color: var(--primary-color);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-right: 0.5em;
+        }
+
+        .reward-points {
+            background: linear-gradient(135deg, #FF7F3E, #FFA07A);
+            color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .reward-points:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .streak-counter {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .streak-counter:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+
+        .reward-points h3 {
+            margin-bottom: 5px;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .badge {
+            background-color: #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        .quiz-timer {
+            background-color: #830C4F;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            width: max-content;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            box-shadow: 0 5px 15px rgba(131, 12, 79, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .quiz-timer:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(131, 12, 79, 0.2);
+            cursor: pointer;
+        }
+
+        .quizHead{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .ai-switch {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+        }
+
+        .ai-options {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            border-radius: 5px;
+            overflow: hidden;
+
+        }
+
+        .ai-options a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .ai-switch:hover {
+            transform: translateY(-2px);
+            z-index: 100000;
+        }
+    
+        .ai-options a:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+        
+        .show {
+            display: block;
+        }
+
+        .ai-switch.active::after {
+            transform: rotate(180deg);
+        }
+
+        .progress-box {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .progress-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .gd-box {
+            background-color: #ffffff;
+            color: #333333;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(131, 12, 79, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .gd-box li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 1.1em;
+            color: #555;
+            transition: all 0.2s ease;
+        }
+
+        .gd-box h1 {
+            color: #830C4F;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+
+        .gd-box li:hover {
+            color: #830C4F;
+            cursor: pointer;
+        }
+
+        .gd-box li::before {
+            content: "";
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            transition: all 0.2s ease;
+        }
+
+        .gd-box li:nth-child(1)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+        .gd-box li:nth-child(2)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+        .gd-box li:nth-child(3)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+        .gd-box li:nth-child(4)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+        .gd-box li:nth-child(5)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+        .gd-box li:nth-child(6)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+
+        .gd-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(131, 12, 79, 0.2);
+
+        }
+
+
+        .progress-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .progress-bar {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            background: linear-gradient(90deg, var(--primary-color), #b30c6f);
+            height: 100%;
+            border-radius: 10px;
+            width: 0;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .dashboard {
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-title {
+            font-size: 30px;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .dashboard-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .stat-card p {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .quiz-card {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .quiz-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .quiz-card p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .quiz-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .quiz-difficulty {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .difficulty-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .easy { background-color: #4CAF50; }
+        .medium { background-color: #FFC107; }
+        .hard { background-color: #F44336; }
+
+        .quiz-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: #f0f0f0;
+        }
+
+        .quiz-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), #b30c6f);
+            transition: width 0.5s ease;
+        }
+
+
+        .completed-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(76, 175, 80, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #4CAF50;
+        }
+
+        .tutor-ai-insights {
+            background-color: #ffffff;
+            color: #333333;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(131, 12, 79, 0.1);
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .tutor-ai-insights:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .tutor-ai-insights h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .insight-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .insight-item:hover {
+            color: var(--primary-color);
+        }
+
+        .insight-icon {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        .quiz-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .back-to-dashboard {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+            font-family: 'Poppins', 'sans-serif';
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.1; }
+        }
+
+        .ai-switch-icon {
+            animation: fadeInOut 2s infinite;
+        }
+
+        .ai-switch.active .ai-switch-icon {
+            animation: none;
+        }
+
+        .back-to-dashboard:hover {
+            background-color: #6b0a40;
+        }
+
+        .quiz-question {
+            background-color: #ffffff;
+            color: #333333;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(131, 12, 79, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .quiz-question:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .quiz-options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .quiz-options li {
+            margin: 10px 0;
+        }
+
+        .quiz-options label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #830c4f;
+        }
+
+        .quiz-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            font-size: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+            font-family: 'Poppins', 'sans-serif';
+        }
+
+        .quiz-submit:hover {
+            background-color: #6b0a40;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <aside class="sidebar">
+            <div class="logo"><a href="index.html"><img src="Vocation.ai Logo (Horizontal cropped).png" style="height: 65px;"></a></div>
+            
+            <div class="reward-points" data-intro="Your Reward Points!" data-step="3">
+                <h3>Reward Points</h3>
+                <p id="pointsDisplay">500 pts</p>
+            </div>
+
+            <div class="badges" data-intro="Your Badges!" data-step="4">
+                <div class="badge" title="Quick Learner">🚀</div>
+                <div class="badge" title="Perfect Score">🏆</div>
+                <div class="badge" title="Streak Master">🔥</div>
+            </div>
+
+            <div data-intro="Your Daily Streaks!" data-step="5" class="streak-counter">
+                <h3>Current Streak</h3>
+                <p id="streakDisplay">5 days</p>
+            </div>
+
+            <div data-intro="Your progress, based on your previous quiz performances." data-step="6" class="progress-box">
+                <h3 style="cursor: pointer;">Last Assessments <i class="fas fa-angle-right"></i></h3>
+                <div class="module" style="color: black;">
+                    <p>Basic Algebra</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 80%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 10px;">
+                    <p>English Grammar</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 65%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 10px;">
+                    <p>MS Excel Basics</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 90%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div data-intro="This job readiness bar shows how much more you need to work before unlocking a job credit." data-step="7" class="progress-box">
+                <h3 style="cursor: pointer;">Job Readiness  <i class="fas fa-angle-right"></i></h3>
+                <div class="module" style="color: black;">
+                    <p>Data Entry</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 75%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 10px;">
+                    <p>Content Writing</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 60%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 10px;">
+                    <p>Customer Service</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div data-intro="Topics you need to cover again." data-step="8" class="topics-to-recover">
+                <h3 style="cursor: pointer;">Weak Topics  <i class="fas fa-angle-right"></i></h3>
+                <ol style="color: #333;">
+                    <li>Multiplication - Arithmetic</li>
+                    <li>Writing Skills - English</li>
+                    <li>Tenses - Grammar</li>
+                    <li>Formula - Ms Excel</li>
+                </ol>
+            </div>
+        </aside>
+
+        <main class="quiz-main">
+            <header siu="Let's explore the Quiz interface!" tou="11" class="quiz-header">
+                <h2 data-intro="QuizAI tests your knowledge and job readiness." data-step="1" class="ai-switch" id="aiSwitch">
+                    Quiz AI
+                    <i class="fas fa-angle-down ai-switch-icon" style="margin-left: 3px;"></i>
+                    <div class="ai-options" id="aiOptions">
+                        <a href="#" id="jobAI">Job AI</a>
+                        <a href="#" id="tutorAI">Tutor AI</a>
+                        <a href="#" id="Community">Community</a>
+                        <a href="#" id="UserJourneyFlow">User Flow</a>
+                    </div>
+                </h2>
+            </header>
+            <div class="dashboard" id="quizDashboard">
+                <div class="dashboard-header" data-intro="All quizzes are automatically generated by QuizAI using the knowledge base, with questions based on what you've learned in TutorAI modules. QuizAI also monitors webcam activity, shared screen content, and tab switching to prevent cheating." data-step="2">
+                    <h2 class="dashboard-title">Your Quiz Journey <i class="fas fa-angle-right"></i></h2>
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <h3>15</h3>
+                            <p>Quizzes Completed</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>87%</h3>
+                            <p>Average Score</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>5</h3>
+                            <p>Day Streak</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="quiz-grid">
+                    <div class="quiz-card" data-quiz-id="1">
+                        <h3>Ms Excel - Formulae</h3>
+                        <p>Master essential Excel formulae to streamline your data tasks.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot easy"></span>
+                                Easy
+                            </span>
+                            <span>10 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 100%;"></div>
+                        </div>
+                        <div class="completed-overlay">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div onclick="startNewTour()" class="quiz-card" data-quiz-id="2">
+                        <h3>Arithmetic - Addition</h3>
+                        <p>Explore the basics of addition to enhance your arithmetic skills.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot medium"></span>
+                                Medium
+                            </span>
+                            <span>15 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                    <div onclick="startNewTour()" class="quiz-card" data-quiz-id="3">
+                        <h3>Arithmetic - Statistics</h3>
+                        <p>Delve into fundamental statistics concepts to boost arithmetic knowledge.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot medium"></span>
+                                Medium
+                            </span>
+                            <span>12 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div onclick="startNewTour()" class="quiz-card" data-quiz-id="4">
+                        <h3>UI/UX - Wireframing</h3>
+                        <p>Learn the essentials of wireframing to enhance your UI/UX designs.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot hard"></span>
+                                Hard
+                            </span>
+                            <span>20 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 30%;"></div>
+                        </div>
+                    </div>
+                    <div onclick="startNewTour()" data-intro="Try a quiz!" data-step="10" class="quiz-card" data-quiz-id="5">
+                        <h3>English - Tenses</h3>
+                        <p>Master English tenses to improve your grammar and communication skills.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot easy"></span>
+                                Easy
+                            </span>
+                            <span>15 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="quiz-card" data-quiz-id="6">
+                        <h3>English - Vocabulary</h3>
+                        <p>Expand your English vocabulary for more effective communication and writing.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot hard"></span>
+                                Hard
+                            </span>
+                            <span>15 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 100%;"></div>
+                        </div>
+                        <div class="completed-overlay">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div onclick="startNewTour()" class="quiz-card" data-quiz-id="7">
+                        <h3>Arithmetic - Fractions</h3>
+                        <p>Master the basics of fractions and their operations.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot medium"></span>
+                                Medium
+                            </span>
+                            <span>12 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 40%;"></div>
+                        </div>
+                    </div>
+    
+                    <div class="quiz-card" data-quiz-id="8">
+                        <h3>Computer Basics - Hardware</h3>
+                        <p>Learn about essential computer hardware components.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot easy"></span>
+                                Easy
+                            </span>
+                            <span>10 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 100%;"></div>
+                        </div>
+                        <div class="completed-overlay">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+    
+                    <div onclick="startNewTour()" class="quiz-card" data-quiz-id="9">
+                        <h3>English - Idioms and Phrases</h3>
+                        <p>Enhance your English with common idioms and phrases.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot hard"></span>
+                                Hard
+                            </span>
+                            <span>15 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>    
+                </div>
+                <div class="tutor-ai-insights" data-intro="TutorAI Insights!" data-step="9">
+                    <h3>TutorAI Insights <i class="fas fa-angle-right"></i></h3>
+                    <div class="insight-item">
+                        <i class="fas fa-lightbulb insight-icon"></i>
+                        <p>You're excelling in Arithmetic topics. Consider trying the advanced Multiplication quiz!</p>
+                    </div>
+                    <div class="insight-item">
+                        <i class="fas fa-chart-line insight-icon"></i>
+                        <p>Your time management skills have improved by 20% this week. Great job!</p>
+                    </div>
+                    <div class="insight-item">
+                        <i class="fas fa-user-graduate insight-icon"></i>
+                        <p>Based on your progress, you're ready for intermediate-level Ms Excel topics.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="quiz-content" id="quizContent">
+                <button class="back-to-dashboard" id="backToDashboard"><i class="fas fa-arrow-left" style="margin-right: 7px;"></i>Back to Dashboard</button>
+                <div siu="These are the basic quiz guidelines. QuizAI will monitor your shared screen content, tab switching and camera activity to prevent cheating." tou="12" class="gd-box">
+                    <h1 style="cursor: pointer;">Quiz Guidelines</h1>
+                    <ul>
+                        <li>Ensure your camera is on throughout the quiz.</li>
+                        <li>Keep your entire screen shared at all times.</li>
+                        <li>Avoid switching between tabs or applications.</li>
+                        <li>QuizAI will monitor all these activities and quiz will be automatically submitted if any cheating is found.</li>
+                        <li>Read each question carefully and select the best answer from the options provided.</li>
+                        <li>Once you are satisfied with your answers, click on the "Submit" button.</li>
+                    </ul>            
+                </div>
+                <div class="quizHead">
+                <div siu="Quiz Timer!" tou="13" class="quiz-timer" id="quizTimer"><i style="margin-right: 10px;" class="fas fa-clock"></i>Time remaining: 10:00</div>
+                <div siu="Questions Tracker!" tou="14" class="quiz-timer" id="quizTimer"><i style="margin-right: 10px;" class="fas fa-check-circle"></i>Questions Answered: 2/5</div>
+                <div siu="Questions saved for review." tou="15" class="quiz-timer" id="quizTimer"><i style="margin-right: 10px;" class="fas fa-bookmark"></i>Marked for Review: 4</div>
+                </div>
+                <div class="quiz-question" siu="Question Box!" tou="16">
+                    <h3>Question 1:</h3>
+                    <p>Which element has the chemical symbol 'O'?</p>
+                    <ul class="quiz-options">
+                        <li>
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Oxygen
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Gold
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Silver
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Hydrogen
+                            </label>
+                        </li>
+                    </ul>
+                    <style>
+                        .dob {
+                            color: #830c4fdc;
+                            cursor: pointer;
+                            font-size: 20px;
+                            transition: 0.3s;
+                        }
+
+                        .dob:hover {
+                            color: #6c003ddc;
+                            font-size: 22px;
+                        }
+                    </style>
+                    <div siu="Mark for review button!" tou="17" style="display: flex; justify-content: right;">
+                    <i class="far fa-bookmark dob"></i>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <h3>Question 2:</h3>
+                    <p>Which of the following is NOT a basic principle of effective time management?</p>
+                    <ul class="quiz-options">
+                        <li>
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Prioritizing tasks
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Setting goals
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Multitasking constantly
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Creating a schedule
+                            </label>
+                        </li>
+                    </ul>
+                    <div style="display: flex; justify-content: right;">
+                        <i class="far fa-bookmark dob"></i>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <h3>Question 3:</h3>
+                    <p>Which planet is known as the Red Planet?</p>
+                    <ul class="quiz-options">
+                        <li>
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Earth
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                Mars
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Jupiter
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Venus
+                            </label>
+                        </li>
+                    </ul>
+                    <div style="display: flex; justify-content: right;">
+                        <i class="far fa-bookmark dob"></i>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <h3>Question 4:</h3>
+                    <p>Which of the following is an example of a strong password?</p>
+                    <ul class="quiz-options">
+                        <li>
+                            <label>
+                                <input type="radio" name="q4" value="a">
+                                password123
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q4" value="b">
+                                qwerty
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q4" value="c">
+                                P@ssw0rd!
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q4" value="d">
+                                abcdefgh
+                            </label>
+                        </li>
+                    </ul>
+                    <div style="display: flex; justify-content: right;">
+                        <i class="far fa-bookmark dob"></i>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <h3>Question 5:</h3>
+                    <p>What is the largest mammal in the world?</p>
+                    <ul class="quiz-options">
+                        <li>
+                            <label>
+                                <input type="radio" name="q5" value="b">
+                                Elephant
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q5" value="c">
+                                Blue Whale
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q5" value="d">
+                                Giraffe
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q5" value="d">
+                                Hippopotamus
+                            </label>
+                        </li>
+                    </ul>
+                    <div style="display: flex; justify-content: right;">
+                        <i class="far fa-bookmark dob"></i>
+                    </div>
+                </div>
+                <button siu="Hit 'Submit' when done!" tou="18" class="quiz-submit">Submit <i class="far fa-check-circle" style="margin-left: 1px;"></i></button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const quizDashboard = document.getElementById('quizDashboard');
+        const quizContent = document.getElementById('quizContent');
+        const backToDashboard = document.getElementById('backToDashboard');
+        const quizCards = document.querySelectorAll('.quiz-card');
+
+        const aiSwitch = document.getElementById('aiSwitch');
+        const aiOptions = document.getElementById('aiOptions');
+        const jobAI = document.getElementById('jobAI');
+        const tutorAI = document.getElementById('tutorAI');
+        const Community = document.getElementById('Community');
+
+        aiSwitch.addEventListener('click', function(event) {
+            event.stopPropagation();
+            this.classList.toggle('active');
+            aiOptions.classList.toggle('show');
+        });
+
+        jobAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'JobAI.html';
+        });
+
+        tutorAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'TutorAI.html';
+        });
+
+        Community.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'Community.html';
+        });
+
+        UserJourneyFlow.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'user-journey.html';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.ai-switch')) {
+                aiSwitch.classList.remove('active');
+                aiOptions.classList.remove('show');
+            }
+        });
+
+        quizCards.forEach(card => {
+            card.addEventListener('click', () => {
+                if (!card.querySelector('.completed-overlay')) {
+                    quizDashboard.style.display = 'none';
+                    quizContent.style.display = 'block';
+                }
+            });
+        });
+
+        backToDashboard.addEventListener('click', () => {
+            quizContent.style.display = 'none';
+            quizDashboard.style.display = 'block';
+        });
+
+        document.querySelector('.quiz-submit').addEventListener('click', function() {
+            alert('Quiz submitted! In a real application, this would process the answers and provide feedback.');
+            quizContent.style.display = 'none';
+            quizDashboard.style.display = 'block';
+        });
+        let firstTour;
+        let secondTour;
+
+        function initializeTours() {
+            firstTour = introJs();
+            const elements = document.querySelectorAll('.highlight');
+                const steps = Array.from(elements).map((element, index) => ({
+                    element: element,
+                    intro: element.getAttribute('data-intro'),
+                    position: 'right'
+                }));
+            firstTour.setOptions({
+                steps : steps,
+                exitOnOverlayClick: false,
+                exitOnEsc: false,
+                disableInteraction: true
+            });
+
+            secondTour = introJs();
+        }
+
+        function startFirstTour() {
+            initializeTours();
+            firstTour.start().oncomplete(function() {
+                document.getElementById('jobAssistAI').classList.add('tour-completed');
+            });
+        }
+
+        dry=0
+
+        function startNewTour() {
+            if (firstTour && firstTour._currentStep !== null) {
+                firstTour.exit();
+            }
+
+            if(dry == 0){
+                const elements = document.querySelectorAll('[siu]');
+                const steps = Array.from(elements).map((element) => ({
+                element: element,
+                intro: element.getAttribute('siu'),
+                position: element.getAttribute('data-position') || 'right',
+                step: parseInt(element.getAttribute('tou'), 10)
+            })).sort((a, b) => a.step - b.step);
+
+            secondTour.setOptions({
+                steps: steps,
+                showSkipButton: true,
+                exitOnOverlayClick: false,
+                exitOnEsc: false,
+                disableInteraction: false
+            }).start();
+            dry=1
+            }
+
+        }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                startFirstTour();
+                document.getElementById('jobAssistAI').addEventListener('click', startNewTour);
+            });
+
+    </script>
+    </body>
+-->
+</html>

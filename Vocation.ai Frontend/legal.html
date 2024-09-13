@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="vocational (1).png">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <title>Vocation.ai - Legal</title>
+    <script>
+        const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+        };
+        firebase.initializeApp(firebaseConfig);
+      
+      
+          const database = firebase.database();
+        
+          function formatDateToGMT530(date) {
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      return date.toLocaleString('en-IN', options).replace(',', '');
+    }
+    
+          document.addEventListener('click', function(event) {
+            const element = event.target;
+    
+            const clickData = {
+              tagName: element.tagName,
+              id: element.id || null,
+              classList: Array.from(element.classList).join(' ') || null,
+              textContent: element.textContent.trim() || null,
+              timestamp: formatDateToGMT530(new Date()), page: document.title
+            };
+            database.ref('clicks').push(clickData)
+          });
+        </script>
+        <script>
+            function isMobile() {
+                return /Mobi|Android/i.test(navigator.userAgent);
+            }
+    
+            if (isMobile()) {
+                window.location.href = "mobile.html";
+            }
+        </script>
+    <style>
+                @font-face {
+            font-family: Gidiff;
+            src: url("GlacialIndifference-Regular.otf") format("opentype");
+        }
+        :root {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            --text-color: #333;
+            --background-color: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, #830C4F 0%, #5C0C4F 100%);
+            color: var(--secondary-color);
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.3rem;
+        }
+
+        nav button {
+            background-color: transparent;
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover, nav button.active {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        main {
+            padding: 2rem 0;
+        }
+
+        section {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: var(--primary-color);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.4rem;
+        }
+
+        p, ul {
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            padding-left: 2rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 35px 0;
+            background: linear-gradient(135deg, #830C4F 0%, #5C0C4F 100%);
+            color: white;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: white;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 1rem;
+            }
+        }
+        a{
+            text-decoration: none;
+            color: #830c4f;
+        }
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+    </style>
+</head>
+<body>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+    <header>
+        <div class="container">
+            <a href="index.html" style="text-decoration: none;">
+                <img src="vocational.png" height="100px">
+                <h1 style="margin: 0; font-size: 40px; color: white; font-family: Gidiff;">Vocation.ai</h1></a>
+            <nav>
+                <button id="privacyBtn" class="active">Privacy Policy</button>
+                <button id="tosBtn">Terms of Service</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="privacy">
+            <h2>Privacy Policy</h2>
+            
+            <h3>1. Introduction</h3>
+            <p>Welcome to Vocation.ai. We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard your data when you use our platform.</p>
+
+            <h3>2. Information We Collect</h3>
+            <p>We collect the following types of information to provide and enhance our services:</p>
+            <ul>
+                <li><strong>Personal Information:</strong> Full name, email address, contact details, date of birth, gender, location, and government-issued identification (for identity verification).</li>
+                <li><strong>Financial Information:</strong> Income statements and other financial data required for background checks, especially for accessing free services.</li>
+                <li><strong>Educational Information:</strong> Educational background, skills, learning progress, and certifications.</li>
+                <li><strong>Employment Information:</strong> Work history, job preferences, and performance metrics on job tasks.</li>
+                <li><strong>Device and Usage Information:</strong> IP address, browser type, device ID, usage patterns, and interaction history with our AI services.</li>
+                <li><strong>User-Generated Content:</strong> Responses to quizzes, assignments, job tasks, and any other content you create or submit on the platform.</li>
+            </ul>
+
+            <h3>3. How We Use Your Information</h3>
+            <p>We use your information for the following purposes:</p>
+            <ul>
+                <li>Personalizing and enhancing your learning experience.</li>
+                <li>Matching you with suitable job opportunities based on your skills and performance.</li>
+                <li>Improving our AI algorithms for tutoring, job recommendations, and overall platform functionality.</li>
+                <li>Communicating with you regarding your account, services, and updates.</li>
+                <li>Conducting background checks and verifying your eligibility for free services.</li>
+                <li>Ensuring the security, integrity, and compliance of our platform.</li>
+                <li>Fulfilling legal obligations and responding to lawful requests from authorities.</li>
+            </ul>
+
+            <h3>4. Data Sharing and Disclosure</h3>
+            <p>We may share your information with the following entities:</p>
+            <ul>
+                <li><strong>Employers:</strong> When you apply for or accept job opportunities, relevant data may be shared with prospective employers.</li>
+                <li><strong>Service Providers:</strong> Third-party vendors that help us operate, maintain, and improve our platform (e.g., cloud services, analytics providers).</li>
+                <li><strong>Legal Authorities:</strong> When required by law or to protect our rights, your information may be disclosed to legal authorities.</li>
+            </ul>
+            <p>We do not sell your personal information to third parties.</p>
+
+            <h3>5. Data Security</h3>
+            <p>We implement industry-standard security measures, including encryption, access controls, and regular security audits, to protect your data against unauthorized access, alteration, disclosure, or destruction.</p>
+
+            <h3>6. Your Rights and Choices</h3>
+            <p>You have the following rights regarding your personal data:</p>
+            <ul>
+                <li>Accessing and updating your personal information.</li>
+                <li>Requesting the deletion of your data (subject to certain legal obligations).</li>
+                <li>Opting out of certain data processing activities.</li>
+                <li>Lodging a complaint with a supervisory authority if you believe your rights have been violated.</li>
+            </ul>
+
+            <h3>7. Children's Privacy</h3>
+            <p>Our services are intended for users aged 16 and above. We do not knowingly collect or store information from children under 16 without parental consent.</p>
+
+            <h3>8. Changes to This Policy</h3>
+            <p>We may update this Privacy Policy periodically to reflect changes in our practices, technologies, or legal obligations. We will notify you of any significant updates via email or through our platform.</p>
+
+            <h3>9. Contact Us</h3>
+            <p>If you have any questions or concerns about this Privacy Policy, please contact us at <a href="mailto:legal@vocation.ai">legal@vocation.ai</a></p>
+        </section>
+
+        <section id="tos" style="display: none;">
+            <h2>Terms of Service</h2>
+
+            <h3>1. Acceptance of Terms</h3>
+            <p>By accessing or using Vocation.ai, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access the service.</p>
+
+            <h3>2. Eligibility</h3>
+            <p>You must be at least 16 years old to use our services. By using Vocation.ai, you represent and warrant that you meet all eligibility requirements.</p>
+
+            <h3>3. User Accounts</h3>
+            <p>You are responsible for maintaining the confidentiality of your account credentials. You agree to accept responsibility for all activities that occur under your account.</p>
+
+            <h3>4. Background Checks and Free Services</h3>
+            <p>To qualify for free services, users must undergo a background check that includes the submission of government-issued identification and income statements. This is to ensure that only eligible individuals who genuinely need financial assistance receive free access.</p>
+
+            <h3>5. User Conduct</h3>
+            <p>You agree to use Vocation.ai only for lawful purposes and in accordance with these Terms. Prohibited activities include, but are not limited to:</p>
+            <ul>
+                <li>Violating any applicable laws or regulations.</li>
+                <li>Impersonating any person or entity, or falsely stating or otherwise misrepresenting your affiliation with a person or entity.</li>
+                <li>Interfering with or disrupting the service, servers, or networks connected to the service.</li>
+                <li>Engaging in cheating or any form of academic dishonesty.</li>
+                <li>Attempting to gain unauthorized access to any part of the platform.</li>
+            </ul>
+
+            <h3>6. Intellectual Property</h3>
+            <p>All content, features, and functionality available on Vocation.ai are the exclusive property of Vocation.ai and are protected by copyright, trademark, and other intellectual property laws. You may not copy, modify, distribute, or create derivative works based on our content without our prior written consent.</p>
+
+            <h3>7. User-Generated Content</h3>
+            <p>By submitting content to the platform, you grant Vocation.ai a non-exclusive, royalty-free, worldwide license to use, reproduce, modify, and distribute your content for the purpose of providing and improving our services.</p>
+
+            <h3>8. AI-Powered Services</h3>
+            <p>Our AI tutoring and job matching services are designed to assist and guide you. While we strive for accuracy, we do not guarantee the completeness, accuracy, or suitability of any information or recommendations provided by our AI systems.</p>
+
+            <h3>9. Job Opportunities</h3>
+            <p>We facilitate connections between users and potential employers but are not responsible for the interactions, negotiations, or agreements between users and third-party employers. Vocation.ai does not guarantee employment or specific job outcomes.</p>
+
+            <h3>10. Limitation of Liability</h3>
+            <p>To the fullest extent permitted by law, Vocation.ai shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of the service, including but not limited to loss of data, profits, or business opportunities.</p>
+
+            <h3>11. Modifications to the Service</h3>
+            <p>We reserve the right to modify or discontinue, temporarily or permanently, any part of our services with or without notice. Vocation.ai shall not be liable to you or any third party for any modifications, suspensions, or discontinuances of our services.</p>
+
+            <h3>12. Governing Law</h3>
+            <p>These Terms shall be governed by and construed in accordance with the laws of India, without regard to its conflict of law principles.</p>
+
+            <h3>13. Changes to Terms</h3>
+            <p>We reserve the right to update or change these Terms at any time. Significant changes will be communicated to you via email or through the platform. Continued use of the service after such changes constitutes your acceptance of the new Terms.</p>
+
+            <h3>14. Contact Information</h3>
+            <p>If you have any questions about these Terms, please contact us at <a href="mailto:legal@vocation.ai">legal@vocation.ai</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p style="margin-bottom: 0px; font-family: 'Gidiff', sans-serif; font-size: 18px;"><a href="index.html">© Vocation.ai | Empowering Education & Employment in Rural India through AI</a></p>
+    </footer>
+
+    <script>
+        const privacyBtn = document.getElementById('privacyBtn');
+        const tosBtn = document.getElementById('tosBtn');
+        const privacySection = document.getElementById('privacy');
+        const tosSection = document.getElementById('tos');
+
+        privacyBtn.addEventListener('click', () => {
+            privacyBtn.classList.add('active');
+            tosBtn.classList.remove('active');
+            privacySection.style.display = 'block';
+            tosSection.style.display = 'none';
+        });
+
+        tosBtn.addEventListener('click', () => {
+            tosBtn.classList.add('active');
+            privacyBtn.classList.remove('active');
+            tosSection.style.display = 'block';
+            privacySection.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

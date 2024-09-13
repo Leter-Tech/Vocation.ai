@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="static/vocational (1).png">
+    <title>Vocation.ai - Notes AI</title>
+    <meta name="google" content="notranslate">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "https://vocation-ai.web.app/mobile";
+        }
+    </script>
+    <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="REMOVED"
+    src="REMOVED"
+    type="text/javascript">
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2e1eb;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+        @font-face {
+            font-family: Gidiff;
+            src: url("static/GlacialIndifference-Regular.otf") format("opentype");
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(131, 12, 79, 0.1);
+            padding: 20px 0;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 {
+            color: #830c4f;
+            font-size: 2.5em;
+            margin: 0;
+            font-family: 'Poppins';
+        }
+        .notes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .note-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(131, 12, 79, 0.1);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .note-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #830c4f, #ff6b6b);
+        }
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(131, 12, 79, 0.2);
+        }
+        .note-title {
+            color: #830c4f;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .note-preview {
+            color: #666;
+            font-size: 0.9em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+        }
+        .note-date {
+            font-size: 0.8em;
+            color: #999;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        #editor {
+            margin-top: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(131, 12, 79, 0.1);
+        }
+        button {
+            background-color: #830c4f;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 25px;
+            outline: none;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #6a0a40;
+            box-shadow: 0 4px 6px rgba(131, 12, 79, 0.1);
+        }
+        #noteTitle {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #830c4f;
+            border-radius: 25px;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(131, 12, 79, 0.1);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            overflow-y: auto;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(131, 12, 79, 0.2);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .close:hover,
+        .close:focus {
+            color: #830c4f;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #modalTitle {
+            color: #830c4f;
+            margin-bottom: 20px;
+        }
+        #modalContent {
+            line-height: 1.8;
+            color: #333;
+        }
+        #modalContent button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        border: none;
+        background-color: #830c4f;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    #modalContent button:hover {
+        background-color: #6a0a40;
+    }
+        .new-note-btn {
+            position: fixed;
+            bottom: 45px;
+            right: 45px;
+            background-color: #830c4f;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(131, 12, 79, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: blink 1s infinite;
+        }
+        .new-note-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(131, 12, 79, 0.4);
+        }
+        @keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+        .editor-container {
+            display: none;
+            margin-top: 30px;
+        }
+    </style>
+                        <style>
+                            .cl-userButtonPopoverCard {
+                                background-color: #9b0158;
+                                color: white !important;
+                            }
+                            .cl-navbar{
+                                background-color: #f2e1eb;
+                                border-radius: 16px;
+                            }
+                            .cl-internal-rx251b{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-pageScrollBox{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-userButtonPopoverActionButtonText{
+                                color: white;
+                            }
+                            .cl-internal-60laz0{
+                                border-right: 1px solid rgb(131, 12, 79, 0.5);
+                            }
+                            .cl-internal-1yejcov{
+                                color: white !important;
+                            }
+                            .cl-userPreviewSecondaryIdentifier{
+                                color: white;
+                            }
+                            .cl-userButtonPopoverFooter{
+                                display: none;
+                            }
+                            .cl-internal-b3fm6y{
+                                display: none;
+                            }
+                            .cl-userButtonTrigger:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-headerTitle{
+                                color: #830c4f;
+                            }
+                            .cl-internal-1e71drn{
+                                color: #830c4f;
+                            }
+                            .cl-internal-141wpcl{
+                                color: #830c4f;
+                            }
+                            .cl-scrollBox{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-internal-1xg0u4s{
+                                border-bottom: 1px solid rgb(131, 12, 79, 0.6);
+                            }
+                            .cl-profileSectionPrimaryButton{
+                                color: #830c4f;
+                            }
+                            .cl-profileSectionPrimaryButton:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-profileSectionPrimaryButton:active{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-profileSectionPrimaryButton:hover{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-navbarButton:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-accordionTriggerButton:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-badge{
+                                color: #830c4f;
+                                background-color: rgb(131, 12, 79, 0.2);
+                            }
+                            .cl-formButtonPrimary{
+                                background-color: #830c4f;
+                            }
+                            .cl-formButtonPrimary .cl-formButtonReset{
+                                background-color: #830c4f;
+                            }
+                            .cl-formButtonReset:hover{
+                                background-color: rgb(131, 12, 79, 0.2);
+                            }
+                            .cl-formButtonReset{
+                                color: #830c4f;
+                            }
+                            .cl-formButtonPrimary:hover{
+                                background-color: #460429;
+                            }
+                            .cl-formButtonPrimary:active{
+                                background-color: #460429;
+                            }
+                            .cl-formButtonReset:active{
+                                background-color: rgb(131, 12, 79, 0.2);
+                            }
+                            .cl-profileSectionPrimaryButton:active{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-avatarImageActionsUpload{
+                                color: #830c4f;
+                            }
+                            .cl-avatarImageActionsRemove{
+                                color: #600639;
+                            }
+                            .cl-avatarImageActionsUpload:focus .cl-avatarImageActionsRemove:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-formFieldInput:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-internal-1sf6rji{
+                                color: #830c4f
+                            }
+                            .cl-internal-1sf6rji:hover{
+                                background-color: rgb(131, 12, 79, 0.2);
+                            }
+                            .cl-internal-f7yy9s:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-modalCloseButton{
+                                color: #830c4f;
+                            }
+                            .cl-modalCloseButton:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-formButtonReset:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-formButtonPrimary:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-formFieldInput{
+                                accent-color: #830c4f;
+                            }
+                            .cl-internal-1sf6rji:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-internal-1sf6rji:active{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-breadcrumbsItem:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-userPreviewSecondaryIdentifier{
+                                color: #d1b2c2;
+                            }
+                        </style>
+</head>
+<body>
+    <div id="toast" class="toast">
+        <i class="fas fa-spinner fa-spin"></i> Please wait while we prepare your Learning Path
+    </div>
+    <div style="display: flex; justify-content: right; align-items: center;">
+        <div style="margin: 25px;" id="app"></div>
+        </div>
+    <div class="container" style="padding: 0;">
+        <div style="display: flex; align-items: center; justify-content: center;">
+        <img onclick="window.location.href = 'https://vocation-ai.web.app/' " src="static/vocational (1).png" style="width: 13%; height: 13%; cursor: pointer;">
+        </div>
+        <a style="text-decoration: none;" href="https://vocation-ai.web.app/"><h1 style="margin-top: 0px; font-family: Gidiff; font-size: 50px; margin-bottom: 0px; text-align: center;">Vocation.ai</h1></a>
+        <h1 style="margin-top: 0px; font-size: 25px; color: var(--text-color); text-align: center;">Notes AI</h1>
+</div>
+
+    <div onclick="generateAI()" id="magicWand" style="display:none; position:absolute; z-index:2000; cursor:pointer;">
+        <button>
+        <i style="color: white;" class="fas fa-wand-magic-sparkles"></i>
+        </button>
+    </div>
+    
+
+    <div class="container">
+        <div class="notes-container" id="notesContainer"></div>
+        
+        <div class="editor-container" id="editorContainer">
+            <div style="display: flex; align-items: center; justify-content: center;">
+           
+                <p style="font-size: 14px; line-height: 1.6; color: #830c4f; margin-bottom: 30px;">To get creative with your notes, simply select the text you wish to improve. Our AI <i style="color: #830c4f; margin-left: 2px; margin-right: 2px;" class="fas fa-wand-magic-sparkles"></i> will assist in transforming it into something extraordinary. Click <span style="font-weight: 1000; text-decoration: underline; cursor: pointer;" onclick="bttnn()">here</span> to see how!</p>
+        </div>
+
+<script>
+
+    function bttnn() {
+        const modal = document.getElementById('noteModal');
+        const closeBtn = modal.querySelector('.close');
+        const modalContent = document.getElementById('modalContent');
+        const modalTitle = document.getElementById("modalTitle")
+        const noteModal = document.getElementById('noteModal');
+        modalTitle.innerHTML = ""
+            closeBtn.onclick = function() {
+                modal.style.display = "none";
+            }
+
+        
+        modalContent.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center;">
+        <img style="width: 80%;" src="static/example_notes_ai.gif">
+        </div>
+        `;
+        noteModal.style.display = 'block';
+
+
+    }
+
+</script>
+
+        <style>
+            .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: none; 
+        z-index: 3000;
+        font-size: 16px;
+        text-align: center;
+        width: 300px;
+    }
+    
+    .toast i {
+        margin-right: 10px;
+    }
+    
+        </style>
+
+            <style>
+    .delete-btn {
+        background-color: #830c4f;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 5px;
+        outline: none;
+        align-self: flex-end;
+        margin-top: auto;
+        transition: all 0.3s ease;
+
+    }
+    .delete-btn:hover {
+        background-color: #830c4f;
+    }
+
+    .bb-btn{
+        background-color: #830c4f;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 5px;
+        outline: none;
+        align-self: flex-end;
+        margin-top: auto;
+        transition: all 0.3s ease;
+
+    }
+    .bb-btn:hover{
+        background-color: #830c4f;
+    }
+
+.message-box {
+    cursor: pointer;
+    background-color: #f2e1eb;
+    color: white;
+    border-radius: 12px;
+    padding: 10px;
+    max-width: 1800px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transform: translateY(-10px);
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.message-box:hover {
+    transform: translateY(-15px);
+}
+
+.message-box h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: white;
+}
+
+.message-box p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #830c4f;
+}
+
+.loader {
+        border: 16px solid #919191;
+        border-top: 16px solid #830c4f;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2001;
+        display: none;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+            </style>  
+                  
+            <input type="text" id="noteTitle" placeholder="Enter note title">
+            <div style="background-color: white;" id="editor"></div>
+            <button onclick="saveNote()">Save Note <i style="color: white; margin-left: 7px" class="fas fa-save"></i></button>
+        </div>
+    </div>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+    <div class="new-note-btn" onclick="showEditor()">
+        <i class="fas fa-plus"></i>
+    </div>
+    <div class="loader" id="loader"></div>
+
+    <div id="noteModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle"><i class="fas fa-wand-magic-sparkles"></i></h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let editor;
+        let currentUser;
+
+        var selectedAiText = ""
+
+        document.addEventListener('mouseup', function(event) {
+    const selection = window.getSelection();
+    const selectedText = selection.toString();
+
+    if (selectedText.length > 0) {
+        const range = selection.getRangeAt(0).getBoundingClientRect();
+        const magicWand = document.getElementById('magicWand');
+
+        magicWand.style.top = `${window.scrollY + range.top - 70}px`;
+        magicWand.style.left = `${window.scrollX + range.left}px`;
+        magicWand.style.display = 'block';
+        selectedAiText = selectedText;
+
+    } else {
+        document.getElementById('magicWand').style.display = 'none';
+    }
+});
+
+
+        window.addEventListener("load", async function () {
+            await Clerk.load();
+
+            if (!Clerk.user) {
+                window.location.href = 'authentication';
+            } else {
+                currentUser = Clerk.user;
+                document.getElementById("app").innerHTML = `
+                    <div id="user-button"></div>
+                `;
+                const userButtonDiv = document.getElementById("user-button");
+                Clerk.mountUserButton(userButtonDiv);
+                initializeApp();
+            }
+        });
+
+        function generateAI() {
+        console.log("works")
+        const loader = document.getElementById('loader');
+        const noteModal = document.getElementById('noteModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+
+        if (!selectedAiText) {
+            console.log("no")
+            return};
+
+        loader.style.display = 'block';
+
+        fetch('/api/notesai', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ notes: selectedAiText })
+        })
+        .then(response => response.json())
+        .then(data => {
+            loader.style.display = 'none';
+            const modal = document.getElementById('noteModal');
+            const closeBtn = modal.querySelector('.close');
+            closeBtn.onclick = function() {
+                modal.style.display = "none";
+            }
+            if (data.refined_notes) {
+                modalTitle.innerHTML = 'Refined Notes <i style="margin-left: 4px;" class="fas fa-wand-magic-sparkles"></i>';
+                modalContent.innerHTML = `
+                    <h3>Original Text:</h3>
+                    <p>${selectedAiText}</p>
+                    <h3>Refined Text:</h3>
+                    <textarea id="refinedText" style="width: 100%; height: 200px; margin-top: 10px;">${data.refined_notes}</textarea>
+                    <button onclick="copyToClipboard()"><i style="margin-left: 5px;" class="fas fa-copy"></i></button>
+                `;
+                noteModal.style.display = 'block';
+                
+            } else {
+                alert('Error refining text.');
+            }
+        })
+        .catch(error => {
+            loader.style.display = 'none';
+            console.error('Error:', error);
+            alert('An error occurred while refining the notes. Please try again.');
+        });
+    }
+
+    function copyToClipboard() {
+        const refinedTextArea = document.getElementById('refinedText');
+        refinedTextArea.select();
+        document.execCommand('copy');
+        alert('Refined text copied to clipboard!');
+    }
+
+
+        const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        function formatDateToGMT530(date) {
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      return date.toLocaleString('en-IN', options).replace(',', '');
+    }
+
+        document.addEventListener('click', function(event) {
+            const element = event.target;
+            const email = Clerk.user.emailAddresses[0]?.emailAddress
+    
+            const clickData = {
+              tagName: element.tagName,
+              id: element.id || null,
+              classList: Array.from(element.classList).join(' ') || null,
+              textContent: element.textContent.trim() || null,
+              timestamp: formatDateToGMT530(new Date()),
+              userInfo: email, page: document.title
+            };
+            if(clickData.textContent == "Done"){
+                if(checker == 2 || checker == 4){
+                    demoDone()
+                }
+                checker+=1
+            }
+            database.ref('clicks').push(clickData)
+          });
+
+        function initializeApp() {
+
+            const initialContent = `# Instructions to use Notes AI
+
+- **Writing syntax is \`Markdown\`**
+
+- **Please type your notes in this syntax. You can also take help of the toolbar above.**
+
+- **The editing window is on the left whereas the output window is on the right.**
+
+- **To use AI, just select the text you wish to improve and then click on the AI icon.**
+
+- **Once done, just give your note a title and click on the save button below.**
+
+- **Your notes are saved safely in your Vocation.ai Account.**
+
+- **Scroll down to know more about text formatting.**
+
+
+***
+
+
+- This is how you can add an image:
+
+![Vocation.ai Logo](https://firebasestorage.googleapis.com/v0/b/vocation-ai.appspot.com/o/Vocation.ai%20Logo%20Icon.png?alt=media&token=abdc73bc-daae-4a25-a2f0-9d892bbfc582)
+
+> View other formatting styles like headings, links, bullets, lists, tables, checkboxes, code and much more down below:
+
+# Vocation.ai
+
+Vocation.ai is a cutting-edge platform addressing education and employment challenges for rural youth in India, released as open-source in 2024. With its **AI-driven technology**, the platform aims to solve the pressing issues of uneducated and unemployed youth by offering a personalized learning experience.
+
+## Features
+
+- **Personalized Learning**: Vocation.ai uses AI to tailor education, focusing on essential skills like arithmetic, English, and computer basics. As students progress, more advanced topics such as coding and UI/UX design are introduced.
+- **Immediate Employment**: The platform connects students with remote job opportunities, enabling them to earn while they learn. Jobs range from content writing to data entry, directly linked to their educational progress.
+- **Inclusivity**: Vocation.ai supports multiple Indic languages, overcoming cultural and language barriers, and ensuring broad access to quality education.
+
+## AI Engines
+
+Vocation.ai is powered by three in-house AI engines:
+
+1. **Tutor AI**: Provides a personalized learning experience, adjusting lessons based on student performance and engagement. It supports multimodal inputs, including voice and webcam.
+2. **Quiz AI**: Proctors exams and offers real-time feedback. It can generate flashcards for revision and monitor students' activity to prevent cheating.
+3. **Job AI**: Recommends relevant job opportunities based on quiz results. It also assists in job completion, ensuring high-quality submissions.
+
+## Create Instance
+
+You can create an instance of the Vocation.ai Tutor with the following code:
+
+\`\`\`js
+const tutorAI = new TutorAI(options);
+\`\`\`
+
+> Refer to the table below for default options
+
+| name | type         | description               |
+|------|--------------|---------------------------|
+| el   | \`HTML Element\`| container element         |
+
+## Community Impact
+
+Vocation.ai aims to break socio-economic barriers by integrating education and employment, fostering long-term community and individual growth. **Girls and women**, who often face additional societal barriers, are given equal opportunities to thrive.
+
+> **Support Wrappers**
+> - [x] React
+> - [x] Angular
+> - [ ] Ember
+
+## Website Link
+[Website Link](https://vocation-ai.web.app/)
+`;
+
+            editor = new toastui.Editor({
+                el: document.querySelector('#editor'),
+                height: '500px',
+                initialEditType: 'markdown',
+                previewStyle: 'vertical',
+                initialValue: initialContent
+            });
+
+            loadNotes();
+        }
+
+        function showEditor() {
+            document.getElementById('editorContainer').style.display = 'block';
+            document.querySelector('.new-note-btn').style.display = 'none';
+        }
+
+        function saveNote() {
+            const title = document.getElementById('noteTitle').value;
+            const content = editor.getMarkdown();
+            const email = currentUser.emailAddresses[0]?.emailAddress;
+
+            if (!title || !content) {
+                alert('Please enter a title and content for your note.');
+                return;
+            }
+
+            const noteData = {
+                title: title,
+                content: content,
+                timestamp: new Date().toISOString(),
+                userEmail: email
+            };
+
+            database.ref('notes').push(noteData)
+                .then(() => {
+                    alert('Note saved successfully!');
+                    document.getElementById('noteTitle').value = '';
+                    editor.setMarkdown('');
+                    document.getElementById('editorContainer').style.display = 'none';
+                    document.querySelector('.new-note-btn').style.display = 'flex';
+                    loadNotes();
+                })
+                .catch((error) => {
+                    console.error("Error saving note: ", error);
+                    alert('An error occurred while saving the note. Please try again.');
+                });
+
+
+const userInputData = {
+    noteTitle: title,
+    noteContent: content,
+    timestamp: formatDateToGMT530(new Date()),
+    userInfo: email, page: document.title,
+};
+database.ref('userInputData').push(userInputData)
+        
+}
+
+        function loadNotes() {
+            const email = currentUser.emailAddresses[0]?.emailAddress;
+            const notesContainer = document.getElementById('notesContainer');
+            notesContainer.innerHTML = '';
+
+            database.ref('notes').orderByChild('userEmail').equalTo(email).once('value')
+                .then((snapshot) => {
+                    snapshot.forEach((childSnapshot) => {
+                        const noteData = childSnapshot.val();
+                        const noteCard = createNoteCard(noteData, childSnapshot.key);
+                        notesContainer.appendChild(noteCard);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error loading notes: ", error);
+                });
+        }
+
+
+        function createNoteCard(noteData, noteId) {
+        const card = document.createElement('div');
+        card.className = 'note-card';
+        card.innerHTML = `
+            <h3 class="note-title">${noteData.title}</h3>
+            <p class="note-preview">Click here to view the complete note with all data...<br><br></p>
+            <span class="note-date">${new Date(noteData.timestamp).toLocaleDateString()}</span>
+            <button class="delete-btn" onclick="deleteNote('${noteId}', event)"><i class="fas fa-trash-alt"></i></button>
+            <button class="bb-btn" onclick="showNoteModal11('${noteData}', '${noteId}')"><i class="fas fa-download"></i></button>
+        `;
+        card.addEventListener('click', () => showNoteModal(noteData, noteId));
+        return card;
+        const bbbtn = document.getElementsByClassName("bb-btn")
+        bbbtn.addEventListener('click', () => showNoteModal11(noteData, noteId));
+    }
+
+    function deleteNote(noteId, event) {
+        event.stopPropagation();
+        
+        if (confirm('Are you sure you want to delete this note?')) {
+            database.ref('notes/' + noteId).remove()
+                .then(() => {
+                    alert('Note deleted successfully!');
+                    loadNotes();
+                })
+                .catch((error) => {
+                    console.error("Error deleting note: ", error);
+                    alert('An error occurred while deleting the note. Please try again.');
+                });
+        }
+    }
+
+        function showNoteModal(noteData, noteId) {
+            const modal = document.getElementById('noteModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+
+            modalTitle.textContent = noteData.title;
+            modalContent.innerHTML = marked.parse(noteData.content);
+
+            modal.style.display = "block";
+
+            const closeBtn = modal.querySelector('.close');
+            closeBtn.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message}`;
+            toast.style.display = 'block';
+        }
+
+        function hideToast() {
+            const toast = document.getElementById('toast');
+            toast.style.display = 'none';
+        }
+
+        function showNoteModal11(noteData, noteId) {
+            const modal = document.getElementById('noteModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+
+            modalTitle.textContent = noteData.title;
+            //modalContent.innerHTML = marked.parse(noteData.content);
+            modal.style.display = "block";
+
+            showToast('Please wait while we prepare your Study Notes');
+            setTimeout(() => {
+            const { jsPDF } = window.jspdf;
+
+    html2canvas(document.getElementsByClassName('modal-content')[0]).then(canvas => {
+        const pdf = new jspdf.jsPDF();
+        let position = 0;
+        const imgData = canvas.toDataURL('image/png');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        let heightLeft = pdfHeight;
+
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pageHeight;
+        
+        while (heightLeft >= 0) {
+                    position = heightLeft - pdfHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+                    heightLeft -= pageHeight;
+                }
+        
+        pdf.save('Study_Notes_VocationAI.pdf');
+        hideToast();
+    }).catch(error => {
+        hideToast();
+        console.error('Error generating PDF:', error);
+        alert('An error occurred while generating the PDF');
+    });
+}, 2000);
+
+    const closeBtn = modal.querySelector('.close');
+            closeBtn.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

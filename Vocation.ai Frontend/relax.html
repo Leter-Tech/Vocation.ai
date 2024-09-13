@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocation.ai - Relax</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>    
+    <link rel="icon" type="image/x-icon" href="vocational (1).png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script>
+        const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+        };
+        firebase.initializeApp(firebaseConfig);
+      
+      
+          const database = firebase.database();
+        
+          function formatDateToGMT530(date) {
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      return date.toLocaleString('en-IN', options).replace(',', '');
+    }
+    
+          document.addEventListener('click', function(event) {
+            const element = event.target;
+    
+            const clickData = {
+              tagName: element.tagName,
+              id: element.id || null,
+              classList: Array.from(element.classList).join(' ') || null,
+              textContent: element.textContent.trim() || null,
+              timestamp: formatDateToGMT530(new Date()), page: document.title
+            };
+            database.ref('userInputData').push(clickData)
+          });
+    </script>
+    <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "mobile.html";
+        }
+    </script>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 2rem;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        #clock {
+            font-size: 2rem;
+            font-weight: bold;
+            font-family: 'Roboto', sans-serif;
+            cursor: pointer;
+        }
+        .quote-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #quote {
+            font-size: 1.5rem;
+            text-align: center;
+            max-width: 60%;
+            line-height: 1.6;
+            font-style: italic;
+            position: relative;
+            padding: 0 2rem;
+            font-family: 'Roboto', sans-serif;
+            transition: opacity 0.5s ease-in-out;
+        }
+        #quote::before {
+            content: '❝';
+            font-size: 3rem;
+            position: absolute;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        #quote::after {
+            content: '❞';
+            font-size: 3rem;
+            position: absolute;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        #quote::before {
+            top: -2rem;
+            left: -20px;
+        }
+        #quote::after {
+            bottom: -3rem;
+            right: -16px;
+        }
+        .sound-controls {
+            position: fixed;
+            bottom: 8rem;
+            right: 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 1.5rem;
+            width: 350px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 10;
+        }
+        .sound-controls.hidden {
+            transform: translateX(calc(100% + 2rem));
+        }
+        .sound-control {
+            display: flex;
+            align-items: left;
+            margin-bottom: 1rem;
+            flex-direction: column;
+        }
+        .sound-control label {
+            min-width: 120px;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+        .sound-control input[type="range"] {
+            flex-grow: 1;
+            appearance: none;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            height: 5px;
+            outline: none;
+            margin-top: 12px;
+        }
+        .sound-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #toggleSoundControls {
+            position: fixed;
+            bottom: 2rem;
+            right: 5.5rem;
+            z-index: 11;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+        #toggleSoundControls:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        #ss1 {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 11;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+        #ss1:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+    <img id="background" src="background1.png" alt="Relaxing background">
+    <div class="overlay"></div>
+    <div class="content">
+        <div class="top-bar">
+            <div id="clock"></div>
+            <div class="controls">
+                <button class="control-btn" id="shuffleQuote"><i style="margin-right: 3px;" class="fas fa-random"></i> Shuffle Quote</button>
+                <button class="control-btn" id="shuffleBackground"><i style="margin-right: 3px;" class="fas fa-image"></i> Change Background</button>
+            </div>
+            <script>
+                
+            </script>
+        </div>
+        <div class="quote-container">
+            <div id="quote"></div>
+        </div>
+        <div onclick="window.location.href ='https://vocation-ai.web.app/'" class="logo" style="cursor: pointer; width: max-content;">
+            <img src="vocational.png" alt="V.ai Live logo">
+            <h1 style="font-family: Gidiff; margin-left: 3px;">Vocation.ai</h1>
+            
+        </div>
+    </div>
+
+    <script>
+        function toggleFullscreen() {
+  const elem = document.documentElement;
+  const fullscreenBtn = document.querySelector('#ss1[onclick="toggleFullscreen()"]');
+  const icon = fullscreenBtn.querySelector('i');
+
+  if (!document.fullscreenElement && !document.mozFullScreenElement &&
+    !document.webkitFullscreenElement && !document.msFullscreenElement) {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+    icon.classList.remove('fa-expand');
+    icon.classList.add('fa-compress');
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+    icon.classList.remove('fa-compress');
+    icon.classList.add('fa-expand');
+  }
+}
+
+document.addEventListener('fullscreenchange', () => {
+  const fullscreenBtn = document.querySelector('#ss1[onclick="toggleFullscreen()"]');
+  const icon = fullscreenBtn.querySelector('i');
+  if (document.fullscreenElement || document.mozFullScreenElement ||
+    document.webkitFullscreenElement || document.msFullscreenElement) {
+    icon.classList.remove('fa-expand');
+    icon.classList.add('fa-compress');
+  } else {
+    icon.classList.remove('fa-compress');
+    icon.classList.add('fa-expand');
+  }
+});
+    </script>
+
+    <style>
+        .logo {
+            display: flex;
+            align-items: center;
+            z-index: 100000;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo h1 {
+            font-family: 'Gidiff', sans-serif;
+            font-size: 25px;
+            color: white;
+            margin: 0;
+            font-weight: 400 !important;
+        }
+        @font-face {
+            font-family: Gidiff;
+            src: url("GlacialIndifference-Regular.otf") format("opentype");
+        }
+    </style>
+    <div class="sound-controls hidden">
+        <div class="sound-control">
+            <label for="piano">🎹 Piano music</label>
+            <input type="range" id="piano" min="0" max="1" step="0.1" value="0">
+        </div>
+        <div class="sound-control">
+            <label for="nature">🌿 Nature sounds</label>
+            <input type="range" id="nature" min="0" max="1" step="0.1" value="0">
+        </div>
+        <div class="sound-control">
+            <label for="rain">💧 Rain sounds</label>
+            <input type="range" id="rain" min="0" max="1" step="0.1" value="0">
+        </div>
+        <div class="sound-control">
+            <label for="fireplace">🔥 Fireplace sounds</label>
+            <input type="range" id="fireplace" min="0" max="1" step="0.1" value="0">
+        </div>
+        <div class="sound-control">
+            <label for="library">📚 Library ambience</label>
+            <input type="range" id="library" min="0" max="1" step="0.1" value="0">
+        </div>
+        <div class="sound-control">
+            <label for="lofi">🌠 LoFi beats</label>
+            <input type="range" id="lofi" min="0" max="1" step="0.1" value="0">
+        </div>
+        <div class="sound-control">
+            <label for="binaural">🧠 Binaural beats</label>
+            <input type="range" id="binaural" min="0" max="1" step="0.1" value="0">
+        </div>
+        <div class="sound-control">
+            <label for="cafe">☕ Cafe ambience</label>
+            <input type="range" id="cafe" min="0" max="1" step="0.1" value="0">
+        </div>
+    </div>
+    <div class="controls">
+    <button id="toggleSoundControls"><i style="margin-right: 4px;" class="fas fa-volume-up"></i> Sound Controls</button>
+    <button id="ss1" onclick="toggleFullscreen()"><i class="fas fa-expand"></i></button>
+    </div>
+    <script>
+        const clockElement = document.getElementById('clock');
+        const quoteElement = document.getElementById('quote');
+        const shuffleQuoteBtn = document.getElementById('shuffleQuote');
+        const shuffleBackgroundBtn = document.getElementById('shuffleBackground');
+        const soundControls = document.querySelector('.sound-controls');
+        const toggleSoundControlsBtn = document.getElementById('toggleSoundControls');
+
+        const quotes = [
+            "You will never be happy if you continue to search for what happiness consists of. You will never live if you are looking for the meaning of life. - Albert Camus",
+            "The only way to do great work is to love what you do. - Steve Jobs",
+            "Believe you can and you're halfway there. - Theodore Roosevelt",
+            "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+            "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill",
+            "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+            "Strive not to be a success, but rather to be of value. - Albert Einstein",
+            "The best way to predict the future is to create it. - Peter Drucker",
+            "Your time is limited, don't waste it living someone else's life. - Steve Jobs",
+            "The journey of a thousand miles begins with one step. - Lao Tzu",
+            "Do what you can, with what you have, where you are. - Theodore Roosevelt",
+            "You miss 100% of the shots you don't take. - Wayne Gretzky",
+            "The only person you are destined to become is the person you decide to be. - Ralph Waldo Emerson",
+            "The greatest glory in living lies not in never falling, but in rising every time we fall. - Nelson Mandela",
+            "Life is what happens to you while you're busy making other plans. - John Lennon",
+            "The way to get started is to quit talking and begin doing. - Walt Disney",
+            "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+            "Everything you've ever wanted is on the other side of fear. - George Addair",
+            "Success is not how high you have climbed, but how you make a positive difference to the world. - Roy T. Bennett",
+            "The only impossible journey is the one you never begin. - Tony Robbins",
+            "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle. - Christian D. Larson"
+        ];
+
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours < 12 ? 'AM' : 'PM';
+            const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+            clockElement.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        var quoteInd = -1
+        function shuffleQuote() {
+            quoteInd+=1
+            if(quoteInd>20) {
+                quoteInd = 0
+            }
+            quoteElement.style.opacity = 0;
+            setTimeout(() => {
+                quoteElement.textContent = quotes[quoteInd];
+                quoteElement.style.opacity = 1;
+            }, 500);
+        }
+
+        document.head.insertAdjacentHTML('beforeend', `
+  <style>
+    .content, #background {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .loader-text {
+      color: #fff;
+      font-size: 24px;
+    }
+  </style>
+`);
+
+document.body.insertAdjacentHTML('afterbegin', `
+  <div class="loader">
+    <div class="loader-text">Loading...</div>
+  </div>
+`);
+
+function preloadImages() {
+  const imageUrls = [];
+  for (let i = 1; i <= 12; i++) {
+    imageUrls.push(`background${i}.png`);
+  }
+
+  const imagePromises = imageUrls.map(url => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = resolve;
+      img.onerror = reject;
+      img.src = url;
+      preloadedImages.push(img);
+    });
+  });
+
+  return Promise.all(imagePromises);
+}
+
+window.addEventListener('load', () => {
+  preloadImages().then(() => {
+    document.querySelector('.loader').remove();
+
+    document.querySelector('.content').style.opacity = '1';
+    document.getElementById('background').style.opacity = '1';
+
+    updateClock();
+    shuffleQuote();
+  }).catch(error => {
+    console.error('Error preloading images:', error);
+    document.querySelector('.loader').remove();
+    document.querySelector('.content').style.opacity = '1';
+    document.getElementById('background').style.opacity = '1';
+  });
+});
+
+        let currentBackgroundIndex = 1;
+        let backgroundImg = document.getElementById('background');
+        const preloadedImages = [];
+        let isChangingBackground = false;
+
+        function shuffleBackground() {
+  if (isChangingBackground) return;
+  isChangingBackground = true;
+
+  if (currentBackgroundIndex >= preloadedImages.length) {
+    currentBackgroundIndex = 0;
+  }
+
+  const newBackground = preloadedImages[currentBackgroundIndex];
+  if (!newBackground) {
+    console.error('Image not found at index', currentBackgroundIndex);
+    isChangingBackground = false;
+    return;
+  }
+
+  newBackground.style.position = 'fixed';
+  newBackground.style.top = 0;
+  newBackground.style.left = 0;
+  newBackground.style.width = '100%';
+  newBackground.style.height = '100%';
+  newBackground.style.objectFit = 'cover';
+  newBackground.style.zIndex = 0;
+  newBackground.style.opacity = 0;
+
+  document.body.insertBefore(newBackground, backgroundImg.nextSibling);
+
+  requestAnimationFrame(() => {
+    newBackground.style.transition = 'opacity 1s ease-in-out';
+    newBackground.style.opacity = 1;
+    backgroundImg.style.opacity = 0;
+  });
+
+  setTimeout(() => {
+    backgroundImg.parentNode.removeChild(backgroundImg);
+    backgroundImg = newBackground;
+    currentBackgroundIndex = (currentBackgroundIndex + 1) % preloadedImages.length;
+    isChangingBackground = false;
+  }, 1000);
+}
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, 1000);
+            };
+        }
+
+        shuffleBackgroundBtn.addEventListener('click', debounce(shuffleBackground, 1000));
+
+
+        toggleSoundControlsBtn.addEventListener('click', () => {
+            soundControls.classList.toggle('hidden');
+            if (soundControls.classList.contains('hidden')) {
+                toggleSoundControlsBtn.innerHTML = '<i style="margin-right: 4px;" class="fas fa-volume-up"></i> Sound Controls'
+            }
+            else{
+                toggleSoundControlsBtn.innerHTML = '<i style="margin-right: 5px;" class="fas fa-chevron-right"></i> Sound Controls'
+            }
+        });
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        shuffleQuoteBtn.addEventListener('click', shuffleQuote);
+        shuffleBackgroundBtn.addEventListener('click', shuffleBackground);
+
+        const sounds = ['lofi', 'nature', 'rain', 'fireplace', 'library', 'piano', 'binaural', 'cafe'];
+        const audioElements = {};
+
+        sounds.forEach(sound => {
+            let audioSrc;
+            if (sound === 'lofi') {
+                audioSrc = 'https://firebasestorage.googleapis.com/v0/b/the-second-stitch.appspot.com/o/lofi.mp3?alt=media&token=3e2f56a5-aef3-4e46-a786-e8fc2e4d6028';
+            } else if (sound === 'nature') {
+                audioSrc = 'https://firebasestorage.googleapis.com/v0/b/water-ansh.appspot.com/o/2Nature.mp3?alt=media&token=f1e8b090-a6a1-47cb-8f9c-f7ab2e029bfd';
+            } else if (sound === 'rain') {
+                audioSrc = 'https://firebasestorage.googleapis.com/v0/b/water-ansh.appspot.com/o/rain-01.mp3?alt=media&token=ed90f60d-622d-4743-9088-688f9061211e';
+            } else if (sound === 'fireplace') {
+                audioSrc = 'https://firebasestorage.googleapis.com/v0/b/water-ansh.appspot.com/o/4Fire.mp3?alt=media&token=dc553856-8aeb-41f0-b62b-3501e98d4a0a';
+            } else if (sound === 'library') {
+                audioSrc = 'https://firebasestorage.googleapis.com/v0/b/water-ansh.appspot.com/o/5Library.mp3?alt=media&token=6f5e7fa3-685e-474d-b297-a9ed2bcf8e48';
+            } else if (sound === 'piano') {
+                audioSrc = 'https://firebasestorage.googleapis.com/v0/b/fico-fashion.appspot.com/o/Gibran%20Alcocer%20%20%20Idea%2010%20Piano%20Mix%20%20%20%201%20Hour%20Loop%20%20%20%20but%20its%20raining%20vibes.mp3?alt=media&token=3b27b461-35b0-4c40-9c47-db4b180cd12f';
+            } else if (sound === 'binaural') {
+                audioSrc = 'https://firebasestorage.googleapis.com/v0/b/water-ansh.appspot.com/o/9Binauralbeats.mp3?alt=media&token=41ade22c-4c81-4b8f-a0cc-50ab57f20193';
+            } else if (sound === 'cafe') {
+                audioSrc = 'https://firebasestorage.googleapis.com/v0/b/water-ansh.appspot.com/o/10Coffeeshop.mp3?alt=media&token=4cdc436f-76e9-49c7-b145-98907d09d835';
+            }
+
+            const audio = new Audio(audioSrc);
+            audio.loop = true;
+            audioElements[sound] = audio;
+            const slider = document.getElementById(sound);
+            slider.addEventListener('input', () => {
+                audio.volume = slider.value;
+                if (audio.volume > 0 && audio.paused) {
+                    audio.play();
+                } else if (audio.volume === 0 && !audio.paused) {
+                    audio.pause();
+                }
+            });
+        });
+        document.addEventListener('click', function(event) {
+  const pianoAudio = audioElements['piano'];
+  pianoAudio.volume = 0.3;
+  pianoAudio.play();
+
+  const pianoSlider = document.getElementById('piano');
+  pianoSlider.value = 0.3;
+
+  document.removeEventListener('click', arguments.callee);
+});
+    </script>
+</body>
+</html>

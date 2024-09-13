@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="static/vocational (1).png">
+    <title>Vocation.ai - Productivity AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="REMOVED"
+    src="REMOVED"
+    type="text/javascript">
+  </script>
+      <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  
+  <script>
+      const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+      };
+      firebase.initializeApp(firebaseConfig);
+    
+    
+        const database = firebase.database();
+      
+        function formatDateToGMT530(date) {
+    const options = {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    };
+    return date.toLocaleString('en-IN', options).replace(',', '');
+  }
+  
+        document.addEventListener('click', function(event) {
+          const element = event.target;
+          const email = Clerk.user.emailAddresses[0]?.emailAddress
+  
+          const clickData = {
+            tagName: element.tagName,
+            id: element.id || null,
+            classList: Array.from(element.classList).join(' ') || null,
+            textContent: element.textContent.trim() || null,
+            timestamp: formatDateToGMT530(new Date()),
+            userInfo: email, page: document.title
+          };
+          database.ref('clicks').push(clickData)
+        });
+      </script>
+      <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "https://vocation-ai.web.app/mobile";
+        }
+    </script>
+        <style>
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f2e1eb;
+                padding: 20px;
+                color: #333;
+                line-height: 1.6;
+                padding: 20px;
+                margin: 0;
+            }
+            @font-face {
+                font-family: Gidiff;
+                src: url("static/GlacialIndifference-Regular.otf") format("opentype");
+            }
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                background-color: white;
+                padding: 40px;
+                border-radius: 12px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+            ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+            h1 {
+                color: #830c4f;
+                font-size: 2.5em;
+                margin-bottom: 30px;
+            }
+        </style>
+        <body>
+            <script>
+                window.addEventListener("load", async function () {
+                    await Clerk.load();
+                    function pam(name) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(name);
+                }
+        
+                const redirectUrl = pam('redirect_url');
+        
+        
+                    if (!Clerk.user) {
+                        if (redirectUrl) {
+                            setTimeout(() => {
+                                window.location.href = 'authentication';
+                            }, 12000);
+                        }
+        
+                        else{
+                            window.location.href = 'authentication';
+                        } 
+                    }
+        
+                    else {
+                        document.getElementById("app").innerHTML = `
+                            <div id="user-button"></div>
+                        `;
+        
+                        const userButtonDiv = document.getElementById("user-button");
+        
+                        Clerk.mountUserButton(userButtonDiv);
+                    }
+                });
+            </script>
+                        <style>
+                            .cl-userButtonPopoverCard {
+                                background-color: #9b0158;
+                                color: white !important;
+                            }
+                            .cl-navbar{
+                                background-color: #f2e1eb;
+                                border-radius: 16px;
+                            }
+                            .cl-internal-rx251b{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-pageScrollBox{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-userButtonPopoverActionButtonText{
+                                color: white;
+                            }
+                            .cl-internal-60laz0{
+                                border-right: 1px solid rgb(131, 12, 79, 0.5);
+                            }
+                            .cl-internal-1yejcov{
+                                color: white !important;
+                            }
+                            .cl-userPreviewSecondaryIdentifier{
+                                color: white;
+                            }
+                            .cl-userButtonPopoverFooter{
+                                display: none;
+                            }
+                            .cl-internal-b3fm6y{
+                                display: none;
+                            }
+                            .cl-userButtonTrigger:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-headerTitle{
+                                color: #830c4f;
+                            }
+                            .cl-internal-1e71drn{
+                                color: #830c4f;
+                            }
+                            .cl-internal-141wpcl{
+                                color: #830c4f;
+                            }
+                            .cl-scrollBox{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-internal-1xg0u4s{
+                                border-bottom: 1px solid rgb(131, 12, 79, 0.6);
+                            }
+                            .cl-profileSectionPrimaryButton{
+                                color: #830c4f;
+                            }
+                            .cl-profileSectionPrimaryButton:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-profileSectionPrimaryButton:active{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-profileSectionPrimaryButton:hover{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-navbarButton:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-accordionTriggerButton:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-badge{
+                                color: #830c4f;
+                                background-color: rgb(131, 12, 79, 0.2);
+                            }
+                            .cl-formButtonPrimary{
+                                background-color: #830c4f;
+                            }
+                            .cl-formButtonPrimary .cl-formButtonReset{
+                                background-color: #830c4f;
+                            }
+                            .cl-formButtonReset:hover{
+                                background-color: rgb(131, 12, 79, 0.2);
+                            }
+                            .cl-formButtonReset{
+                                color: #830c4f;
+                            }
+                            .cl-formButtonPrimary:hover{
+                                background-color: #460429;
+                            }
+                            .cl-formButtonPrimary:active{
+                                background-color: #460429;
+                            }
+                            .cl-formButtonReset:active{
+                                background-color: rgb(131, 12, 79, 0.2);
+                            }
+                            .cl-profileSectionPrimaryButton:active{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-avatarImageActionsUpload{
+                                color: #830c4f;
+                            }
+                            .cl-avatarImageActionsRemove{
+                                color: #600639;
+                            }
+                            .cl-avatarImageActionsUpload:focus .cl-avatarImageActionsRemove:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-formFieldInput:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-internal-1sf6rji{
+                                color: #830c4f
+                            }
+                            .cl-internal-1sf6rji:hover{
+                                background-color: rgb(131, 12, 79, 0.2);
+                            }
+                            .cl-internal-f7yy9s:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-modalCloseButton{
+                                color: #830c4f;
+                            }
+                            .cl-modalCloseButton:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-formButtonReset:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-formButtonPrimary:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-formFieldInput{
+                                accent-color: #830c4f;
+                            }
+                            .cl-internal-1sf6rji:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-internal-1sf6rji:active{
+                                background-color: #f2e1eb;
+                            }
+                            .cl-breadcrumbsItem:focus{
+                                box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                            }
+                            .cl-userPreviewSecondaryIdentifier{
+                                color: #d1b2c2;
+                            }
+                        </style>
+                                <style>
+    
+                                    .zoom-notification {
+                                        --primary-color: #830c4f;
+                                        --secondary-color: #f2e1eb;
+                                        font-family: 'Arial', sans-serif;
+                                        display: none;
+                                        position: fixed;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                        background-color: rgba(131, 12, 79, 0.95);
+                                        z-index: 9999999999;
+                                        justify-content: center;
+                                        align-items: center;
+                                        backdrop-filter: blur(10px);
+                                    }
+                            
+                                    .zoom-content {
+                                        background-color: white;
+                                        padding: 40px;
+                                        border-radius: 20px;
+                                        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+                                        text-align: center;
+                                        max-width: 90%;
+                                        width: 550px;
+                                    }
+                            
+                                    .zoom-content h2 {
+                                        color: var(--primary-color);
+                                        margin-top: 0;
+                                        font-size: 28px;
+                                        margin-bottom: 20px;
+                                    }
+                            
+                                    .zoom-content p {
+                                        color: #333;
+                                        font-size: 16px;
+                                        line-height: 1.6;
+                                    }
+                            
+                                    .key {
+                                        display: inline-block;
+                                        background-color: #f0f0f0;
+                                        border: 2px solid #d0d0d0;
+                                        border-radius: 8px;
+                                        padding: 8px 15px;
+                                        margin: 0 5px;
+                                        font-family: 'Courier New', monospace;
+                                        font-weight: bold;
+                                        font-size: 18px;
+                                        color: #333333;
+                                        box-shadow: 0 4px 0 #d0d0d0;
+                                        transition: all 0.1s ease;
+                                        cursor: pointer;
+                                        margin-top: 20px;
+                                        margin-bottom: 10px;
+                                    }
+                            
+                                    .key:active {
+                                        transform: translateY(4px);
+                                        box-shadow: 0 0 0 #d0d0d0;
+                                    }
+                            
+                                    .icon-zoom {
+                                        font-size: 48px;
+                                        margin-bottom: 20px;
+                                    }
+                            
+                                    .width-info {
+                                        background-color: var(--secondary-color);
+                                        border-radius: 10px;
+                                        padding: 15px;
+                                        margin-top: 20px;
+                                        font-size: 14px;
+                                        color: var(--primary-color);
+                                    }
+                            
+                                    #currentWidth, #requiredWidth {
+                                        font-weight: bold;
+                                        font-size: 18px;
+                                    }
+                                </style>
+                                <div class="zoom-notification" id="zoomNotification">
+                                    <div class="zoom-content">
+                                    <div class="icon-zoom">🔍</div>
+                                    <h2>Please Adjust Your View</h2>
+                                    <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+                                    <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+                                    <div class="width-info">
+                                    <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+                                    <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    <script>
+                                            const zoomNotification = document.getElementById('zoomNotification');
+                                            const currentWidthSpan = document.getElementById('currentWidth');
+                                    
+                                            function checkViewportWidth() {
+                                                const currentWidth = window.innerWidth;
+                                                currentWidthSpan.textContent = currentWidth;
+                                    
+                                                if (currentWidth < 1430) {
+                                                    zoomNotification.style.display = 'flex';
+                                                } else {
+                                                    zoomNotification.style.display = 'none';
+                                                }
+                                            }
+                                    
+                                            window.addEventListener('resize', checkViewportWidth);
+                                            window.addEventListener('load', checkViewportWidth);
+                                        </script>
+                            <div style="display: flex; justify-content: right; align-items: center;">
+                                <div style="margin: 8px;" id="app"></div>
+                                </div>
+                            <div class="container">
+                                <div style="display: flex; align-items: center; justify-content: center;">
+                                    <img onclick="window.location.href='https://vocation-ai.web.app'" src="static/vocational (1).png" style="width: 20%; height: 20%; cursor: pointer;">
+                                    </div>
+                                    <a style="text-decoration: none;" href="https://vocation-ai.web.app/"><h1 style="margin-top: 0px; font-family: Gidiff; font-size: 60px; margin-bottom: 10px; text-align: center;">Vocation.ai</h1></a>
+                                    <h1 style="margin-top: 0px; font-size: 30px; color: var(--text-color); text-align: center;">Productivity AI</h1>
+        
+                                    <style>
+
+                                        .features-container {
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: stretch;
+                                            gap: 30px;
+                                            max-width: 1200px;
+                                            margin: 0 auto;
+                                            position: relative;
+                                            margin-top: 40px;
+                                            margin-bottom: 25px;
+                                        }
+                            
+                                        .features-container h3 {
+                                            color: #830C4F;
+                                        }
+                                    
+                                        .feature-card {
+                                            flex: 1;
+                                            max-width: 300px;
+                                            background: white;
+                                            border-radius: 20px;
+                                            overflow: hidden;
+                                            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                                            transition: all 0.3s ease;
+                                            position: relative;
+                                            z-index: 1;
+                                            cursor: pointer;
+                                        }
+                                    
+                                        .feature-card:hover {
+                                            transform: translateY(-10px);
+                                            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+                                        }
+                                    
+                                        .feature-icon {
+                                            width: 100%;
+                                            height: 150px;
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                            color: white;
+                                            font-size: 3em;
+                                            transition: all 0.7s ease;
+                                            background-color: #830C4F;
+                                        }
+                                    
+                                        .feature-card:hover .feature-icon {
+                                            height: 120px;
+                                        }
+                                    
+                                        .feature-content {
+                                            padding: 30px;
+                                            text-align: center;
+                                        }
+                                    
+                                        .feature-title {
+                                            font-size: 1.45em;
+                                            color: #333;
+                                            margin-bottom: 15px;
+                                            font-weight: 600;
+                                        }
+                                    
+                                        .feature-description {
+                                            font-size: 1em;
+                                            color: #666;
+                                            line-height: 1.6;
+                                        }
+                                    
+                                        .feature-link {
+                                            display: inline-block;
+                                            margin-top: 20px;
+                                            padding: 10px 20px;
+                                            background: #830C4F;
+                                            color: white;
+                                            text-decoration: none;
+                                            border-radius: 30px;
+                                            transition: all 0.3s ease;
+                                        }
+                                    
+                                        .feature-link:hover {
+                                            background: #600639;
+                                        }
+                                    
+                                        .ai-connection {
+                                            position: absolute;
+                                            top: 50%;
+                                            left: 50%;
+                                            transform: translate(-50%, -50%);
+                                            width: 80%;
+                                            height: 2px;
+                                            background: #830C4F;
+                                            z-index: 0;
+                                        }
+                                    
+                                        .ai-connection::before,
+                                        .ai-connection::after {
+                                            content: '';
+                                            position: absolute;
+                                            top: 50%;
+                                            width: 10px;
+                                            height: 10px;
+                                            background: #830C4F;
+                                            border-radius: 50%;
+                                            transform: translateY(-50%);
+                                        }
+                                    
+                                        .ai-connection::before {
+                                            left: 0;
+                                        }
+                                    
+                                        .ai-connection::after {
+                                            right: 0;
+                                        }
+                                    </style>
+                                    <div class="features-container">
+                                        <div class="ai-connection"></div>
+                                        
+                                        <div onclick="window.location.href='productivity_ai/todo_ai'" class="feature-card">
+                                            <div class="feature-icon">
+                                                <i class="fas fa-tasks"></i>
+                                        </div>
+                                            <div class="feature-content">
+                                                <h3 class="feature-title">To-Do List AI</h3>
+                                                <p class="feature-description">Personalized AI-driven todo lists tailored to your study habits and deadlines.</p>
+                                                <a href="productivity_ai/todo_ai" class="feature-link"><i class="fas fa-play"></i></a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div onclick="window.location.href='productivity_ai/my_calendar'" class="feature-card">
+                                            <div class="feature-icon">
+                                                <i class="fas fa-calendar"></i>
+                                            </div>
+                                            <div class="feature-content">
+                                                <h3 class="feature-title">My Calendar</h3>
+                                                <p class="feature-description">Organizes daily schedules with intuitive & interactive calendar views.</p>
+                                                <a href="productivity_ai/my_calendar" class="feature-link"><i class="fas fa-play"></i></a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div onclick="window.location.href='productivity_ai/pomodoro_timer'" class="feature-card">
+                                            <div class="feature-icon">
+                                                <i class="fas fa-stopwatch"></i>
+                                            </div>
+                                            <div class="feature-content">
+                                                <h3 class="feature-title">Pomodoro Timer</h3>
+                                                <p class="feature-description">Focus-enhancing intervals with scheduled breaks for improved productivity.</p>
+                                                <a href="productivity_ai/pomodoro_timer" class="feature-link"><i class="fas fa-play"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+    </body>
+    </head>
+    </html>

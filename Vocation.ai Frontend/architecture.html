@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocation.ai - Architecture</title>
+    <link rel="icon" type="image/x-icon" href="vocational (1).png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://unpkg.com/rough-notation/lib/rough-notation.iife.js"></script>
+    <script src="https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "mobile.html";
+        }
+    </script>
+          <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+          <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+      
+      <script>
+          const firebaseConfig = {
+            Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+          };
+          firebase.initializeApp(firebaseConfig);
+          const database = firebase.database();
+          
+            function formatDateToGMT530(date) {
+        const options = {
+          timeZone: 'Asia/Kolkata',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        };
+        return date.toLocaleString('en-IN', options).replace(',', '');
+      }
+      
+            document.addEventListener('click', function(event) {
+              const element = event.target;
+      
+              const clickData = {
+                tagName: element.tagName,
+                id: element.id || null,
+                classList: Array.from(element.classList).join(' ') || null,
+                textContent: element.textContent.trim() || null,
+                timestamp: formatDateToGMT530(new Date()), page: document.title
+              };
+              database.ref('clicks').push(clickData)
+            });
+          </script>
+</head>
+
+<body>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+</script>
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <img onclick="window.location.href = 'index.html'" src="vocational (1).png" height="180px" style="margin-top: 20px; cursor: pointer;">
+    <a href="index.html" style="text-decoration: none;"><h1 style="margin: 0; font-size: 60px; color: #830C4F; font-family: Gidiff;">Vocation.ai</h1></a>
+    </div>
+    <h2 align="center" style="font-size: 26px; color: #333; margin: 0; border-bottom: none;">Architecture</h2>
+    <p align="center" style="margin-bottom: 0.5px; font-size: 15px; margin-top: 25px;">Double tap to zoom-in | Drag to navigate | Press reset to zoom-out</p>
+    
+
+<div style="margin-top: 4px;" id="mermaid-container">
+
+    <div id="panzoom-element">
+
+    <pre class="mermaid">
+    %%{init: {'theme': 'neutral', 'themeVariables': { 'primaryColor': '#830C4F', 'primaryTextColor': '#fff', 'primaryBorderColor': '#6a0a3f', 'lineColor': '#830C4F', 'secondaryColor': '#006100', 'tertiaryColor': '#fff'}}}%%
+    graph TD
+        A((("Vocation.ai<br>Technology"))):::mainNode --> B{{"Tutor AI"}}:::feature
+        A --> C{{"Quiz AI"}}:::feature
+        A --> D{{"Job AI"}}:::feature
+        A --> ASSSA{{"Online Community"}}:::feature
+        ASSSA --> SSSSA["Peers, Mentors, and<br>Technical Admins"]
+        
+        B --> XssaA["RAG Architecture"]
+        
+        XssaA --> E["LangChain Framework"]
+        XssaA --> F["OpenAI GPT-4 Turbo"]
+        XssaA --> G["Google Gemini-1.5 Pro"]
+        XssaA --> H[("Pinecone DB")]:::database
+        
+        H --> I["Vector Embeddings"]
+        I --> J[("Knowledge Base")]:::database
+        J --> QQWQ["Dynamic Knowledge Update<br>through Internet Access"]
+        QQWQ --> SFAS["Curated by Admins"]
+        I --> K[("Student Memory")]:::database
+        K --> DSD["Strengths & Weaknesses,<br>Topics Covered,<br>Learning Style etc."]
+        DSD --> DGFS["Adaptive and<br>Personalised Learning"]
+        
+        B --> L["Multimodal AI"]
+        B --> 12HJK["Learning Path Generator"]
+        12HJK --> rraaA["Notes AI"]
+        rraaA --> sggds[YouTube AI]
+        sggds --> ffaggt[Mindmap Generator]
+        ffaggt --> gg1121[Productivity AI 'To-Do List AI, Pomodoro Timer & My Calendar']
+        gg1121 --> ssq1tt1[V.ai Live 'Live Video-Chat Study Sessions with Peers']
+        ssq1tt1 --> sssaa1111[V.ai Relax 'Calming Music, Inspiring Quotes & Ambient Images—perfect for a break']
+        L --> SS14["Multiple Indic Languages"]
+        SS14 --> DB168["Voice Recognition and<br>Text-To-Speech<br>'ResponseVoice.JS API'"]
+        DB168 --> X23100["Face expression detection AI<br>using webcam 'Face++ API'"]
+        X23100 --> M["Vision-powered System"]
+
+        M --> SS["Screen Monitoring"]
+        M --> DD["File / Image Upload"]
+
+        SS --> XY["Real-Time Guidance"]
+        DD --> XY
+        XY --> Z141["Autograding Homework<br>using vision capabilities"]
+        
+        C --> 12DFFF1["Access to Knowledge Base"]
+        12DFFF1 --> N["AI-Powered Subjective Quiz, Objective Quiz & Flashcards Generation"]
+        1JH23 --> QW["Learning Progress Tracking"]
+        N --> O["Test Student Knowledge"]
+        O --> 1JH23["Gamification and<br>Reward Points"]
+        QW --> HFX["Determine Job Readiness"]
+        HFX --> DOP21["AI Proctoring monitors<br>Tab switching, Shared Screen<br>Content and Webcam Activity"]
+
+        D --> R["Job Search APIs &<br>Web Scraping"]
+        R --> 4W1["Job Recommendation"]
+        4W1 --> S["Remote Job Opportunities"]
+        S --> D12["Job Quality<br>Feedback Mechanism"]
+        
+        D --> T["Vision-powered Chat System"]
+        T --> U["Assist with Job Tasks"]
+        T --> V["Quality Control"]
+
+        D --> 12HHQ["Resume AI"]
+        D --> 14HHQ["Interview AI"]    
+
+        B -.-> C
+        C -.-> D
+        D -.-> B
+
+        classDef mainNode fill:#830C4F,stroke:#fff,color:#fff;
+        classDef database fill:#e1e1e1,stroke:#333,stroke-width:2px;
+        classDef feature fill:#830C4F,stroke:#6a0a3f,color:#fff;
+    </pre>
+    </div>
+</div>
+<div id="zoom-controls" style="margin-top: 10px; text-align: center;">
+    <button style="margin-top: 2px; color: white; background-color: #830C4F; border: none; cursor: pointer;" class="cta-button" onclick="window.location.href = 'architecture.html'" id="reset">Reset <i style="margin-left: 5px;" class="fas fa-redo"></i></button>
+</div>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+    @font-face {
+        font-family: Gidiff;
+        src: url("GlacialIndifference-Regular.otf") format("opentype");
+    }
+
+    body{
+        background-color: #f2e1eb;
+        padding-left: 40px;
+        padding-right: 40px;
+        font-family: 'Poppins', 'sans-serif';
+    }
+    ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+.container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(131, 12, 79, 0.1);
+    padding: 30px;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.5) !important;
+}
+h1 {
+    color: #830C4F;
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+}
+.topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+#mermaid-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 5px;
+            overflow: hidden;
+            cursor: move;
+        }
+
+.topic-item {
+    background-color: white;
+    border: 2px solid #830C4F;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-weight: bold;
+}
+.topic-item:hover, .topic-item.active {
+    background-color: #830C4F;
+    color: white;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(131, 12, 79, 0.2);
+}
+.explanation {
+    background-color: #f0efef;
+    border-left: 5px solid #830C4F;
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.explanation.show {
+    display: block;
+    opacity: 1;
+}
+</style>
+<div style="display: flex; align-items: center; justify-content: center;">
+    <a class="cta-button" style="color: white; background-color: #830C4F; margin-top: 8px;" href="TutorAI.html">
+        Try Out Vocation.ai
+        <i class="fas fa-arrow-right" style="margin-left: 5px;"></i>
+    </a>
+    </div>
+<br><br>
+<div style="display: flex; justify-content: center; align-items: center">
+<div class="container">
+    <h1>Technology Jargons</h1>
+    <div class="topic-grid">
+        <div class="topic-item" data-topic="rag">RAG Architecture</div>
+        <div class="topic-item" data-topic="multimodal">Multimodal AI</div>
+        <div class="topic-item" data-topic="embedding">Embedding Creator</div>
+        <div class="topic-item" data-topic="knowledge">Knowledge Base</div>
+        <div class="topic-item" data-topic="vector">Vector Database</div>
+        <div class="topic-item" data-topic="langchain">LangChain</div>
+        <div class="topic-item" data-topic="llms">LLMs</div>
+        <div class="topic-item" data-topic="jobRecommendation">Job Recommendation System</div>
+        <div class="topic-item" data-topic="visionPowered">Vision-Powered System</div> 
+    </div>
+    <div id="explanation" class="explanation"></div>
+</div>
+</div>
+<br><br>
+<script>
+    mermaid.initialize({ startOnLoad: true });
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const element = document.getElementById('panzoom-element');
+        let panzoomInstance;
+        const maxZoom = 5;
+        const minZoom = 0;
+
+        try {
+            panzoomInstance = panzoom(element, {
+                maxZoom: maxZoom,
+                minZoom: minZoom,
+                
+                beforeWheel: function(e) {
+                    return true;
+                }
+            });
+        } catch (error) {
+            console.error("Error initializing panzoom:", error);
+        }
+
+
+    });
+
+
+    const explanations = {
+        rag: "RAG stands for Retrieval-Augmented Generation. It's like having a librarian (retrieval) who finds relevant books to help a teacher (generation) teach a topic.",
+        multimodal: "Multimodal AI can understand different types of input: text, images, and even audio. It's like having a friend who can understand you whether you're talking, showing pictures, or playing sounds.",
+        embedding: "The Embedding Creator turns your input and all the information in the Knowledge Base into long lists of numbers. It's like translating everything into a secret code that computers can understand.",
+        knowledge: "The Knowledge Base is like a huge library of information on various topics. The Data Processor organizes this information and prepares it to be turned into embeddings.",
+        vector: "The Vector Database stores information as number lists (vectors) and can quickly find similar information. It's like a librarian who can instantly find books related to your topic.",
+        langchain: "LangChain is like a skilled manager that coordinates all parts of the system, ensuring smooth information flow and connecting retrieval with generation.",
+        llms: "Large Language Models (LLMs) like Gemini-1.5 or GPT-4 are the brain of the system. They generate responses based on your input and the relevant information found in the Knowledge Base.",
+        jobRecommendation: "The Job Recommendation system is like a matchmaker for careers. Imagine you're at a big job fair, but instead of you walking around to find interesting jobs, you have a personal assistant. This assistant knows all about your skills, interests, and experience. They also know about every job at the fair. As you sit comfortably, the assistant runs around, comparing your profile to each job, and brings back the ones that fit you best. They might say, 'Hey, I found this marketing job that matches your creativity, or this data analysis role that fits your math skills!' It saves you time and helps you discover opportunities you might have missed on your own.",
+        visionPowered: "The Vision-powered system is like having a super-smart study buddy who can see what you're working on. Imagine you're doing homework, and this buddy is sitting next to you, able to see your screen or any document you show them. If you're stuck on a math problem, they can look at your work and point out where you might have made a mistake. If you're writing an essay, they can see your draft and suggest improvements. And if you're preparing for a job interview, you can show them your resume, and they'll give you tips on how to make it better. It's like having a tutor, proofreader, and career advisor all rolled into one, always ready to help just by looking at what you're doing."
+
+    };
+
+    document.querySelectorAll('.topic-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const topic = this.getAttribute('data-topic');
+            const explanation = document.getElementById('explanation');
+            explanation.textContent = explanations[topic];
+            explanation.classList.add('show');
+            
+            document.querySelectorAll('.topic-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+</script>
+
+
+<style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+    .cta-button {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: #fff;
+            padding: 15px 30px;
+            font-family: Poppins, sans-serif;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-top: 30px;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .cta-button:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+</style>
+
+
+  
+</body>
+</html>

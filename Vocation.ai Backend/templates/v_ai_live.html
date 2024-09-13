@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="static/vocational (1).png">
+    <title>Vocation.ai - Live</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script crossorigin src="https://unpkg.com/@daily-co/daily-js"></script>
+    <script
+        async
+        crossorigin="anonymous"
+        data-clerk-publishable-key="REMOVED"
+        src="REMOVED"
+        type="text/javascript">
+    </script>
+        <script>
+            function isMobile() {
+                return /Mobi|Android/i.test(navigator.userAgent);
+            }
+    
+            if (isMobile()) {
+                window.location.href = "https://vocation-ai.web.app/mobile";
+            }
+        </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @font-face {
+            font-family: Gidiff;
+            src: url("static/GlacialIndifference-Regular.otf") format("opentype");
+        }
+        :root {
+            --primary-color: #830c4f;
+            --secondary-color: #b4116d;
+            --text-color: #333;
+            --background-color: #f2e1eb;
+            --card-background: #ffffff;
+            --accent-color: #830c4f;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 12px 10px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 70px;
+            height: 70px;
+        }
+
+        .logo h1 {
+            font-family: 'Gidiff', sans-serif;
+            font-size: 35px;
+            color: white;
+            margin: 0;
+            font-weight: 400 !important;
+        }
+
+        #user-button {
+            margin-right: 15px;
+        }
+
+        .main-content {
+            display: flex;
+            margin-top: 30px;
+            gap: 30px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            flex: 3;
+        }
+
+        .video-card {
+            background-color: var(--card-background);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: max-content;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .video-container {
+            position: relative;
+            padding-top: 56.25%;
+            overflow: hidden;
+        }
+
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .video-controls {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 0 0 15px 15px;
+        }
+
+        .control-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            background-color: #33333300;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 10000000000000;
+        }
+
+        .control-bar .control-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .control-bar .control-btn:hover {
+            background-color: #6b0a41;
+            transform: scale(1.1);
+        }
+
+        .control-btn i {
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .control-btn.active i {
+            color: #f2e1eb;
+        }
+
+
+        .chat-container {
+            flex: 1;
+            background-color: var(--card-background);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 260px);
+            transition: 0.3s ease;
+        }
+
+        .chat-container:hover {
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transform: translateY(-5px);
+        }
+
+        .chat-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .chat-message {
+            background-color: #f2e1eb;
+            border-radius: 15px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+
+        .chat-message.sent {
+            background-color: var(--secondary-color);
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            margin-right: 10px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .chat-input input:focus{
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(131, 12, 79, 0.1);
+        }
+
+        .chat-input button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            background-color: #6b0a40;
+        }
+
+        .camera-off {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 90px;
+            color: #fff;
+            background-color: #f2e1eb00;
+            padding: 20px;
+            border-radius: 50%;
+        }
+
+        .user-name {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background-color: rgba(131, 12, 79, 0.7);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .mute-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #830c4f;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .mute-icon i {
+            color: white;
+            font-size: 16px;
+        }
+
+        .mute-icon.muted i {
+            color: white;
+        }
+
+    </style>
+                    <style>
+                        .cl-userButtonPopoverCard {
+                            background-color: #9b0158;
+                            color: white !important;
+                        }
+                        .cl-userButtonPopoverActionButtonText{
+                            color: white;
+                        }
+                        .cl-navbar{
+                            background-color: #f2e1eb;
+                            border-radius: 16px;
+                        }
+                        .cl-internal-rx251b{
+                            background-color: #f2e1eb;
+                        }
+                        .cl-pageScrollBox{
+                            background-color: #f2e1eb;
+                        }
+                        .cl-internal-1yejcov{
+                            color: white !important;
+                        }
+                        .cl-internal-60laz0{
+                            border-right: 1px solid rgb(131, 12, 79, 0.5);
+                        }
+                        .cl-userPreviewSecondaryIdentifier{
+                            color: white;
+                        }
+                        .cl-userButtonPopoverFooter{
+                            display: none;
+                        }
+                        .cl-internal-b3fm6y{
+                            display: none;
+                        }
+                        .cl-userButtonTrigger:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-headerTitle{
+                            color: #830c4f;
+                        }
+                        .cl-internal-1e71drn{
+                            color: #830c4f;
+                        }
+                        .cl-internal-141wpcl{
+                            color: #830c4f;
+                        }
+                        .cl-scrollBox{
+                            background-color: #f2e1eb;
+                        }
+                        .cl-internal-1xg0u4s{
+                            border-bottom: 1px solid rgb(131, 12, 79, 0.6);
+                        }
+                        .cl-profileSectionPrimaryButton{
+                            color: #830c4f;
+                        }
+                        .cl-profileSectionPrimaryButton:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-profileSectionPrimaryButton:active{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-profileSectionPrimaryButton:hover{
+                            background-color: #f2e1eb;
+                        }
+                        .cl-navbarButton:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-accordionTriggerButton:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-badge{
+                            color: #830c4f;
+                            background-color: rgb(131, 12, 79, 0.2);
+                        }
+                        .cl-formButtonPrimary{
+                            background-color: #830c4f;
+                        }
+                        .cl-formButtonPrimary .cl-formButtonReset{
+                            background-color: #830c4f;
+                        }
+                        .cl-formButtonReset:hover{
+                            background-color: rgb(131, 12, 79, 0.2);
+                        }
+                        .cl-formButtonReset{
+                            color: #830c4f;
+                        }
+                        .cl-formButtonPrimary:hover{
+                            background-color: #460429;
+                        }
+                        .cl-formButtonPrimary:active{
+                            background-color: #460429;
+                        }
+                        .cl-formButtonReset:active{
+                            background-color: rgb(131, 12, 79, 0.2);
+                        }
+                        .cl-profileSectionPrimaryButton:active{
+                            background-color: #f2e1eb;
+                        }
+                        .cl-avatarImageActionsUpload{
+                            color: #830c4f;
+                        }
+                        .cl-avatarImageActionsRemove{
+                            color: #600639;
+                        }
+                        .cl-avatarImageActionsUpload:focus .cl-avatarImageActionsRemove:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-formFieldInput:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-internal-1sf6rji{
+                            color: #830c4f
+                        }
+                        .cl-internal-1sf6rji:hover{
+                            background-color: rgb(131, 12, 79, 0.2);
+                        }
+                        .cl-internal-f7yy9s:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-modalCloseButton{
+                            color: #830c4f;
+                        }
+                        .cl-modalCloseButton:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-formButtonReset:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-formButtonPrimary:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-formFieldInput{
+                            accent-color: #830c4f;
+                        }
+                        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+                        .cl-internal-1sf6rji:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-internal-1sf6rji:active{
+                            background-color: #f2e1eb;
+                        }
+                        .cl-breadcrumbsItem:focus{
+                            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                        }
+                        .cl-userPreviewSecondaryIdentifier{
+                            color: #d1b2c2;
+                        }
+                    </style>
+</head>
+<body>
+    <div class="control-bar">
+        <button id="mute-btn" class="control-btn">
+            <i class="fas fa-microphone"></i>
+        </button>
+        <button id="video-btn" class="control-btn">
+            <i class="fas fa-video"></i>
+        </button>
+        <button onclick="window.location.href = '/'" id="closee-btn" class="control-btn">
+            <i class="fas fa-phone-slash"></i>
+        </button>
+    </div>
+    <header>
+        <div class="header-content">
+            <div onclick="window.location.href ='https://vocation-ai.web.app/'" class="logo" style="cursor: pointer;">
+                <img src="static/vocational.png" alt="V.ai Live logo">
+                <h1 style="font-family: Gidiff;">Vocation.ai</h1><span style="font-size: 12px; color: #f2e1eb; margin-left: 3px;">Live</span>
+            </div>
+            <div id="user-button"></div>
+        </div>
+    </header>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+    <div class="container main-content">
+        <div class="video-grid" id="video-grid"></div>
+        <div class="chat-container">
+            <div class="chat-header">
+                V.ai Live Chat
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-message"><strong>V.ai:</strong> Invite your friends to study together on V.ai Live</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Type your message...">
+                <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+};
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+function formatDateToGMT530(date) {
+    const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    };
+    return date.toLocaleString('en-IN', options).replace(',', '');
+}
+
+document.addEventListener('click', function(event) {
+    const element = event.target;
+    const email = Clerk.user.emailAddresses[0]?.emailAddress
+
+    const clickData = {
+        tagName: element.tagName,
+        id: element.id || null,
+        classList: Array.from(element.classList).join(' ') || null,
+        textContent: element.textContent.trim() || null,
+        timestamp: formatDateToGMT530(new Date()),
+        userInfo: email, 
+        page: document.title
+    };
+    database.ref('clicks').push(clickData)
+});
+
+let callObject;
+const videoGrid = document.getElementById('video-grid');
+const peers = {};
+
+async function initializeCall() {
+    try {
+        await joinCall();
+    } catch (err) {
+        console.error('Failed to initialize call', err);
+    }
+    const email = Clerk.user.emailAddresses[0]?.emailAddress
+    const userInputData = {
+        callData: "Call Started in V.ai Live",
+        timestamp: formatDateToGMT530(new Date()),
+        userInfo: email, page: document.title,
+    };
+    database.ref('userInputData').push(userInputData)
+    console.clear()
+}
+
+async function joinCall() {
+    try {
+        await callObject.join({ url: 'https://vocation-ai.daily.co/study' });
+        callObject.on('participant-joined', (event) => {
+            addVideoStream(event.participant);
+        });
+
+        callObject.on('participant-updated', (event) => {
+            updateParticipantState(event.participant);
+        });
+
+        callObject.on('participant-left', (event) => {
+            removeVideoStream(event.participant.session_id);
+        });
+
+        const participants = callObject.participants();
+        Object.values(participants).forEach(addVideoStream);
+
+        updateLocalParticipantState();
+
+    } catch (err) {
+        console.error('Failed to join call', err);
+    }
+}
+
+function addVideoStream(participant) {
+    const videoCard = document.createElement('div');
+    videoCard.className = 'video-card';
+    videoCard.setAttribute('data-session-id', participant.session_id);
+    
+    const videoContainer = document.createElement('div');
+    videoContainer.className = 'video-container';
+    
+    const video = document.createElement('video');
+    video.autoplay = true;
+    video.playsInline = true;
+    
+    const stream = new MediaStream();
+    if (participant.videoTrack) {
+        stream.addTrack(participant.videoTrack);
+    }
+    if (participant.audioTrack && !participant.local) {
+        stream.addTrack(participant.audioTrack);
+    }
+    video.srcObject = stream;
+    
+    const userName = document.createElement('div');
+    userName.className = 'user-name';
+    userName.textContent = participant.user_name || 'Anonymous';
+    
+    videoContainer.appendChild(video);
+    videoContainer.appendChild(userName);
+    
+    videoCard.appendChild(videoContainer);    
+    videoGrid.appendChild(videoCard);
+    
+    peers[participant.session_id] = { videoCard, participant };
+    updateParticipantState(participant);
+}
+
+function updateParticipantState(participant) {
+    const peer = peers[participant.session_id];
+    if (peer) {
+        peer.participant = participant;
+        updateVideoState(participant);
+        updateAudioState(participant);
+        updateUserName(participant);
+    }
+}
+
+function updateVideoState(participant) {
+    const videoCard = document.querySelector(`[data-session-id="${participant.session_id}"]`);
+    if (videoCard) {
+        const video = videoCard.querySelector('video');
+        const cameraOffIcon = videoCard.querySelector('.camera-off');
+        
+        const stream = new MediaStream();
+        if (participant.videoTrack) {
+            stream.addTrack(participant.videoTrack);
+        }
+        if (participant.audioTrack && !participant.local) {
+            stream.addTrack(participant.audioTrack);
+        }
+        video.srcObject = stream;
+
+        if (participant.videoTrack) {
+            video.style.display = 'block';
+            if (cameraOffIcon) cameraOffIcon.remove();
+        } else {
+            video.style.display = 'none';
+            if (!cameraOffIcon) {
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-video-slash camera-off';
+                icon.style.color = "#830c4f";
+                videoCard.querySelector('.video-container').appendChild(icon);
+            }
+        }
+    }
+}
+
+function updateAudioState(participant) {
+    const videoCard = document.querySelector(`[data-session-id="${participant.session_id}"]`);
+    if (videoCard) {
+        let muteIcon = videoCard.querySelector('.mute-icon');
+        if (!muteIcon) {
+            muteIcon = document.createElement('div');
+            muteIcon.className = 'mute-icon';
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-microphone';
+            muteIcon.appendChild(icon);
+            videoCard.querySelector('.video-container').appendChild(muteIcon);
+        }
+        
+        if (participant.audio) {
+            muteIcon.classList.remove('muted');
+            muteIcon.querySelector('i').className = 'fas fa-microphone';
+        } else {
+            muteIcon.classList.add('muted');
+            muteIcon.querySelector('i').className = 'fas fa-microphone-slash';
+        }
+    }
+}
+
+function updateUserName(participant) {
+    const videoCard = document.querySelector(`[data-session-id="${participant.session_id}"]`);
+    if (videoCard) {
+        const userName = videoCard.querySelector('.user-name');
+        userName.textContent = participant.user_name || 'Anonymous';
+    }
+}
+
+function removeVideoStream(sessionId) {
+    const videoCard = document.querySelector(`[data-session-id="${sessionId}"]`);
+    if (videoCard) {
+        videoCard.remove();
+    }
+    delete peers[sessionId];
+}
+
+function updateLocalParticipantState() {
+    const localParticipant = callObject.participants().local;
+    updateParticipantState(localParticipant);
+}
+
+const muteBtn = document.getElementById('mute-btn');
+const videoBtn = document.getElementById('video-btn');
+
+muteBtn.addEventListener('click', () => {
+    const audioEnabled = callObject.localAudio();
+    callObject.setLocalAudio(!audioEnabled);
+    muteBtn.innerHTML = audioEnabled ? '<i class="fas fa-microphone-slash"></i>' : '<i class="fas fa-microphone"></i>';
+    updateLocalParticipantState();
+});
+
+videoBtn.addEventListener('click', () => {
+    const videoEnabled = callObject.localVideo();
+    callObject.setLocalVideo(!videoEnabled);
+    videoBtn.innerHTML = videoEnabled ? '<i class="fas fa-video-slash"></i>' : '<i class="fas fa-video"></i>';
+    updateLocalParticipantState();
+});
+
+window.addEventListener('load', async function() {
+    await Clerk.load();
+    
+    if (!Clerk.user) {
+        window.location.href = 'authentication';
+    } else {
+        const userButtonDiv = document.getElementById('user-button');
+        Clerk.mountUserButton(userButtonDiv);
+        
+        callObject = DailyIframe.createCallObject();
+        callObject.setUserName(Clerk.user.fullName);
+        
+        initializeCall();
+        
+        const chatRef = database.ref('chats');
+        chatRef.on('child_added', (snapshot) => {
+            const message = snapshot.val();
+            displayMessage(message);
+        });
+    }
+});
+
+const chatInput = document.getElementById('chat-input');
+
+chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+
+function displayMessage(message) {
+    const chatMessages = document.getElementById('chat-messages');
+    const messageElement = document.createElement('div');
+    messageElement.className = 'chat-message';
+    if (message.email === Clerk.user.emailAddresses[0].emailAddress) {
+        messageElement.classList.add('sent');
+    }
+    messageElement.innerHTML = `<strong>${message.user}:</strong> ${message.message}`;
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+    if (message) {
+        const user = Clerk.user;
+        const chatRef = database.ref('chats');
+        chatRef.push({
+            user: user.fullName,
+            email: user.emailAddresses[0].emailAddress,
+            message: message,
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
+        input.value = '';
+    }
+}
+    </script>
+
+    
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vocation.ai - Loading</title>
+        <link rel="icon" type="image/x-icon" href="vocational (1).png">
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+        };
+        firebase.initializeApp(firebaseConfig);
+          const database = firebase.database();
+        
+          function formatDateToGMT530(date) {
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      return date.toLocaleString('en-IN', options).replace(',', '');
+    }
+    
+          document.addEventListener('click', function(event) {
+            const element = event.target;
+    
+            const clickData = {
+              tagName: element.tagName,
+              id: element.id || null,
+              classList: Array.from(element.classList).join(' ') || null,
+              textContent: element.textContent.trim() || null,
+              timestamp: formatDateToGMT530(new Date()), page: document.title
+            };
+            database.ref('clicks').push(clickData)
+          });
+        </script>
+        <script>
+            function isMobile() {
+                return /Mobi|Android/i.test(navigator.userAgent);
+            }
+    
+            if (isMobile()) {
+                window.location.href = "mobile.html";
+            }
+        </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        @font-face {
+            font-family: Gidiff;
+            src: url("GlacialIndifference-Regular.otf") format("opentype");
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2e1eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            width: 700px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f2e1eb;
+            border-top: 5px solid #830c4f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        .message { background-color: #f2e1eb; border-radius: 8px; padding: 1rem; margin-top: 1rem; font-size: 0.95rem; line-height: 1.5; color: #830C4F; }        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        h1 {
+            color: #830c4f;
+            margin-bottom: 1rem;
+        }
+
+        #timer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #830c4f;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        .progress {
+            width: 0%;
+            height: 100%;
+            background-color: #830c4f;
+            transition: width 1s linear;
+        }
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+    </style>
+</head>
+<body>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+    <div class="container">
+        <a href="index.html" style="text-decoration: none;">
+        <img src="vocational (1).png" height="100px">
+        <h1 style="margin: 0; font-size: 40px; color: #830C4F; font-family: Gidiff;">Vocation.ai</h1></a>
+        <div class="loader" style="margin-top: 20px;"></div>
+        <h1 id="loading-text">Loading</h1>
+        <p class="updateText"><strong>Estimated Time Left</strong></p>
+        <p id="timer">150 seconds</p>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <br>
+        <div class="message">
+            <p>Hey there! 👋 Our AI is just waking up from its power nap. It needs a moment to stretch its digital muscles and get ready for your awesome questions. Hang tight - it'll be worth the wait!</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.location.replace("https://tutorai-huqg.onrender.com/v_ai_live")
+            const timerElement = document.getElementById('timer');
+            const progressElement = document.querySelector('.progress');
+            const loadingTextElement = document.getElementById('loading-text');
+            let secondsLeft = 151;
+            const totalTime = 151;
+
+            const updateTimer = () => {
+                
+                if (secondsLeft > 0) {
+                    secondsLeft--;
+                    timerElement.textContent = `${secondsLeft} second${secondsLeft !== 1 ? 's' : ''}`;
+                    const progressPercentage = ((totalTime - secondsLeft) / totalTime) * 100;
+                    progressElement.style.width = `${progressPercentage}%`;
+
+                    if (secondsLeft === 145) {
+                        loadingTextElement.textContent = 'Might take 1-2 mins to load';
+                    } else if (secondsLeft === 128) {
+                        loadingTextElement.textContent = 'Loading';
+                    } else if (secondsLeft === 90) {
+                        loadingTextElement.textContent = 'Almost done!';
+                    } else if (secondsLeft === 30) {
+                        loadingTextElement.textContent = 'Very Close!';
+                    } else if (secondsLeft === 5) {
+                        loadingTextElement.textContent = 'Loading';
+                    }
+
+                    setTimeout(updateTimer, 1000);
+                } else {
+                    timerElement.textContent = 'Please Wait!';
+                    loadingTextElement.textContent = 'Please Wait!';
+                    progressElement.style.width = '100%';
+                }
+            };
+
+            updateTimer();
+        });
+    </script>
+    </body>

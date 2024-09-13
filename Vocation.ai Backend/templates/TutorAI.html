@@ -1,0 +1,2417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="static/vocational (1).png">
+    <title>Vocation.ai - Tutor AI</title>
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key='REMOVED'"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+
+<script>
+
+var checker = 1;
+
+function demoDone(){
+    const tutorMainElement = document.querySelector('.chat-main');
+    const sidebar = document.querySelector('.sidebar');
+    tutorMainElement.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        sidebar.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+}
+
+    const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+    };
+    firebase.initializeApp(firebaseConfig);
+  
+  
+      const database = firebase.database();
+    
+      function formatDateToGMT530(date) {
+  const options = {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  };
+  return date.toLocaleString('en-IN', options).replace(',', '');
+}
+
+      document.addEventListener('click', function(event) {
+        const element = event.target;
+        const email = Clerk.user.emailAddresses[0]?.emailAddress
+
+        const clickData = {
+          tagName: element.tagName,
+          id: element.id || null,
+          classList: Array.from(element.classList).join(' ') || null,
+          textContent: element.textContent.trim() || null,
+          timestamp: formatDateToGMT530(new Date()),
+          userInfo: email, page: document.title
+        };
+        if(clickData.textContent == "Done"){
+                if(checker > 1){
+                    demoDone()
+                }
+                checker+=1
+            }
+        database.ref('clicks').push(clickData)
+      });
+    </script>
+    <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "https://vocation-ai.web.app/mobile";
+        }
+    </script>
+    <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="REMOVED"
+    src="REMOVED"
+    type="text/javascript">
+  </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    
+        :root {
+            --primary-color: #830c4f;
+            --secondary-color: #f39c12;
+            --text-color: #333;
+            --bg-color: #f4f4f4;
+            --sidebar-bg: #830c4f;
+            --sidebar-hover: #830c4f;
+        }
+    
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .highlight {
+            padding: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+
+        .introjs-bullets ul li a.active {
+            background: var(--primary-color) !important;
+            box-shadow: 0 0 0 2px rgba(131, 12, 79, 0.3);
+        }
+
+        .introjs-bullets a {
+            background: #9f9b9b !important;
+            transition: background 0.3s ease;
+        }
+
+        .introjs-tooltip {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            color: #830c4f;
+            font-size: 18px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+            padding: 25px;
+            max-width: 350px;
+        }
+
+        .introjs-tooltiptext {
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        .typing-indicator {
+    display: flex;
+    align-items: center;
+}
+
+.typing-indicator .dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+    background-color: #bbb;
+    border-radius: 50%;
+    animation: typing 1.5s infinite ease-in-out;
+}
+
+.typing-indicator .dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.typing-indicator .dot:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.typing-indicator .dot:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes typing {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+}
+
+
+
+        .introjs-tooltip h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #830c4f;
+        }
+
+        .introjs-tooltip p {
+            margin-bottom: 15px;
+        }
+
+        .introjs-button {
+            background-color: #830c4f;
+            color: #fff;
+            text-shadow: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            font-size: 14px;
+            border: 2px solid #830c4f;
+            margin: 5px;
+        }
+
+        .chat-actions {
+            display: flex;
+            padding: 10px 10px 10px 10px;
+            background-color: #f2e1eb;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            justify-content: center;
+        }
+
+        .chat-actions button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .chat-actions button:hover {
+            background-color: #6b0a40;
+        }
+
+        .introjs-skipbutton {
+            color: #830c4f;
+            background-color: transparent;
+            border: 2px solid #830c4f;
+        }
+
+        .introjs-button:hover {
+            background-color: #f2e1eb;
+            color: #830c4f;
+            border: 2px solid #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-button:focus {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            color: #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+        }
+
+        .introjs-tooltip .introjs-skipbutton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 26px;
+            text-align: center;
+            border: 2px solid #830c4f;
+            background-color: transparent;
+            color: #830c4f;
+            transition: all 0.3s ease;
+        }
+
+        .introjs-tooltip .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .introjs-arrow {
+            border-color: #830c4f;
+        }
+
+        .introjs-floating {
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+        }
+    
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            
+        }
+    
+        .chat-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+    
+        .sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+    
+        .logo {
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+    
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+    
+        .action-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+    
+        .action-button:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+    
+        .action-button i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+    
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .arrow-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow {
+            font-size: 24px;
+            position: absolute;
+            animation: moveArrow 2s infinite;
+        }
+        
+
+        .arrownew {
+            font-size: 24px;
+            position: absolute;
+            animation: updown 2s infinite;
+            bottom: 100px;
+            right: -50px
+        }
+
+        .arrowd {
+            font-size: 24px;
+            position: absolute;
+            animation: moveArrow1 2s infinite;
+        }
+
+        @keyframes moveArrow {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(20px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes updown {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(20px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes moveArrow1 {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(20px); }
+            100% { transform: translateY(0); }
+        }
+
+        .button-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background-color: #6b0a41;
+        }
+
+        .hide {
+            display: none;
+        }
+    
+        .chat-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #f2e1eb;
+        }
+    
+        .message {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+    
+        .user-message { 
+            align-self: flex-end;
+            background-color: #ea4fa9;
+            border-bottom-right-radius: 4px;
+            color: white;
+        }
+    
+        .ai-message {
+            align-self: flex-start;
+            background-color: #ffffff;
+            border-bottom-left-radius: 4px;
+        }
+    
+        .ai-message-content {
+            display: flex;
+            align-items: center;
+        }
+    
+        .sound-icon-wrapper {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            border-radius: 50%;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+            color: #830c4f;
+        }
+    
+        .sound-icon {
+            color: white;
+            font-size: 1em;
+        }
+    
+        .chat-input {
+            display: flex;
+            padding: 20px;
+            background-color: white;
+            border-top: 1px solid #e0e0e0;
+        }
+    
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+    
+        .chat-input input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(131, 12, 79, 0.1);
+        }
+
+        #videoContainer {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #video {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+        }
+
+        #emotion1, #emotion2 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #830c4f;
+            margin-top: 10px;
+        }
+    
+        .chat-input button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+    
+        .chat-input button:hover {
+            background-color: #6b0a40;
+        }
+    
+        .mic-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-left: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    
+        .mic-button:hover {
+            background-color: #6b0a40;
+        }
+    
+        .file-upload {
+            display: none;
+        }
+    
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    
+        .sidebar-section {
+            background-color: rgba(255, 255, 255);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+    
+        .sidebar-section:hover {
+            transform: translateY(-3px);
+        }
+    
+        .sidebar-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-section1 {
+            background-color: rgba(255, 255, 255);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+    
+        .sidebar-section1:hover {
+            transform: translateY(-3px);
+        }
+    
+        .sidebar-section1 h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+    
+        .sidebar-list {
+            list-style-type: none;
+        }
+    
+        .sidebar-list li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .sidebar1-list {
+            list-style-type: none;
+        }
+    
+        .sidebar1-list li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            color: #333;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    
+        .language-menu {
+            position: relative;
+            display: inline-block;
+        }
+    
+        .language-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    
+        .language-options {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 20000;
+            right: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            width: 200px;
+        }
+    
+        .ai-switch {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 20000;
+        }
+    
+        .ai-switch:hover {
+            transform: translateY(-2px);
+            z-index: 20000;
+        }
+    
+        .ai-options a:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+
+        .ai-options {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 20000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    
+        .ai-options a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+    
+        .show {
+            display: block;
+        }
+    
+        .ai-switch.active::after {
+            transform: rotate(180deg);
+        }
+    
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.1; }
+        }
+    
+        .ai-switch-icon {
+            animation: fadeInOut 2s infinite;
+        }
+    
+        .ai-switch.active .ai-switch-icon {
+            animation: none;
+        }
+    
+        .language-options a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+    
+        .language-options a:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+
+        .progress-box {
+            background-color: rgba(255, 255, 255);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .progress-box:hover {
+            transform: translateY(-3px);
+        }
+
+        .progress-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+    
+        .progress-bar {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+    
+        .progress {
+            background: linear-gradient(90deg, var(--primary-color), #b30c6f);
+            height: 100%;
+            border-radius: 10px;
+            width: 0;
+            transition: width 0.5s ease-in-out;
+        }
+    
+        .references {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    
+        .references a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+    
+        .references a:hover {
+            text-decoration: underline;
+        }
+    
+        .references ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+    
+        .references li {
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+    
+        .memory-box {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(131, 12, 79, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .memory-box h2 {
+            color: #830c4f;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #830c4f;
+            padding-bottom: 10px;
+        }
+
+        .memory-box ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .memory-box li {
+            margin-bottom: 15px;
+            background-color: #fff;
+            border: 1px solid #830c4f;
+            border-radius: 8px;
+            padding: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .memory-box li:hover {
+            background-color: rgba(131, 12, 79, 0.05);
+        }
+
+        .memory-box li strong {
+            color: #830c4f;
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .memory-box li span {
+            color: #333;
+            display: block;
+        }
+
+        .memory-icon {
+            color: #830c4f;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+function removePoweredBy() {
+  const targetNode = document.body;
+  const config = { childList: true, subtree: true };
+
+  const callback = function(mutationsList, observer) {
+    for(let mutation of mutationsList) {
+      if (mutation.type === 'childList') {
+        const poweredByElement = document.querySelector('.goog-logo-link');
+        if (poweredByElement) {
+          poweredByElement.remove();
+        }
+
+        const disclaimer = document.querySelector('.goog-te-gadget');
+        if (disclaimer) {
+          disclaimer.childNodes.forEach((node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+              node.remove();
+            }
+          });
+        }
+      }
+    }
+  };
+
+  const observer = new MutationObserver(callback);
+  observer.observe(targetNode, config);
+}
+
+
+    </script>
+    <script>
+        window.addEventListener("load", async function () {
+            await Clerk.load();
+            removePoweredBy()
+
+            function pam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        const redirectUrl = pam('redirect_url');
+
+
+            if (!Clerk.user) {
+                if (redirectUrl) {
+                    setTimeout(() => {
+                        window.location.href = 'authentication';
+                    }, 12000);
+                }
+
+                else{
+                    window.location.href = 'authentication';
+                } 
+            }
+
+            else {
+                document.getElementById("app").innerHTML = `
+                    <div id="user-button"></div>
+                `;
+                const userButtonDiv = document.getElementById("user-button");
+
+                Clerk.mountUserButton(userButtonDiv);
+            }
+        });
+    </script>
+
+<div id="typingIndicator" class="typing-animation" style="display: none;">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <span class="typing-message">Typing...</span>
+</div>
+
+
+    <div class="chat-container">
+        <aside class="sidebar">
+            <div class="logo"><a href="https://vocation-ai.web.app"><img src="static/Vocation.ai Logo (Horizontal cropped).png" style="height: 65px;"></a></div>
+            <div class="action-buttons">
+                <button data-intro="Share your screen to utilize TutorAI's vision capabilities while you learn a skill or solve a question, allowing it to guide you effectively." data-step="3" class="action-button" id="shareScreenBtn">
+                    <i class="fas fa-desktop"></i> <span style="margin-left: 10px;">Share Screen</span>
+                </button>
+                <button data-intro="You can upload any document here, such as an image of your homework. TutorAI will then teach and guide you accordingly. It can autograde your homework and determine if you have understood the concept well enough." data-step="4" class="action-button" id="uploadFileBtn">
+                    <i class="fas fa-file-upload"></i> <span style="margin-left: 10px;">Upload File</span>
+                </button>
+                <input type="file" id="fileUpload" class="file-upload">
+                <button data-intro="Open your webcam to allow TutorAI to recognize your facial expressions for better guidance." data-step="5" class="action-button" id="toggleCameraBtn">
+                    <i class="fas fa-video"></i> <span style="margin-left: 10px;">Start Camera</span>
+                </button>
+                <div class="sidebar-section" id="videoContainer" style="display: none;">
+                    <video id="video" class="sidebar-section" autoplay></video>
+                    <div id="emotion1" style="font-size: 16px; font-weight: bold;">Emotion 1: None</div>
+                    <div id="emotion2" style="font-size: 16px; font-weight: bold;">Emotion 2: None</div>
+                </div>
+                
+            </div>
+            <div data-intro="Your uploaded files will appear here." data-step="6" class="sidebar-section">
+                <h3 style="cursor: pointer;">Uploaded Files</h3>
+                <p style="font-size: small; cursor: pointer; color: #333;" id="noou">No Files Uploaded</p>
+                <ul class="sidebar1-list" id="fileList" style="font-size: 13px;"></ul>
+            </div>
+            <div id="arrow2" style="margin-bottom: 30px; margin-top: 20px;" class="arrow-container">
+                <div style="margin-left: 17px;" class="arrowd">
+                    <p style="font-size: 8px;">Chat more to see the student memory get updated</p>
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                    <i class="fas fa-arrow-down"></i>
+                    </div>
+                </div>
+            </div>
+            <div data-intro="TutorAI stores information about you to personalize and enhance your study experience. Additionally, TutorAI uses this information to guide your career development and sometimes serves as a mental health counsellor." data-step="7" class="memory-box">
+                <h2 style="cursor: pointer;">Student Memory</h2>
+                <ul class="sidebar-list">
+                    <li><strong>Strengths</strong><span style="color: black;"> Mathematics, Problem solving</span></li>
+                    <li><strong>Weaknesses</strong><span style="color: black;"> English grammar, Time management</span> </li>
+                    <li><strong>Topics Covered</strong><span style="color: black;"> Basic arithmetic, Introductory algebra</span> </li>
+                    <li><strong>Learning Style</strong><span style="color: black;"> Visual learner, Prefers hands-on exercises</span> </li>
+                </ul>
+            </div>
+            <div data-intro="Progress of topics you are currently learning from TutorAI." data-step="8" class="progress-box">
+                <h3 style="cursor: pointer;">Module Progress <i class="fas fa-angle-right"></i></h3>
+                <div class="module" style="color: black;">
+                    <p>Basic Algebra</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 75%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 6px;">
+                    <p>English Grammar</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 40%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 6px;">
+                    <p>MS Excel Basics</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 60%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div data-intro="Shows your job credits unlocking progress. Find more about this in JobAI." data-step="9" class="progress-box">
+                <h3 style="margin-bottom: 0px; cursor: pointer;">Next Job Unlock <i class="fas fa-angle-right"></i></h3>
+                <p style="font-size: small; color: black;">Based on Module progress</p>
+                
+                <div class="module" style="color: black;">
+                    <p style="margin-top: 7px;">Data Entry</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 55%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 6px;">
+                    <p>Data Annotation</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 70%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 6px;">
+                    <p>Content Writing</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 35%;"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <style>
+    
+            .zoom-notification {
+                --primary-color: #830c4f;
+                --secondary-color: #f2e1eb;
+                font-family: 'Arial', sans-serif;
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(131, 12, 79, 0.95);
+                z-index: 9999999999;
+                justify-content: center;
+                align-items: center;
+                backdrop-filter: blur(10px);
+            }
+    
+            .zoom-content {
+                background-color: white;
+                padding: 40px;
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+                text-align: center;
+                max-width: 90%;
+                width: 550px;
+            }
+    
+            .zoom-content h2 {
+                color: var(--primary-color);
+                margin-top: 0;
+                font-size: 28px;
+                margin-bottom: 20px;
+            }
+    
+            .zoom-content p {
+                color: #333;
+                font-size: 16px;
+                line-height: 1.6;
+            }
+    
+            .key {
+                display: inline-block;
+                background-color: #f0f0f0;
+                border: 2px solid #d0d0d0;
+                border-radius: 8px;
+                padding: 8px 15px;
+                margin: 0 5px;
+                font-family: 'Courier New', monospace;
+                font-weight: bold;
+                font-size: 18px;
+                color: #333333;
+                box-shadow: 0 4px 0 #d0d0d0;
+                transition: all 0.1s ease;
+                cursor: pointer;
+                margin-top: 20px;
+                margin-bottom: 10px;
+            }
+    
+            .key:active {
+                transform: translateY(4px);
+                box-shadow: 0 0 0 #d0d0d0;
+            }
+    
+            .icon-zoom {
+                font-size: 48px;
+                margin-bottom: 20px;
+            }
+    
+            .width-info {
+                background-color: var(--secondary-color);
+                border-radius: 10px;
+                padding: 15px;
+                margin-top: 20px;
+                font-size: 14px;
+                color: var(--primary-color);
+            }
+    
+            #currentWidth, #requiredWidth {
+                font-weight: bold;
+                font-size: 18px;
+            }
+        </style>
+        <div class="zoom-notification" id="zoomNotification">
+            <div class="zoom-content">
+            <div class="icon-zoom">🔍</div>
+            <h2>Please Adjust Your View</h2>
+            <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+            <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+            <div class="width-info">
+            <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+            <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+            </div>
+            </div>
+            </div>
+            <script>
+                    const zoomNotification = document.getElementById('zoomNotification');
+                    const currentWidthSpan = document.getElementById('currentWidth');
+            
+                    function checkViewportWidth() {
+                        const currentWidth = window.innerWidth;
+                        currentWidthSpan.textContent = currentWidth;
+            
+                        if (currentWidth < 1430) {
+                            zoomNotification.style.display = 'flex';
+                        } else {
+                            zoomNotification.style.display = 'none';
+                        }
+                    }
+            
+                    window.addEventListener('resize', checkViewportWidth);
+                    window.addEventListener('load', checkViewportWidth);
+                </script>
+        <main class="chat-main">
+            <header class="chat-header">
+                <div style="display: flex;">
+                <h2 data-intro="TutorAI is your personal digital teacher powered with vision capabilities and a comprehensive knowledge base." data-step="1" class="ai-switch" id="aiSwitch">
+                    Tutor AI
+                    <i class="fas fa-angle-down ai-switch-icon" style="margin-left: 3px;"></i>
+                    <div class="ai-options" id="aiOptions">
+                        <a href="#" id="quizAI">Quiz AI</a>
+                        <a href="#" id="jobAI">Job AI</a>
+                        <a href="#" id="Community">Community</a>
+                        <a href="#" id="UserJourneyFlow">User Flow</a>
+                    
+                    </div>
+                    <style>
+
+                    </style>
+                </h2>
+                <style>
+                    .skiptranslate > span {
+                      display: none !important;
+                    }
+                  </style>
+                  
+                <script type="text/javascript">
+                    function googleTranslateElementInit() {
+                      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+                    }
+                  </script>
+                <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                  
+                <div id="arrow0" style="margin-left: 25px;" class="arrow-container">
+                    <div class="arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+                <p id="navhelp" style="justify-self: center; align-self: center; margin-left: 20px; animation: moveArrow 2s infinite;">Click here to navigate</p>
+            </div>
+                <div class="language-menu">
+                    <div style="display: flex;">
+                    <button data-intro="Select your language from multiple indic languages." data-step="2" class="language-btn" id="languageBtn" style="font-size: 2px; border-radius: 100px; display: flex; width: 60px; height: 30px; align-items: center; justify-content: center;"><i class="fas fa-language" style="font-size: 32px; color: #ffffff;"></i></button>
+                    <div style="margin-left: 10px;" id="app"></div>
+                    </div>
+                    <div class="language-options" id="languageOptions">
+                        <p align='center' style="color: #333; font-size: 12px; margin-top: 10px; margin-bottom: 5px; font-weight: bold;">Change TutorAI Language</p>
+                        <a class="sssqqw" onclick="alert('Changing the language to English'); txtt('Please change the language to English')" href="#">English</a>
+                        <a onclick="alert('Changing the language to Hindi'); txtt('Please change the language to Hindi')" href="#">हिन्दी (Hindi)</a>
+                        <a onclick="alert('Changing the language to Bengali'); txtt('Please change the language to Bengali')" href="#">বাংলা (Bengali)</a>
+                        <a onclick="alert('Changing the language to Telgu'); txtt('Please change the language to Telgu')" href="#">తెలుగు (Telugu)</a>
+                        <a onclick="alert('Changing the language to Marathi'); txtt('Please change the language to Marathi')" href="#">मराठी (Marathi)</a>
+                        <a onclick="alert('Changing the language to Tamil'); txtt('Please change the language to Tamil')" href="#">தமிழ் (Tamil)</a>
+                        <a onclick="alert('Changing the language to Gujarati'); txtt('Please change the language to Gujarati')" href="#">ગુજરાતી (Gujarati)</a>
+                        <a onclick="alert('Changing the language to Punjabi'); txtt('Please change the language to Punjabi')" href="#">ਪੰਜਾਬੀ (Punjabi)</a>
+                        <a onclick="txttask()" href="#">Others (Type)</a>
+                        <div style="display: flex; justify-content: center;">
+                        <div id="google_translate_element"><p align='center' style="color: #333; font-size: 12px; margin-top: 8px; margin-bottom: 5px; font-weight: bold;">Translate Whole Page</p></div>
+                            </div>
+                    <style>
+#google_translate_element{
+    margin-bottom: 15px;
+}
+.sssqqw{
+    background-color: #f1f1f1;
+}
+.goog-te-combo {
+    border-radius: 4px;
+    padding: 0 10px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    padding: 0 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    appearance: none; 
+    color: #333;
+    align-self: center;
+    justify-self: center !important;
+}
+
+#languageOptions .goog-te-combo {
+  width: 99%;
+  height: 35px;
+
+}
+
+                    </style>
+                    <script>
+
+
+                        function txtt(lang){
+                            document.getElementById("userInput").value = lang
+                            sendMessage()
+                        }
+
+                        function txttask() {
+                            let langoth = prompt("Please type your preferred language of conversation", "Kannada/Odia/Malayalam/Punjabi/Assamese/Others");
+                            if(langoth !== null){
+                                    document.getElementById("userInput").value = `Please change the language to ${langoth}`
+                                    sendMessage()
+                                }
+                        }
+                    </script>
+
+
+  
+
+                    </div>
+                </div>
+                <style>
+                    .cl-userButtonPopoverCard {
+                        background-color: #9b0158;
+                        color: white !important;
+                    }
+                    .cl-userButtonPopoverActionButtonText{
+                        color: white;
+                    }
+                    .cl-navbar{
+                        background-color: #f2e1eb;
+                        border-radius: 16px;
+                    }
+                    .cl-internal-rx251b{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-pageScrollBox{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-internal-1yejcov{
+                        color: white !important;
+                    }
+                    .cl-internal-60laz0{
+                        border-right: 1px solid rgb(131, 12, 79, 0.5);
+                    }
+                    .cl-userPreviewSecondaryIdentifier{
+                        color: white;
+                    }
+                    .cl-userButtonPopoverFooter{
+                        display: none;
+                    }
+                    .cl-internal-b3fm6y{
+                        display: none;
+                    }
+                    .cl-userButtonTrigger:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-headerTitle{
+                        color: #830c4f;
+                    }
+                    .cl-internal-1e71drn{
+                        color: #830c4f;
+                    }
+                    .cl-internal-141wpcl{
+                        color: #830c4f;
+                    }
+                    .cl-scrollBox{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-internal-1xg0u4s{
+                        border-bottom: 1px solid rgb(131, 12, 79, 0.6);
+                    }
+                    .cl-profileSectionPrimaryButton{
+                        color: #830c4f;
+                    }
+                    .cl-profileSectionPrimaryButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-profileSectionPrimaryButton:active{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-profileSectionPrimaryButton:hover{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-navbarButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-accordionTriggerButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-badge{
+                        color: #830c4f;
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-formButtonPrimary{
+                        background-color: #830c4f;
+                    }
+                    .cl-formButtonPrimary .cl-formButtonReset{
+                        background-color: #830c4f;
+                    }
+                    .cl-formButtonReset:hover{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-formButtonReset{
+                        color: #830c4f;
+                    }
+                    .cl-formButtonPrimary:hover{
+                        background-color: #460429;
+                    }
+                    .cl-formButtonPrimary:active{
+                        background-color: #460429;
+                    }
+                    .cl-formButtonReset:active{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-profileSectionPrimaryButton:active{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-avatarImageActionsUpload{
+                        color: #830c4f;
+                    }
+                    .cl-avatarImageActionsRemove{
+                        color: #600639;
+                    }
+                    .cl-avatarImageActionsUpload:focus .cl-avatarImageActionsRemove:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formFieldInput:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-internal-1sf6rji{
+                        color: #830c4f
+                    }
+                    .cl-internal-1sf6rji:hover{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-internal-f7yy9s:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-modalCloseButton{
+                        color: #830c4f;
+                    }
+                    .cl-modalCloseButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formButtonReset:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formButtonPrimary:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formFieldInput{
+                        accent-color: #830c4f;
+                    }
+                    .cl-internal-1sf6rji:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    ::-webkit-scrollbar {
+                        width: 8px;
+                    }
+
+                    ::-webkit-scrollbar-track {
+                        background: #f0f0f0;
+                        border-radius: 10px;
+                    }
+
+                    ::-webkit-scrollbar-thumb {
+                        background: #888;
+                        border-radius: 10px;
+                    }
+
+                    ::-webkit-scrollbar-thumb:hover {
+                        background: #555;
+                    }
+
+                    ::-webkit-scrollbar-button {
+                        display: none;
+                    }
+                    .cl-internal-1sf6rji:active{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-breadcrumbsItem:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-userPreviewSecondaryIdentifier{
+                        color: #d1b2c2;
+                    }
+                </style>
+            </header>
+            <div class="chat-actions">
+                <a href="quiz_ai"><button data-intro="Click here to navigate to QuizAI." data-step="16" id="resume"><i style="margin-right: 3px;" class="fas fa-tasks"></i> Quiz AI</button></a>
+                <a href="job_ai"><button data-intro="Click here to navigate to JobAI." data-step="17" id="resume" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fas fa-briefcase"></i> Job AI</button></a>
+                <a href="learning_path_ai"><button data-intro="Use our Learning Path Generator to make your customized and detailed learning path in no time!" data-step="18" id="resume" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fas fa-book-open"></i> Learning Path AI</button></a>
+                <a href="mindmap_ai"><button data-intro="Use our Mindmap Generator to generate comprehensive mindmaps for quick revision!" data-step="19" id="resume" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fas fa-sitemap"></i> Mindmap AI</button></a>
+                <a href="resume_ai"><button data-intro="Use our ResumeAI to generate your entire resume with just a few clicks!" data-step="20" id="resume" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fas fa-file-alt"></i> Resume AI</button></a>
+                <a href="interview_ai"><button data-intro="Use our InterviewAI to prepare for your interview with an AI Interviewer on Live Video Call." data-step="21" id="resume" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fas fa-headset"></i> Interview AI</button></a>
+                <a href="productivity_ai"><button data-intro="Use our ProductivityAI to boost your efficiency using our AI powered To-Do's, Calendar and Pomodoro Timer!" data-step="22" id="resume" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fas fa-clock"></i> Productivity AI</button></a>
+                <a href="notes_ai"><button data-intro="Use our NotesAI to make appealing revision notes while utilizing the power of AI simultaneously!" data-step="23" id="resume" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fas fa-file-invoice"></i> Notes AI</button></a> 
+                <a href="v_ai_live"><button data-intro="Use our V.ai Live for real-time study session with other peer students live on a video call, making learning more fun and interactive!" data-step="24" id="resume" style="margin-left: 8px;"><i class="fas fa-video" style="margin-right: 3px;"></i> V.ai Live</button></a>
+                  <a href="https://vocation-ai.web.app/relax"><button data-intro="Tired of Studying? Use V.ai Relax: Enjoy Calming Music, Inspiring Quotes, and Ambient Images, perfect for a break!" data-step="25" id="resume" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fas fa-mug-hot"></i> V.ai Relax</button></a>    
+                  <a href="youtube_ai"><button data-intro="Use our YouTubeAI to summarize long lectures into key points within seconds!" data-step="26" id="resume" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fab fa-youtube"></i> YT AI</button></a> 
+                </div>
+                
+            <div class="chat-messages" id="chatMessages">
+<style>
+    #chatMessages {
+  background-image: url('static/vocationalLight.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+  background-size: 200px 200px;
+}
+
+.message {
+  position: relative;
+  z-index: 1;
+}
+</style>
+
+                <div class="message ai-message">
+                    <div class="ai-message-content">
+                        <p>Hello! I’m your <strong>Tutor AI</strong>, How can I help you today?</p>
+                        <div data-intro="Press this button to use text-to-speech." data-step="10" class="sound-icon-wrapper">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+                    <p style="font-size: 12px; margin-top: 5px; font-weight: 600;">(To generate a quiz or a detailed learning path, just ask me!)</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input data-intro="Type your message here." data-step="11" type="text" id="userInput" placeholder="Type your message here...">
+                <button title="Send" data-intro="and hit Send!" data-step="12" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+                <button title="Voice Input" data-intro="Press this button to use voice input functionality." data-step="13" class="mic-button" id="micBtn"><i class="fas fa-microphone"></i></button>
+                <div id="arrownew" class="arrow-container">
+                    <div class="arrownew">
+                        <i style="color: #830C4F;" class="fas fa-arrow-down"></i>
+                    </div>
+                </div>
+                <button title="Attach Files" data-intro="Press this button to select uploaded files." data-step="14" id="attachments-modal"><i class="fas fa-paperclip"></i></button>
+                
+                <button title="Clear Chat Context" data-intro="Press this button to clear chat context." data-step="15" id="clearContextBtn"><i class="fas fa-broom"></i></button>
+                <div id="arrowz" style="margin-right: 30px;" class="arrow-container">
+                    <div class="arrow">
+                        <i style="color: #830C4F;" class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="fileModal" class="modal">
+    <div class="modal-content">
+      <h2 class="mh2">Select a file</h2>
+      <h3 id="noFilesHeading"><strong>No files found</strong></h3>
+      <p id="noFilesMessage">Please upload a file using the upload button in the sidebar and then attach them using this option.</p>
+      <ul id="modalFileList" class="file-list">
+      </ul>
+      <button style="margin-top: 25px;" class="btn" onclick="document.getElementById('fileModal').style.display='none';">Done</button>
+    </div>
+  </div>
+
+<script>
+
+function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp(`[\\?&]${name}=([^&#]*)`);
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        window.onload = function() {
+            const topic = getUrlParameter('topic');
+            const subtopic = getUrlParameter('subtopic');
+            if (topic && subtopic) {
+                document.getElementById('userInput').value = `I want to learn ${topic} - ${subtopic}`;
+                
+                setTimeout(function() {
+                    sendMessage()
+                }, 3000);
+            }
+        };
+
+const fileMap = new Map();
+
+function handleFileSelection(event) {
+  const fileInput = event.target;
+  if (fileInput.files.length > 0) {
+    for (let i = 0; i < fileInput.files.length; i++) {
+      const file = fileInput.files[i];
+      fileMap.set(file.name, file);
+    }
+    updateFileListModal();
+  }
+}
+
+document.querySelector('input[type="file"]').addEventListener('change', handleFileSelection);
+
+
+function updateFileListModal() {
+  const fileList = document.getElementById('modalFileList');
+  const noFilesMessage = document.getElementById('noFilesMessage');
+  const noFilesHeading = document.getElementById('noFilesHeading');
+
+  fileList.innerHTML = "";
+  
+  const fileNames = Array.from(fileMap.keys());
+
+  if (fileNames.length === 0) {
+    noFilesMessage.style.display = 'block';
+    noFilesHeading.style.display = 'block';
+  } else {
+    noFilesMessage.style.display = 'none';
+    noFilesHeading.style.display = 'none';
+
+    fileNames.forEach(fileName => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <input type="radio" name="selectedFile" value="${fileName}" />
+        ${fileName}
+      `;
+      fileList.appendChild(li);
+    });
+  }
+}
+
+var chek = 0;
+document.getElementById('attachments-modal').addEventListener('click', () => {
+  const modal = document.getElementById('fileModal');
+  const fileList = document.getElementById('modalFileList');
+  const noFilesMessage = document.getElementById('noFilesMessage');
+  const noFilesHeading = document.getElementById('noFilesHeading');
+  
+  fileList.innerHTML = "";
+  noFilesMessage.style.display = 'none';
+  noFilesHeading.style.display = 'none';
+
+  const fileNames = Array.from(fileMap.keys());
+
+  if (fileNames.length === 0) {
+    noFilesMessage.style.display = 'block';
+    noFilesHeading.style.display = 'block';
+    document.getElementById("uploadFileBtn").style.zIndex = "2000000000000000000000000000"
+  } else {
+    noFilesMessage.style.display = 'none';
+    noFilesHeading.style.display = 'none';
+
+    fileNames.forEach(fileName => {
+      const li = document.createElement('li');
+
+      li.innerHTML = `
+        <input type="radio" name="selectedFile" value="${fileName}" />
+        ${fileName}
+      `;
+
+      fileList.appendChild(li);
+    });
+  }
+
+  modal.style.display = 'block';
+  document.getElementById("arrownew").style.display = "none";
+
+});
+
+</script>  
+    <style>
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #f2e1eb;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #830c4f;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+  color: #830c4f;
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: #c8106e;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mh2 {
+  color: #830c4f;
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+
+.file-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.file-list li {
+  margin-bottom: 10px;
+}
+
+.file-list input[type="radio"] {
+  margin-right: 10px;
+  accent-color: #830C4F;
+}
+
+.submit-button {
+  background-color: #830c4f;
+  color: #f2e1eb;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-button:hover {
+  background-color: #c8106e;
+}
+
+    </style>
+
+
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const noou = document.getElementById('noou');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const shareScreenBtn = document.getElementById('shareScreenBtn');
+        const uploadFileBtn = document.getElementById('uploadFileBtn');
+        const fileUpload = document.getElementById('fileUpload');
+        const micBtn = document.getElementById('micBtn');
+        const languageBtn = document.getElementById('languageBtn');
+        const languageOptions = document.getElementById('languageOptions');
+        const languageLinks = languageOptions.querySelectorAll('a');
+        const fileList = document.getElementById('fileList');
+        const aiSwitch = document.getElementById('aiSwitch');
+        const aiOptions = document.getElementById('aiOptions');
+        const jobAI = document.getElementById('jobAI');
+        const quizAI = document.getElementById('quizAI');
+        const Community = document.getElementById('Community');
+        const UserJourneyFlow = document.getElementById('UserJourneyFlow');
+        const studentMemoryDiv = document.querySelector('.memory-box');
+        const clearContextBtn = document.getElementById('clearContextBtn');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        const memtip = document.getElementById("arrow2")
+
+        const toggleCameraBtn = document.getElementById('toggleCameraBtn');
+        const videoContainer = document.getElementById('videoContainer');
+        const video = document.getElementById('video');
+        const emotion1 = document.getElementById('emotion1');
+        const emotion2 = document.getElementById('emotion2');
+
+
+        let stream = null;
+        let isCameraOn = false;
+
+        const apiKey = 'SxCrlGtFs3N18pJN70o70STiuG6VIoYt';
+        const apiSecret = 'zOw7aw2HrpKY2Z2PC1OAFAmKfWlamBIv';
+        const faceApiUrl = `https://api-us.faceplusplus.com/facepp/v3/detect`;
+
+        toggleCameraBtn.addEventListener('click', () => {
+            if (!isCameraOn) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(s => {
+                        stream = s;
+                        video.srcObject = stream;
+                        videoContainer.style.display = 'block';
+                        toggleCameraBtn.querySelector('span').textContent = 'Stop Camera';
+                        isCameraOn = true;
+                        processFrame();
+                    })
+                    .catch(err => {
+                        console.error('Error accessing the camera:', err);
+                    });
+            } else {
+                stopCamera();
+            }
+        });
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
+            videoContainer.style.display = 'none';
+            toggleCameraBtn.querySelector('span').textContent = 'Start Camera';
+            isCameraOn = false;
+        }
+
+        const emotionEmojis = {
+    happiness: '😊',
+    sadness: '😢',
+    anger: '😡',
+    surprise: '😲',
+    disgust: '🤢',
+    fear: '😨',
+    neutral: '😐'
+};
+
+languageLinks.forEach(link => {
+    link.addEventListener('click', (event) => {
+        event.preventDefault();
+        languageLinks.forEach(otherLink => {
+            otherLink.style.backgroundColor = '#f1f1f100';
+        });
+        event.target.style.backgroundColor = '#f1f1f1';
+    });
+});
+
+
+const emotionLabels = {
+    happiness: 'Happiness',
+    sadness: 'Sadness',
+    anger: 'Anger',
+    surprise: 'Surprise',
+    disgust: 'Disgust',
+    fear: 'Fear',
+    neutral: 'Neutral'
+};
+
+function processFrame() {
+    if (!isCameraOn) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(blob => {
+        const formData = new FormData();
+        formData.append('api_key', apiKey);
+        formData.append('api_secret', apiSecret);
+        formData.append('image_file', blob);
+        formData.append('return_attributes', 'emotion');
+
+        fetch(faceApiUrl, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.faces && data.faces.length > 0) {
+                const emotions = data.faces[0].attributes.emotion;
+                const sortedEmotions = Object.entries(emotions).sort((a, b) => b[1] - a[1]);
+                const [topEmotion1, topEmotion2] = sortedEmotions;
+                
+                const emotionText1 = emotionLabels[topEmotion1[0]] || 'Unknown';
+                const emotionText2 = emotionLabels[topEmotion2[0]] || 'Unknown';
+                
+                const confidence1 = Math.round(topEmotion1[1]);
+                const confidence2 = Math.round(topEmotion2[1]);
+
+                emotion1.innerHTML = `${emotionText1} ${emotionEmojis[topEmotion1[0]]} (${confidence1}%)`;
+                emotion2.innerHTML = `${emotionText2} ${emotionEmojis[topEmotion2[0]]} (${confidence2}%)`;
+            } else {
+                emotion1.innerHTML = 'Top Emotion: None';
+                emotion2.innerHTML = 'Second Emotion: None';
+            }
+            if (isCameraOn) setTimeout(processFrame, 1000);
+        })
+        .catch(err => {
+            console.error('Error detecting emotion:', err);
+        });
+    }, 'image/jpeg');
+}
+
+
+
+                clearContextBtn.addEventListener('click', clearContext);
+
+                async function clearContext() {
+                try {
+                    const response = await fetch('/api/clear_context', {
+                        method: 'POST',
+                    });
+                    const data = await response.json();
+                    chatMessages.innerHTML = '';
+                    addClearMessage("Chat context cleared. You can start a new conversation.", 'ai-message');
+                    updateStudentMemory({
+                        strengths: [],
+                        weaknesses: [],
+                        topics_covered: [],
+                        learning_style: []
+                    });
+                } catch (error) {
+                    console.error('Error:', error);
+                    addMessage("An error occurred while clearing the chat context.", 'ai-message');
+                }
+            }
+    
+        aiSwitch.addEventListener('click', function(event) {
+            event.stopPropagation();
+            this.classList.toggle('active');
+            aiOptions.classList.toggle('show');
+            document.getElementById('arrow0').classList.add('hide');
+            document.getElementById('navhelp').classList.add('hide');
+        });
+    
+        jobAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/JobAI.html';
+        });
+    
+        quizAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/QuizAI.html';
+        });
+    
+        Community.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/Community.html';
+        });
+    
+        UserJourneyFlow.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/user-journey.html';
+        });
+    
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.ai-switch')) {
+                aiSwitch.classList.remove('active');
+                aiOptions.classList.remove('show');
+            }
+        });
+    
+
+    
+        shareScreenBtn.addEventListener('click', async () => {
+    try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+
+        const screenShareContainer = document.createElement('div');
+        screenShareContainer.classList.add('sidebar-section1');
+
+        const title = document.createElement('h3');
+        title.innerText = 'Shared Screen';
+        screenShareContainer.appendChild(title);
+
+        const videoElement = document.createElement('video');
+        videoElement.srcObject = stream;
+        videoElement.autoplay = true;
+        videoElement.muted = true;
+        videoElement.classList.add('screen-share-video');
+
+        screenShareContainer.appendChild(videoElement);
+
+        const stopBtn = document.createElement('button');
+        stopBtn.innerText = 'Stop Sharing';
+        stopBtn.classList.add('stop-sharing-btn');
+
+        stopBtn.addEventListener('click', () => {
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+            screenShareContainer.remove();
+        });
+
+        screenShareContainer.appendChild(stopBtn);
+
+        const fileListContainer = document.querySelector('#fileList').parentNode;
+        fileListContainer.parentNode.insertBefore(screenShareContainer, fileListContainer);
+
+    } catch (error) {
+        console.error('Error during screen sharing:', error);
+        alert('Failed to start screen sharing.');
+    }
+});
+
+    
+        uploadFileBtn.addEventListener('click', () => {
+            fileUpload.click();
+        });
+    
+        fileUpload.addEventListener('change', (e) => {
+    const files = e.target.files;
+    const maxSize = 50 * 1024 * 1024;
+
+    if (files.length > 0) {
+        let fileNames = [];
+        let validFiles = true;
+
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].size > maxSize) {
+                validFiles = false;
+                break;
+            }
+            fileNames.push(files[i].name);
+        }
+
+        if (!validFiles) {
+            alert('Files must be 50 MB or smaller.');
+            e.target.value = '';
+            fileList.innerHTML = '';
+            noou.innerHTML = 'No Files Uploaded';
+            return;
+        }
+
+        noou.innerHTML = '';
+
+        fileNames.forEach(fileName => {
+            const li = document.createElement('li');
+            li.textContent = fileName;
+            fileList.appendChild(li);
+        });
+
+        document.getElementById("arrownew").style.display = 'block';
+
+
+        addMessage(`Uploaded files: ${fileNames.join(', ')}`, 'user-message');
+    } else {
+        noou.innerHTML = 'No Files Uploaded';
+    }
+});
+
+
+
+    micBtn.addEventListener('click', () => {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+
+    micBtn.classList.add('listening');
+    micBtn.innerHTML = '<i class="fas fa-microphone"></i> Listening...';
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        userInput.value = transcript;
+        micBtn.classList.remove('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+    };
+
+    recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        alert('An error occurred with voice input. Please try again.');
+        micBtn.classList.remove('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+    };
+
+    recognition.onend = () => {
+        micBtn.classList.remove('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+    };
+});
+    
+        languageBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            languageOptions.classList.toggle('show');
+        });
+    
+        window.addEventListener('click', (event) => {
+            if (!event.target.closest('.language-menu')) {
+                languageOptions.classList.remove('show');
+            }
+        });
+    
+        sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    function getSelectedFile() {
+  const selectedRadio = document.querySelector('input[name="selectedFile"]:checked');
+  if (selectedRadio) {
+    const selectedFileName = selectedRadio.value;
+    return fileMap.get(selectedFileName) || null;
+  }
+  return null;
+}
+
+async function sendMessage() {
+    const message = userInput.value.trim();
+    var ducc = ""
+    const email = Clerk.user.emailAddresses[0]?.emailAddress
+    var fieel = getSelectedFile()
+    if (message !== "") {
+        chek += 1;
+    }
+    if(fieel == null){
+        ducc = "No File Selected"
+    }
+    else{
+        ducc = fieel.name
+    }
+    const userInputData = {
+        text: message,
+        file: ducc,
+        timestamp: formatDateToGMT530(new Date()),
+        userInfo: email, page: document.title
+};
+    database.ref('userInputData').push(userInputData)
+
+    const file = getSelectedFile();
+    const modal = document.getElementById("attachments-modal");
+    const memtip = document.getElementById("arrow2");
+    const lpa = document.getElementById("arrowz");
+    if (chek >= 1 && chek <= 2) {
+        memtip.style.display = 'block';
+    } else if (chek > 2 && chek < 6) {
+        memtip.style.display = 'none';
+    } else if (chek === 6) {
+    } else {
+        memtip.style.display = 'none';
+    }
+
+    if (message || file) {
+        if (message) {
+            addMessage(message, 'user-message');
+        }
+
+        if (file) {
+                addImageMessage(file);
+        }
+
+        userInput.value = '';
+
+        const formData = new FormData();
+        formData.append('message', message || '');
+        if (file) {
+            formData.append('file', file);
+        }
+
+        showTypingIndicator();
+
+        try {
+            await getAIResponse(formData);
+        } catch (error) {
+            console.error('Error:', error);
+            hideTypingIndicator();
+            addMessage("I'm sorry, I encountered an error while processing your request.", 'ai-message');
+        }
+
+        resetRadioButtonSelection();
+    }
+}
+
+function resetRadioButtonSelection() {
+    const radios = document.querySelectorAll('input[name="selectedFile"]');
+    radios.forEach(radio => {
+        radio.checked = false;
+    });
+}
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.innerHTML = message
+    toast.style.display = 'block';
+}
+
+function hideToast() {
+    const toast = document.getElementById('toast');
+    toast.style.display = 'none';
+}
+
+function addImageMessage(file) {
+    if (!file)
+     return;
+
+    const reader = new FileReader();
+
+    
+    reader.onload = function (event) {
+        const imageElement = document.createElement('img');
+        const imageUrl = event.target.result;
+
+
+        if(imageUrl.includes("data:image")){
+            imageElement.src = imageUrl;
+            const message = `Sometimes, The AI might not respond according to the image you sent. In that case, please clear the chat context, reload and try sending the image again. <p style="margin-top: 6px;" class="closedb">Done <i style="margin-left: 3px; font-size: 15px;" class="fas fa-check-circle"></i></p>`
+            showToast(message)
+            document.querySelector('.closedb').addEventListener('click', () => {
+           hideToast()
+        });
+        }
+        else{
+            imageElement.src = "static/document.png"
+            const message = `Sometimes, The AI might not be able to read your files. In that case, please clear the chat context and upload file's screenshot or paste its text content here. <p style="margin-top: 6px;" class="closedb">Done <i style="margin-left: 3px; font-size: 15px;" class="fas fa-check-circle"></i></p>`
+            showToast(message)
+            document.querySelector('.closedb').addEventListener('click', () => {
+           hideToast()
+        });
+        }
+        
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', 'user-message');
+        
+        imageElement.classList.add('uploaded-image');
+        imageElement.style.maxWidth = '200px';
+        messageElement.appendChild(imageElement);
+        
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    reader.readAsDataURL(file);
+}
+
+var yy2w = 0;
+
+async function getAIResponse(formData) {
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        hideTypingIndicator();
+
+        if (data.quiz_data) {
+            localStorage.setItem('quizData', JSON.stringify(data.quiz_data));
+            addMessage("Quiz generated successfully. Redirecting to quiz page...", 'ai-message');
+            setTimeout(() => {
+                window.location.href = '/quiz_ai';
+            }, 2000);
+        } else {
+            addMessage(formatMessage(data.message), 'ai-message');
+            if (data.message === "Sure, I can create you a detailed learning path. Please click <a style='color: #840c4f' href='/learning_path_ai'>here</a> to use our Learning Path Generator") {
+                yy2w = 1;
+            }
+            else if(data.message === "Unsupported file type. Please upload an image of that document instead. <br><br> <strong>Supported file types:</strong><br>1. Images <br> 2. Audios <br> 3. Videos <br> 4. PDFs <br> 5. Coding Files<br> 6. Text Files <br><br> For Microsoft Office files, use image.") {
+                yy2w = 1;
+            }
+            updateStudentMemory(data.student_memory);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        hideTypingIndicator();
+
+        if (yy2w === 0) {
+            addMessage("I'm sorry, I encountered an error while processing your request.", 'ai-message');
+        }
+    }
+}
+
+function showTypingIndicator() {
+    const typingElement = document.createElement('div');
+    typingElement.classList.add('message', 'ai-message');
+    typingElement.innerHTML = `
+        <div class="typing-indicator">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    `;
+    chatMessages.appendChild(typingElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+    const typingIndicatorElement = chatMessages.querySelector('.typing-indicator');
+    if (typingIndicatorElement) {
+        chatMessages.removeChild(typingIndicatorElement.parentNode);
+    }
+}
+
+function addClearMessage(message, className) {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message', className);
+    
+    if (className === 'ai-message') {
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('ai-message-content');
+        
+        contentDiv.innerHTML = `
+        <div style="display: flex; flex-direction: column">
+            <p>${message}</p>
+        </div>
+            <div class="sound-icon-wrapper">
+                <i class="fas fa-volume-up"></i>
+            </div>
+        `;
+        
+        messageElement.appendChild(contentDiv);
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }}
+
+function addMessage(message, className) {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message', className);
+    
+    if (className === 'ai-message') {
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('ai-message-content');
+        
+        contentDiv.innerHTML = `
+        <div style="display: flex; flex-direction: column">
+            <p>${message}</p>
+        </div>
+            <div class="sound-icon-wrapper">
+                <i class="fas fa-volume-up"></i>
+            </div>
+        `;
+        messageElement.appendChild(contentDiv);
+
+        const references = document.createElement('div');
+                references.classList.add('references');
+                references.innerHTML = `
+                    <p>References:</p>
+                    <ul>
+                        <li><a href="#" onclick="alert('This would link to a YouTube video in the knowledge base.')">YouTube: Introduction to the topic</a></li>
+                        <li><a href="#" onclick="alert('This would link to an article in the knowledge base.')">Article: Detailed explanation</a></li>
+                    </ul>
+                `;
+        
+        messageElement.appendChild(references);
+    } else {
+        messageElement.innerHTML = `<p>${message}</p>`;
+    }
+    
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    const quizLink = messageElement.querySelector('.quiz-link');
+    if (quizLink) {
+        quizLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = '/quiz_ai';
+        });
+    }
+}
+
+    function formatMessage(message) {
+        message = message.replace(/^\* (.+)$/gm, '<li>$1</li>');
+        message = message.replace(/(<li>.+<\/li>)(?!.*<li>)/g, '<ol>$&</ol><br>');
+        message = message.replace(/\n\n/g, '<br><br>');
+        message = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        message = message.replace(/\n/g, '<br><br>');
+        return message;
+    }
+
+    function updateStudentMemory(memory) {
+        let memoryHTML = '<h2>Student Memory</h2><ul>';
+        for (const [key, values] of Object.entries(memory)) {
+            if (values.length > 0) {
+                memoryHTML += `<li style="color: #830c4f"><strong>${key.replace('_', ' ')}:</strong> ${values.join(', ')}</li>`;
+            }
+        }
+        memoryHTML += '</ul>';
+        studentMemoryDiv.innerHTML = memoryHTML;
+    }
+
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        memtip.style.display = 'none'
+    document.getElementById("arrownew").style.display = 'none';
+    document.getElementById("arrowz").style.display = 'none';
+    chatMessages.addEventListener('click', (event) => {
+        const soundIconWrapper = event.target.closest('.sound-icon-wrapper');
+        if (soundIconWrapper) {
+            event.stopPropagation();
+            const messageElement = soundIconWrapper.closest('.ai-message-content').querySelector('p');
+            const textToSpeak = messageElement ? messageElement.innerText : '';
+
+            if (typeof responsiveVoice !== 'undefined') {
+                responsiveVoice.speak(textToSpeak, "UK English Female", { 
+                    rate: 1, 
+                    pitch: 1, 
+                    volume: 1 
+                });
+            } else {
+                alert('Text-to-Speech functionality is not available.');
+            }
+        }
+    });
+});
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            const elements = document.querySelectorAll('.highlight');
+            const steps = Array.from(elements).map((element, index) => ({
+                element: element,
+                intro: element.getAttribute('data-intro'),
+                position: 'right'
+            }));
+    
+            introJs().setOptions({
+                steps: steps,
+                showSkipButton: true,
+                showBullets: false
+            }).start();
+        });
+    </script>
+    <style>
+        .card-container {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+}
+
+.card-container h3 {
+    color: #830c4f;
+    margin-bottom: 8px;
+}
+
+.screen-share-video {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.uploaded-image {
+    max-width: 150px;
+    max-height: 150px;
+    display: block;
+    margin: 10px 0;
+}
+
+
+.stop-sharing-btn {
+    width: 100%;
+    padding: 8px;
+    background-color: #830c4f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.stop-sharing-btn:hover {
+    background-color: #6b0a40;
+}
+    </style>
+        <style>
+            .toast {
+        position: fixed;
+        bottom: 120px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333333db;
+        color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: none; 
+        z-index: 1000; 
+        font-size: 16px;
+        text-align: center;
+        width: 750px;
+    }
+    
+    .toast i {
+        margin-right: 10px;
+    }
+
+    .closedb {
+            color: #1dea13;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .closedb:hover,
+        .closedb:focus {
+            color: #18ad10;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    
+        </style>
+        <div id="toast" class="toast">
+            <p>Sometimes, The AI might not be able to read your files. In that case, please clear the chat context and upload file's screenshot or paste its text content here.</p>
+            <p style="margin-top: 6px;" class="closedb">Done <i style="margin-left: 3px; font-size: 15px;" class="fas fa-check-circle"></i></p>
+        </div>
+        <script>
+            document.querySelector('.closedb').addEventListener('click', () => {
+           hideToast()
+        });
+        </script>
+</body>
+</html>

@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vocation.ai - Loading</title>
+        <link rel="icon" type="image/x-icon" href="vocational (1).png">
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+        };
+        firebase.initializeApp(firebaseConfig);
+      
+      
+          const database = firebase.database();
+        
+          function formatDateToGMT530(date) {
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      return date.toLocaleString('en-IN', options).replace(',', '');
+    }
+    
+          document.addEventListener('click', function(event) {
+            const element = event.target;
+    
+            const clickData = {
+              tagName: element.tagName,
+              id: element.id || null,
+              classList: Array.from(element.classList).join(' ') || null,
+              textContent: element.textContent.trim() || null,
+              timestamp: formatDateToGMT530(new Date()), page: document.title
+            };
+            database.ref('clicks').push(clickData)
+          });
+        </script>
+        <script>
+            function isMobile() {
+                return /Mobi|Android/i.test(navigator.userAgent);
+            }
+    
+            if (isMobile()) {
+                window.location.href = "mobile.html";
+            }
+        </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        @font-face {
+            font-family: Gidiff;
+            src: url("GlacialIndifference-Regular.otf") format("opentype");
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2e1eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            width: 700px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f2e1eb;
+            border-top: 5px solid #830c4f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        .message { background-color: #f2e1eb; border-radius: 8px; padding: 1rem; margin-top: 1rem; font-size: 0.95rem; line-height: 1.5; color: #830C4F; }        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        h1 {
+            color: #830c4f;
+            margin-bottom: 1rem;
+        }
+
+        #timer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #830c4f;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        .progress {
+            width: 0%;
+            height: 100%;
+            background-color: #830c4f;
+            transition: width 1s linear;
+        }
+    </style>
+</head>
+<body>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+    <div class="container">
+        <a href="index.html" style="text-decoration: none;">
+        <img src="vocational (1).png" height="100px">
+        <h1 style="margin: 0; font-size: 40px; color: #830C4F; font-family: Gidiff;">Vocation.ai</h1></a>
+        <div class="loader" style="margin-top: 20px;"></div>
+        <h1 id="loading-text">Loading</h1>
+        <p class="updateText"><strong>Estimated Time Left</strong></p>
+        <p id="timer">150 seconds</p>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <br>
+        <div class="message">
+            <p>Hey there! 👋 Our AI is just waking up from its power nap. It needs a moment to stretch its digital muscles and get ready for your awesome questions. Hang tight - it'll be worth the wait!</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.location.replace("https://tutorai-huqg.onrender.com/")
+            const timerElement = document.getElementById('timer');
+            const progressElement = document.querySelector('.progress');
+            const loadingTextElement = document.getElementById('loading-text');
+            let secondsLeft = 151;
+            const totalTime = 151;
+
+            const updateTimer = () => {
+                
+                if (secondsLeft > 0) {
+                    secondsLeft--;
+                    timerElement.textContent = `${secondsLeft} second${secondsLeft !== 1 ? 's' : ''}`;
+                    const progressPercentage = ((totalTime - secondsLeft) / totalTime) * 100;
+                    progressElement.style.width = `${progressPercentage}%`;
+
+                    if (secondsLeft === 145) {
+                        loadingTextElement.textContent = 'Might take 1-2 mins to load';
+                    } else if (secondsLeft === 128) {
+                        loadingTextElement.textContent = 'Loading';
+                    } else if (secondsLeft === 90) {
+                        loadingTextElement.textContent = 'Almost done!';
+                    } else if (secondsLeft === 30) {
+                        loadingTextElement.textContent = 'Very Close!';
+                    } else if (secondsLeft === 5) {
+                        loadingTextElement.textContent = 'Loading';
+                    }
+
+                    setTimeout(updateTimer, 1000);
+                } else {
+                    timerElement.textContent = 'Please Wait!';
+                    loadingTextElement.textContent = 'Please Wait!';
+                    progressElement.style.width = '100%';
+                }
+            };
+
+            updateTimer();
+        });
+    </script>
+    </body>
+
+
+<!--<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="vocational (1).png">
+    <title>Vocation.ai - Tutor AI</title>
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    
+        :root {
+            --primary-color: #830c4f;
+            --secondary-color: #f39c12;
+            --text-color: #333;
+            --bg-color: #f4f4f4;
+            --sidebar-bg: #830c4f;
+            --sidebar-hover: #830c4f;
+        }
+    
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .highlight {
+            padding: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+
+        .introjs-bullets ul li a.active {
+            background: var(--primary-color) !important;
+            box-shadow: 0 0 0 2px rgba(131, 12, 79, 0.3);
+        }
+
+        .introjs-bullets a {
+            background: #9f9b9b !important;
+            transition: background 0.3s ease;
+        }
+
+        .introjs-tooltip {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            color: #830c4f;
+            font-size: 18px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+            padding: 25px;
+            max-width: 350px;
+        }
+
+        .introjs-tooltiptext {
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        .introjs-tooltip h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #830c4f;
+        }
+
+        .introjs-tooltip p {
+            margin-bottom: 15px;
+        }
+
+        .introjs-button {
+            background-color: #830c4f;
+            color: #fff;
+            text-shadow: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            font-size: 14px;
+            border: 2px solid #830c4f;
+            margin: 5px;
+        }
+
+        .introjs-skipbutton {
+            color: #830c4f;
+            background-color: transparent;
+            border: 2px solid #830c4f;
+        }
+
+        .introjs-button:hover {
+            background-color: #f2e1eb;
+            color: #830c4f;
+            border: 2px solid #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-button:focus {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            color: #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+        }
+
+        .introjs-tooltip .introjs-skipbutton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 26px;
+            text-align: center;
+            border: 2px solid #830c4f;
+            background-color: transparent;
+            color: #830c4f;
+            transition: all 0.3s ease;
+        }
+
+        .introjs-tooltip .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .introjs-arrow {
+            border-color: #830c4f;
+        }
+
+        .introjs-floating {
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+        }
+    
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+    
+        .chat-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+    
+        .sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+    
+        .logo {
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+    
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+    
+        .action-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+    
+        .action-button:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+    
+        .action-button i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+    
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+    
+        .chat-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #f2e1eb;
+        }
+    
+        .message {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+    
+        .user-message { 
+            align-self: flex-end;
+            background-color: #ea4fa9;
+            border-bottom-right-radius: 4px;
+            color: white;
+        }
+    
+        .ai-message {
+            align-self: flex-start;
+            background-color: #ffffff;
+            border-bottom-left-radius: 4px;
+        }
+    
+        .ai-message-content {
+            display: flex;
+            align-items: center;
+        }
+    
+        .sound-icon-wrapper {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            border-radius: 50%;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+            color: #830c4f;
+        }
+    
+        .sound-icon {
+            color: white;
+            font-size: 1em;
+        }
+    
+        .chat-input {
+            display: flex;
+            padding: 20px;
+            background-color: white;
+            border-top: 1px solid #e0e0e0;
+        }
+    
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+    
+        .chat-input input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(131, 12, 79, 0.1);
+        }
+    
+        .chat-input button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+    
+        .chat-input button:hover {
+            background-color: #6b0a40;
+        }
+    
+        .mic-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-left: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    
+        .mic-button:hover {
+            background-color: #6b0a40;
+        }
+    
+        .file-upload {
+            display: none;
+        }
+    
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 18px;
+            height: 60px;
+            margin-bottom: 10px;
+        }
+    
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    
+        .sidebar-section {
+            background-color: rgba(255, 255, 255);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+    
+        .sidebar-section:hover {
+            transform: translateY(-3px);
+        }
+    
+        .sidebar-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+    
+        .sidebar-list {
+            list-style-type: none;
+        }
+    
+        .sidebar-list li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            color: #333;
+            cursor: pointer;
+        }
+    
+        .language-menu {
+            position: relative;
+            display: inline-block;
+        }
+    
+        .language-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    
+        .language-options {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            right: 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    
+        .ai-switch {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    
+        .ai-switch:hover {
+            transform: translateY(-2px);
+        }
+    
+        .ai-options a:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+
+        .ai-options {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    
+        .ai-options a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+    
+        .show {
+            display: block;
+        }
+    
+        .ai-switch.active::after {
+            transform: rotate(180deg);
+        }
+    
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.1; }
+        }
+    
+        .ai-switch-icon {
+            animation: fadeInOut 2s infinite;
+        }
+    
+        .ai-switch.active .ai-switch-icon {
+            animation: none;
+        }
+    
+        .language-options a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+    
+        .language-options a:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+
+        .progress-box {
+            background-color: rgba(255, 255, 255);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .progress-box:hover {
+            transform: translateY(-3px);
+        }
+
+        .progress-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+    
+        .progress-bar {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+    
+        .progress {
+            background: linear-gradient(90deg, var(--primary-color), #b30c6f);
+            height: 100%;
+            border-radius: 10px;
+            width: 0;
+            transition: width 0.5s ease-in-out;
+        }
+    
+        .references {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    
+        .references a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+    
+        .references a:hover {
+            text-decoration: underline;
+        }
+    
+        .references ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+    
+        .references li {
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+    
+        .memory-box {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(131, 12, 79, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .memory-box h2 {
+            color: #830c4f;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #830c4f;
+            padding-bottom: 10px;
+        }
+
+        .memory-box ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .memory-box li {
+            margin-bottom: 15px;
+            background-color: #fff;
+            border: 1px solid #830c4f;
+            border-radius: 8px;
+            padding: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .memory-box li:hover {
+            background-color: rgba(131, 12, 79, 0.05);
+        }
+
+        .memory-box li strong {
+            color: #830c4f;
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .memory-box li span {
+            color: #333;
+            display: block;
+        }
+
+        .memory-icon {
+            color: #830c4f;
+            margin-right: 5px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <aside class="sidebar">
+            <div class="logo"><a href="index.html"><img src="Vocation.ai Logo (Horizontal cropped).png" style="height: 65px;"></a></div>
+            <div class="action-buttons">
+                <button data-intro="Share your screen to utilize TutorAI's vision capabilities while you learn a skill or solve a question, allowing it to guide you effectively." data-step="3" class="action-button" id="shareScreenBtn">
+                    <i class="fas fa-desktop"></i> <span style="margin-left: 10px;">Share Screen</span>
+                </button>
+                <button data-intro="You can upload any document here, such as an image of your homework. TutorAI will then teach and guide you accordingly. It can autograde your homework and determine if you have understood the concept well enough." data-step="4" class="action-button" id="uploadFileBtn">
+                    <i class="fas fa-file-upload"></i> <span style="margin-left: 10px;">Upload File</span>
+                </button>
+                <input type="file" id="fileUpload" class="file-upload" multiple>
+            </div>
+            <div data-intro="Your uploaded files will appear here." data-step="5" class="sidebar-section">
+                <h3 style="cursor: pointer;">Uploaded Files</h3>
+                <p style="font-size: small; cursor: pointer; color: #333;" id="noou">No Files Uploaded</p>
+                <ul class="sidebar-list" id="fileList" style="font-size: 13px;"></ul>
+            </div>
+            <div data-intro="TutorAI stores information about you to personalize and enhance your study experience. Additionally, TutorAI uses this information to guide your career development and sometimes serves as a mental health counsellor." data-step="6" class="memory-box">
+                <h2 style="cursor: pointer;">Student Memory</h2>
+                <ul class="sidebar-list">
+                    <li><strong>Strengths</strong><span style="color: black;"> Mathematics, Problem solving</span></li>
+                    <li><strong>Weaknesses</strong><span style="color: black;"> English grammar, Time management</span> </li>
+                    <li><strong>Topics Covered</strong><span style="color: black;"> Basic arithmetic, Introductory algebra</span> </li>
+                    <li><strong>Learning Style</strong><span style="color: black;"> Visual learner, Prefers hands-on exercises</span> </li>
+                </ul>
+            </div>
+            <div data-intro="Progress of topics you are currently learning from TutorAI." data-step="7" class="progress-box">
+                <h3 style="cursor: pointer;">Module Progress <i class="fas fa-angle-right"></i></h3>
+                <div class="module" style="color: black;">
+                    <p>Basic Algebra</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 75%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 6px;">
+                    <p>English Grammar</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 40%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 6px;">
+                    <p>MS Excel Basics</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 60%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div data-intro="Shows your job credits unlocking progress. Find more about this in JobAI." data-step="8" class="progress-box">
+                <h3 style="margin-bottom: 0px; cursor: pointer;">Next Job Unlock <i class="fas fa-angle-right"></i></h3>
+                <p style="font-size: small; color: black;">Based on Module progress</p>
+                
+                <div class="module" style="color: black;">
+                    <p style="margin-top: 7px;">Data Entry</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 55%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 6px;">
+                    <p>Data Annotation</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 70%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 6px;">
+                    <p>Content Writing</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 35%;"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <main class="chat-main">
+            <header class="chat-header">
+                <h2 data-intro="TutorAI is your personal digital teacher powered with vision capabilities and a comprehensive knowledge base." data-step="1" class="ai-switch" id="aiSwitch">
+                    Tutor AI
+                    <i class="fas fa-angle-down ai-switch-icon" style="margin-left: 3px;"></i>
+                    <div class="ai-options" id="aiOptions">
+                        <a href="#" id="jobAI">Job AI</a>
+                        <a href="#" id="quizAI">Quiz AI</a>
+                        <a href="#" id="Community">Community</a>
+                        <a href="#" id="UserJourneyFlow">User Flow</a>
+                    </div>
+                </h2>
+
+                <div data-intro="Select your language from multiple indic languages." data-step="2" class="language-menu">
+                    <button class="language-btn" id="languageBtn" style="font-size: 2px; border-radius: 100px; display: flex; width: 60px; height: 30px; align-items: center; justify-content: center;"><i class="fas fa-language" style="font-size: 32px; color: #ffffff;"></i></button>
+                    <div class="language-options" id="languageOptions">
+                        <a href="#">English</a>
+                        <a href="#">हिन्दी (Hindi)</a>
+                        <a href="#">বাংলা (Bengali)</a>
+                        <a href="#">తెలుగు (Telugu)</a>
+                        <a href="#">मराठी (Marathi)</a>
+                    </div>
+                </div>
+            </header>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="ai-message-content">
+                        <p>Hello! I'm your Tutor AI. How can I help you today?</p>
+                        <div data-intro="Press this button to use text-to-speech." data-step="9" class="sound-icon-wrapper">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input data-intro="Type your message here." data-step="10" type="text" id="userInput" placeholder="Type your message here...">
+                <button data-intro="and hit Send!" data-step="11" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+                <button data-intro="Press this button to use voice input functionality." data-step="12" class="mic-button" id="micBtn"><i class="fas fa-microphone"></i></button>
+                <button id="clearContextBtn"><i class="fas fa-broom"></i></button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const noou = document.getElementById('noou');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const shareScreenBtn = document.getElementById('shareScreenBtn');
+        const uploadFileBtn = document.getElementById('uploadFileBtn');
+        const fileUpload = document.getElementById('fileUpload');
+        const micBtn = document.getElementById('micBtn');
+        const languageBtn = document.getElementById('languageBtn');
+        const languageOptions = document.getElementById('languageOptions');
+        const fileList = document.getElementById('fileList');
+        const toggleChatBtn = document.getElementById('toggleChatBtn');
+        const aiSwitch = document.getElementById('aiSwitch');
+        const aiOptions = document.getElementById('aiOptions');
+        const jobAI = document.getElementById('jobAI');
+        const quizAI = document.getElementById('quizAI');
+        const Community = document.getElementById('Community');
+
+        aiSwitch.addEventListener('click', function(event) {
+            event.stopPropagation();
+            this.classList.toggle('active');
+            aiOptions.classList.toggle('show');
+        });
+
+        jobAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'JobAI.html';
+        });
+
+        quizAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'QuizAI.html';
+            
+        });
+
+        Community.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'Community.html';
+            
+        });
+
+        UserJourneyFlow.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'user-journey.html';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.ai-switch')) {
+                aiSwitch.classList.remove('active');
+                aiOptions.classList.remove('show');
+            }
+        });
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        shareScreenBtn.addEventListener('click', () => {
+            alert('Screen sharing functionality would be implemented here.');
+        });
+
+        uploadFileBtn.addEventListener('click', () => {
+            fileUpload.click();
+        });
+
+        fileUpload.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files.length > 0) {
+                let fileNames = Array.from(files).map(file => file.name);
+                fileNames.forEach(fileName => {
+                    const li = document.createElement('li');
+                    li.textContent = fileName;
+                    noou.innerHTML = "";
+                    fileList.appendChild(li);
+                });
+                addMessage(`Uploaded files: ${fileNames.join(', ')}`, 'user-message');
+            }
+        });
+
+        micBtn.addEventListener('click', () => {
+            alert('Voice input functionality would be implemented here.');
+        });
+
+        languageBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        languageOptions.classList.toggle('show');
+        });
+
+        window.addEventListener('click', (event) => {
+            if (!event.target.closest('.language-menu')) {
+                languageOptions.classList.remove('show');
+            }
+        });
+
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message) {
+                addMessage(message, 'user-message');
+                userInput.value = '';
+                simulateAIResponse();
+            }
+        }
+
+        function addMessage(message, className) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', className);
+            
+            if (className === 'ai-message') {
+                const contentDiv = document.createElement('div');
+                contentDiv.classList.add('ai-message-content');
+                
+                contentDiv.innerHTML = `
+                    <p>${message}</p>
+                    <div class="sound-icon-wrapper">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                `;
+                
+                messageElement.appendChild(contentDiv);
+
+                const references = document.createElement('div');
+                references.classList.add('references');
+                references.innerHTML = `
+                    <p>References:</p>
+                    <ul>
+                        <li><a href="#" onclick="alert('This would link to a YouTube video in the knowledge base.')">YouTube: Introduction to the topic</a></li>
+                        <li><a href="#" onclick="alert('This would link to an article in the knowledge base.')">Article: Detailed explanation</a></li>
+                    </ul>
+                `;
+                messageElement.appendChild(references);
+            } else {
+                messageElement.innerHTML = `<p>${message}</p>`;
+            }
+            
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            chatMessages.addEventListener('click', (event) => {
+                const soundIconWrapper = event.target.closest('.sound-icon-wrapper');
+                if (soundIconWrapper) {
+                    event.stopPropagation();
+                    alert('Text-to-speech functionality would be implemented here.');
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            chatMessages.addEventListener('click', (event) => {
+                if (event.target.classList.contains('sound-icon')) {
+                    event.stopPropagation();
+                    alert('Text-to-speech functionality would be implemented here.');
+                }
+            });
+        });
+
+        function simulateAIResponse() {
+            const skeletonLoader = document.createElement('div');
+            skeletonLoader.classList.add('skeleton');
+            chatMessages.appendChild(skeletonLoader);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                chatMessages.removeChild(skeletonLoader);
+                addMessage("I'm processing your input. Here's a simulated response from the Tutor AI, now with references to our knowledge base.", 'ai-message');
+            }, 2000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+        const elements = document.querySelectorAll('.highlight');
+        const steps = Array.from(elements).map((element, index) => ({
+            element: element,
+            intro: element.getAttribute('data-intro'),
+            position: 'right'
+        }));
+
+        introJs().setOptions({
+            steps: steps,
+            showSkipButton: true
+        }).start();
+    });
+    </script>
+</body>
+-->
+</html>

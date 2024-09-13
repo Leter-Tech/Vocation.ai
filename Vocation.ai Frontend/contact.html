@@ -1,0 +1,467 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="vocational (1).png">
+        <title>Vocation.ai - Contact</title>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+        <script>
+            const firebaseConfig = {
+                Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const database = firebase.database();
+    
+            function formatDateToGMT530(date) {
+                const options = {
+                    timeZone: 'Asia/Kolkata',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                };
+                return date.toLocaleString('en-IN', options).replace(',', '');
+            }
+    
+            document.addEventListener('click', function(event) {
+                const element = event.target;
+                const clickData = {
+                    tagName: element.tagName,
+                    id: element.id || null,
+                    classList: Array.from(element.classList).join(' ') || null,
+                    textContent: element.textContent.trim() || null,
+                    timestamp: formatDateToGMT530(new Date()),
+                    page: document.title
+                };
+                database.ref('clicks').push(clickData);
+            });
+        </script>
+        <script>
+            function isMobile() {
+                return /Mobi|Android/i.test(navigator.userAgent);
+            }
+    
+            if (isMobile()) {
+                window.location.href = "mobile.html";
+            }
+        </script>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #F5F5F5;
+                font-family: 'Poppins', sans-serif;
+                color: #333;
+            }
+    
+            nav {
+                width: 100%;
+                background: none;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                position: fixed;
+                top: 0;
+                z-index: 1000;
+                box-sizing: border-box;
+            }
+    
+            nav ul {
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding: 0;
+                flex-wrap: wrap;
+            }
+    
+            nav ul li {
+                margin: 0 15px;
+            }
+    
+            nav ul li a {
+                text-decoration: none;
+                color: white;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+    
+            nav ul li a:hover {
+                color: #FFD700;
+            }
+    
+            .contact-section {
+                padding: 100px 50px;
+                background-color: #f2e1eb;
+            }
+    
+            .contact-section h2 {
+                font-size: 2.5em;
+                margin-bottom: 30px;
+                color: #830C4F;
+                text-align: center;
+            }
+    
+            .contact-form {
+                max-width: 600px;
+                margin: 0 auto;
+                background: white;
+                padding: 40px;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+    
+            .contact-form .form-group {
+                margin-bottom: 20px;
+            }
+    
+            .contact-form label {
+                display: block;
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+    
+            .contact-form input,
+            .contact-form textarea {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 1em;
+            }
+    
+            .contact-form textarea {
+                height: 150px;
+                resize: none;
+            }
+    
+            .contact-form button {
+                display: inline-block;
+                background: #830C4F;
+                color: white;
+                padding: 15px 30px;
+                text-decoration: none;
+                border: none;
+                border-radius: 50px;
+                font-size: 1.2em;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+    
+            .contact-form button:hover {
+                background: #FFD700;
+                color: #830C4F;
+                transform: translateY(-3px);
+                box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            }
+    
+            .thank-you-message {
+                display: none;
+                background-color: #f2e1eb;
+                padding: 20px;
+                text-align: center;
+                border-radius: 10px;
+                margin-top: 20px;
+            }
+    
+            footer {
+                text-align: center;
+                padding: 20px 0;
+                background: linear-gradient(135deg, #830C4F 0%, #5C0C4F 100%);
+                color: white;
+            }
+    
+            footer a {
+                text-decoration: none;
+                color: white;
+            }
+    
+            @font-face {
+                font-family: Gidiff;
+                src: url("GlacialIndifference-Regular.otf") format("opentype");
+            }
+            ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+    
+    ::-webkit-scrollbar-button {
+        display: none;
+    }
+            @media (max-width: 768px) {
+                nav {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+    
+                nav ul {
+                    margin-top: 10px;
+                }
+    
+                nav ul li {
+                    margin: 5px 15px;
+                }
+    
+                .contact-section {
+                    padding: 80px 20px;
+                }
+    
+                .contact-form {
+                    padding: 30px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <style>
+        
+            .zoom-notification {
+                --primary-color: #830c4f;
+                --secondary-color: #f2e1eb;
+                font-family: 'Arial', sans-serif;
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(131, 12, 79, 0.95);
+                z-index: 9999999999;
+                justify-content: center;
+                align-items: center;
+                backdrop-filter: blur(10px);
+            }
+    
+            .zoom-content {
+                background-color: white;
+                padding: 40px;
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+                text-align: center;
+                max-width: 90%;
+                width: 550px;
+            }
+    
+            .zoom-content h2 {
+                color: var(--primary-color);
+                margin-top: 0;
+                font-size: 28px;
+                margin-bottom: 20px;
+            }
+    
+            .zoom-content p {
+                color: #333;
+                font-size: 16px;
+                line-height: 1.6;
+            }
+    
+            .key {
+                display: inline-block;
+                background-color: #f0f0f0;
+                border: 2px solid #d0d0d0;
+                border-radius: 8px;
+                padding: 8px 15px;
+                margin: 0 5px;
+                font-family: 'Courier New', monospace;
+                font-weight: bold;
+                font-size: 18px;
+                color: #333333;
+                box-shadow: 0 4px 0 #d0d0d0;
+                transition: all 0.1s ease;
+                cursor: pointer;
+                margin-top: 20px;
+                margin-bottom: 10px;
+            }
+    
+            .key:active {
+                transform: translateY(4px);
+                box-shadow: 0 0 0 #d0d0d0;
+            }
+    
+            .icon-zoom {
+                font-size: 48px;
+                margin-bottom: 20px;
+            }
+    
+            .width-info {
+                background-color: var(--secondary-color);
+                border-radius: 10px;
+                padding: 15px;
+                margin-top: 20px;
+                font-size: 14px;
+                color: var(--primary-color);
+            }
+    
+            #currentWidth, #requiredWidth {
+                font-weight: bold;
+                font-size: 18px;
+            }
+        </style>
+        <div class="zoom-notification" id="zoomNotification">
+            <div class="zoom-content">
+            <div class="icon-zoom">🔍</div>
+            <h2>Please Adjust Your View</h2>
+            <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+            <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+            <div class="width-info">
+            <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+            <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+            </div>
+            </div>
+            </div>
+            <script>
+                    const zoomNotification = document.getElementById('zoomNotification');
+                    const currentWidthSpan = document.getElementById('currentWidth');
+            
+                    function checkViewportWidth() {
+                        const currentWidth = window.innerWidth;
+                        currentWidthSpan.textContent = currentWidth;
+            
+                        if (currentWidth < 1430) {
+                            zoomNotification.style.display = 'flex';
+                        } else {
+                            zoomNotification.style.display = 'none';
+                        }
+                    }
+            
+                    window.addEventListener('resize', checkViewportWidth);
+                    window.addEventListener('load', checkViewportWidth);
+                </script>
+        <nav>
+            <a style="text-decoration: none; color: white;" href="index.html"><div id="divv" style="display: flex; margin-top: 20px;"><img id="lg" src="vocational.png" alt="Vocation.ai Logo" style="height: 80px;"><h1 id="lgt" style="font-size: 40px; font-family: 'Gidiff'; font-weight: 400; margin-left: 2px; margin-top: 15px;">Vocation.ai</h1></div></a>
+            <ul id="ull" style="margin-top: -40px;">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="index.html#technology">Technology</a></li>
+                <li><a href="index.html#impact">Impact</a></li>
+                <li><a href="whitepaper.html">Whitepaper</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="pricing.html#dsec">Donate</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    
+        <style>
+            .scrolled{
+                width: 100%;
+                background: linear-gradient(135deg, #830C4F 0%, #5C0C4F 100%);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 20px;
+                position: fixed;
+                top: 0;
+                z-index: 1000;
+                box-sizing: border-box;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+        </style>
+    
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const navbar = document.getElementsByTagName('nav')[0];
+                const logo = document.getElementById('lg')
+                const logotext = document.getElementById('lgt')
+                const divv = document.getElementById('divv');
+                const ull = document.getElementById('ull');
+    
+                navbar.classList.add('scrolled');
+                logo.style.height = '68px';
+                logotext.style.fontSize = '30px';
+                logotext.style.marginTop = '18px';
+                logo.style.marginTop = '3px';
+                divv.style.marginTop = '0px';
+                ull.style.marginTop = '0px';
+            });
+        </script>
+    
+        <section class="contact-section">
+            <h2>Contact Us</h2>
+            <div class="thank-you-message">
+                <p style="color: green;">Thank you for your message! We will get back to you soon.</p>
+            </div>
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    
+        <footer>
+            <p><a href="index.html">© Vocation.ai | Empowering Education & Employment in Rural India through AI</a></p>
+        </footer>
+    
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const form = document.getElementById("contactForm");
+                const thankYouMessage = document.querySelector(".thank-you-message");
+    
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+    
+                    const name = document.getElementById("name").value;
+                    const email = document.getElementById("email").value;
+                    const subject = document.getElementById("subject").value;
+                    const message = document.getElementById("message").value;
+                    const timestamp = formatDateToGMT530(new Date());
+    
+                    const contactData = {
+                        name: name,
+                        email: email,
+                        subject: subject,
+                        message: message,
+                        timestamp: timestamp
+                    };
+    
+                    database.ref('contactMessages').push(contactData)
+                        .then(() => {
+                            form.reset();
+                            thankYouMessage.style.display = "block";
+                        })
+                        .catch(error => {
+                            console.error("Error sending message: ", error);
+                            alert("There was an error sending your message. Please try again.");
+                        });
+                });
+            });
+        </script>
+    </body>
+    </html>    

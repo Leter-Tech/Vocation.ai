@@ -1,0 +1,2472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="static/vocational (1).png">
+    <title>Vocation.ai - Job AI</title>
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key='REMOVED'"></script>
+    <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "https://vocation-ai.web.app/mobile";
+        }
+    </script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script>
+
+var checker = 1;
+
+function demoDone(){
+    const jobMainElement = document.querySelector('.job-main');
+    const sidebar = document.querySelector('.sidebar');
+    jobMainElement.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        sidebar.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+}
+
+        const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+        };
+        firebase.initializeApp(firebaseConfig);
+      
+      
+          const database = firebase.database();
+        
+          function formatDateToGMT530(date) {
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      return date.toLocaleString('en-IN', options).replace(',', '');
+    }
+    
+          document.addEventListener('click', function(event) {
+            const element = event.target;
+            const email = Clerk.user.emailAddresses[0]?.emailAddress
+    
+            const clickData = {
+              tagName: element.tagName,
+              id: element.id || null,
+              classList: Array.from(element.classList).join(' ') || null,
+              textContent: element.textContent.trim() || null,
+              timestamp: formatDateToGMT530(new Date()),
+              userInfo: email, page: document.title
+            };
+            if(clickData.textContent == "Done"){
+                if(checker > 1){
+                    demoDone()
+                }
+                checker+=1
+            }
+            database.ref('clicks').push(clickData)
+          });
+        </script>
+        <script
+        async
+        crossorigin="anonymous"
+        data-clerk-publishable-key="REMOVED"
+        src="REMOVED"
+        type="text/javascript">
+      </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #830c4f;
+            --secondary-color: #f39c12;
+            --text-color: #333;
+            --bg-color: #f4f4f4;
+        }
+
+        .highlight {
+            padding: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+
+        .mh2 {
+  color: #830c4f;
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+
+.file-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.file-list li {
+  margin-bottom: 10px;
+}
+
+.file-list input[type="radio"] {
+  margin-right: 10px;
+  accent-color: #830C4F;
+}
+
+.uploaded-image {
+    max-width: 150px;
+    max-height: 150px;
+    display: block;
+    margin: 10px 0;
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+}
+
+.typing-indicator .dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+    background-color: #bbb;
+    border-radius: 50%;
+    animation: typing 1.5s infinite ease-in-out;
+}
+
+.typing-indicator .dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.typing-indicator .dot:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.typing-indicator .dot:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes typing {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+}
+
+
+.btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background-color: #6b0a41;
+        }
+
+        .introjs-bullets ul li a.active {
+            background: var(--primary-color) !important;
+            box-shadow: 0 0 0 2px rgba(131, 12, 79, 0.3);
+        }
+
+        .introjs-bullets a {
+            background: #9f9b9b !important;
+            transition: background 0.3s ease;
+        }
+
+        .introjs-tooltip {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            color: #830c4f;
+            font-size: 18px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+            padding: 25px;
+            max-width: 350px;
+        }
+
+        .introjs-tooltiptext {
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        .introjs-tooltip h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #830c4f;
+        }
+
+        .introjs-tooltip p {
+            margin-bottom: 15px;
+        }
+
+        .introjs-button {
+            background-color: #830c4f;
+            color: #fff;
+            text-shadow: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            font-size: 14px;
+            border: 2px solid #830c4f;
+            margin: 5px;
+        }
+
+        .introjs-skipbutton {
+            color: #830c4f;
+            background-color: transparent;
+            border: 2px solid #830c4f;
+        }
+
+        .introjs-button:hover {
+            background-color: #f2e1eb;
+            color: #830c4f;
+            border: 2px solid #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-button:focus {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            color: #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+        }
+
+        .card-container {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+}
+
+.card-container h3 {
+    color: #830c4f;
+    margin-bottom: 8px;
+}
+
+.screen-share-video {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.stop-sharing-btn {
+    width: 100%;
+    padding: 8px;
+    background-color: #830c4f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.stop-sharing-btn:hover {
+    background-color: #6b0a40;
+}
+.arrow-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow {
+            font-size: 24px;
+            position: absolute;
+            animation: moveArrow 2s infinite;
+        }
+
+        @keyframes moveArrow {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(20px); }
+            100% { transform: translateX(0); }
+        }
+
+        .button-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .hide {
+            display: none;
+        }
+        .introjs-tooltip .introjs-skipbutton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 26px;
+            text-align: center;
+            border: 2px solid #830c4f;
+            background-color: transparent;
+            color: #830c4f;
+            transition: all 0.3s ease;
+        }
+
+        .introjs-tooltip .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .sidebar-section1 {
+            background-color: rgba(255, 255, 255);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+    
+        .sidebar-section1:hover {
+            transform: translateY(-3px);
+        }
+    
+        .sidebar-section1 h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .introjs-arrow {
+            border-color: #830c4f;
+        }
+
+        .introjs-floating {
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+        }
+
+        .ai-switch {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ai-options {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100000000000000000;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .ai-options a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 1; }
+        }
+
+        .ai-switch-icon {
+            animation: fadeInOut 2s infinite;
+        }
+
+        .ai-switch.active .ai-switch-icon {
+            animation: none;
+        }
+
+        .ai-switch:hover {
+            transform: translateY(-2px);
+            z-index: 100000;
+        }
+    
+        .ai-options a:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+
+        .show {
+            display: block;
+        }
+
+        .ai-switch.active::after {
+            transform: rotate(180deg);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .job-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 320px;
+            background-color: #830c4f;
+            color: #333;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-weight: bold;
+        }
+
+        .job-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            overflow: hidden;
+        }
+
+        .sound-icon-wrapper {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            border-radius: 50%;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+            color: #830c4f;
+        }
+    
+        .sound-icon {
+            color: white;
+            font-size: 1em;
+        }
+
+        .mic-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-left: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    
+        .mic-button:hover {
+            background-color: #6b0a40;
+        }
+
+        .job-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .job-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+            align-content: start; 
+            background-color: #f2e1eb;
+        }
+
+
+        .job-item {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            height: 270px;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .job-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .job-title {
+            font-size: 1.2em;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .job-company {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .job-description {
+            font-size: 0.9em;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .job-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .job-tag {
+            background-color: #f0f0f0;
+            color: #555;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+
+        .job-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .apply-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .apply-btn:hover {
+            background-color: #6b0a40;
+        }
+
+        .save-job {
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .save-job:hover {
+            color: var(--primary-color);
+        }
+
+        .job-difficulty {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.8em;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        .difficulty-easy { background-color: #c8e6c9; color: #2e7d32; }
+        .difficulty-medium { background-color: #fff9c4; color: #f57f17; }
+        .difficulty-hard { background-color: #ffcdd2; color: #c62828; }
+
+        .job-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
+
+        .modal1 {
+  display: none;
+  position: fixed;
+  z-index: 200000000000000000000000000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal1-content {
+  background-color: #f2e1eb;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #830c4f;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close1-button {
+  color: #830c4f;
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.close1-button:hover,
+.close1-button:focus {
+  color: #c8106e;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 60%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #modalJobDescription {
+            margin-bottom: 15px;
+        }
+
+        #modalJobTags {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .modal .apply-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .closedb {
+            color: #1dea13;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .closedb:hover,
+        .closedb:focus {
+            color: #18ad10;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .chat-container {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #f2e1eb;
+        }
+    
+        .message {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+    
+        .user-message { 
+            align-self: flex-end;
+            background-color: #ea4fa9;
+            border-bottom-right-radius: 4px;
+            color: white;
+        }
+    
+        .ai-message {
+            align-self: flex-start;
+            background-color: #ffffff;
+            border-bottom-left-radius: 4px;
+        }
+    
+        .ai-message-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 20px;
+            background-color: white;
+            border-top: 1px solid #e0e0e0;
+        }
+    
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+    
+        .chat-input input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(131, 12, 79, 0.1);
+        }
+    
+        .chat-input button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+    
+        .chat-input button:hover {
+            background-color: #6b0a40;
+        }
+
+
+        .feedback-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .feedback-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .feedback-container h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .db4{
+            color: var(--primary-color);
+            margin-bottom: 2px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            color: #f39c12;
+            margin-right: 10px;
+        }
+
+        .employer-feedback {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .employer-name {
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .feedback-date {
+            font-size: 0.8em;
+            color: #888;
+        }
+
+
+
+        .chat-actions {
+            display: flex;
+            padding: 10px 20px 10px 20px;
+            background-color: #f2e1eb;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .chat-actions button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .chat-actions button:hover {
+            background-color: #6b0a40;
+        }
+
+        .info-box {
+            background-color: #f1f3f5;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .info-box h4 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 1em;
+        }
+
+        .info-box p {
+            color: #3e3e3e;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+        .current-jobs {
+            margin-top: 25px;
+        }
+
+        .current-jobs h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .current-job-item {
+            background-color: #f1f3f5;
+            border-left: 4px solid var(--primary-color);
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .current-job-item:hover {
+            transform: translateX(5px);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .current-job-item p {
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .current-job-item p:first-child {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .current-job-item p:last-child {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .feedback-box {
+            background-color: #f1f3f5;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feedback-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+    
+    <script>
+        window.addEventListener("load", async function () {
+            await Clerk.load();
+            removePoweredBy()
+            function pam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        const redirectUrl = pam('redirect_url');
+
+
+            if (!Clerk.user) {
+                if (redirectUrl) {
+                    setTimeout(() => {
+                        window.location.href = 'authentication';
+                    }, 12000);
+                }
+
+                else{
+                    window.location.href = 'authentication';
+                } 
+            }
+
+            else {
+                document.getElementById("app").innerHTML = `
+                    <div id="user-button"></div>
+                `;
+
+                const userButtonDiv = document.getElementById("user-button");
+
+                Clerk.mountUserButton(userButtonDiv);
+            }
+        });
+    </script>
+    <div class="job-container">
+        <aside class="sidebar">
+            <div class="logo"><a href="https://vocation-ai.web.app/"><img src="static/Vocation.ai Logo (Horizontal cropped).png" style="height: 65px;"></a></div>
+            <div class="feedback-container">
+                <h2 style="color: #830c4f;">JobAI Dashboard</h2>
+                
+                <div style="cursor: pointer;" data-intro="Your overall job rating is based on feedback from employers, which impacts your job credits." data-step="3" class="info-box">
+                    <h4 class="db4">Overall Rating</h4>
+                    <p style="color: #3e3e3e; font-weight: bold; font-size: 14px;">4.4/5</p>
+                </div>
+
+                <div style="cursor: pointer;" data-intro="Job credits enable you to take part in job opportunities." data-step="4" class="info-box">
+                    <h4 class="db4">Job Credits left</h4>
+                    <p style="color: #3e3e3e; font-weight: bold; font-size: 14px;">5 for next 22 days</p>
+                </div>
+
+                <div style="cursor: pointer;" data-intro="Incentives you've earned from the jobs." data-step="5" class="info-box">
+                    <h4 class="db4">Amount Earned</h4>
+                    <p style="color: #3e3e3e; font-weight: bold; font-size: 14px;">₹62456 in last 92 days</p>
+                </div>
+
+                <div data-intro="Jobs you're currently working on." data-step="6" class="current-jobs">
+                    <h4 style="cursor: pointer;">Current Jobs <i class="fas fa-angle-right"></i></h4>
+                    <div class="current-job-item">
+                        <p><strong>Data Entry Project</strong></p>
+                        <p style="color: #3e3e3e;">Due: July 5, 2024</p>
+                    </div>
+                    <div class="current-job-item">
+                        <p><strong>Content Writing Task</strong></p>
+                        <p style="color: #3e3e3e;">Due: July 12, 2024</p>
+                    </div>
+                </div>
+
+                <div data-intro="Jobs you've already finished." data-step="7" class="current-jobs">
+                    <h4 style="cursor: pointer;">Jobs Finished <i class="fas fa-angle-right"></i></h4>
+                    <div class="current-job-item">
+                        <p><strong>Data Annotation Team</strong></p>
+                        <p style="color: #3e3e3e;">Done: Jan 16, 2024</p>
+                    </div>
+                    <div class="current-job-item">
+                        <p><strong>Newspaper Proofreading</strong></p>
+                        <p style="color: #3e3e3e;">Done: Mar 7, 2024</p>
+                    </div>
+                    <div class="current-job-item">
+                        <p><strong>Virtual Assistant</strong></p>
+                        <p style="color: #3e3e3e;">Done: Apr 9, 2024</p>
+                    </div>
+                    <div class="current-job-item">
+                        <p><strong>Community Admin</strong></p>
+                        <p style="color: #3e3e3e;">Done: May 28, 2024</p>
+                    </div>
+                </div>
+<div data-intro="Employer feedback comments. These affect your job credits." data-step="8">
+                <h3  style="margin-top: 20px; cursor: pointer; color: #830c4f; font-size: 18px;">Employer Feedback <i class="fas fa-angle-right"></i></h3>
+                <div class="feedback-box">
+                    <div class="rating">
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <span style="color: #3e3e3e;">4.2 / 5.0</span>
+                    </div>
+                    <p class="employer-feedback">"Great work ethic and attention to detail. Could improve on communication skills."</p>
+                    <p class="employer-name">Arjun Patel</p>
+                    <p class="feedback-date">June 15, 2024</p>
+                </div>
+
+                <div class="feedback-box" style="margin-top: 20px;">
+                    <div class="rating">
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span style="color: #3e3e3e;">4.5 / 5.0</span>
+                    </div>
+                    <p class="employer-feedback">"Excellent problem-solving skills. Delivered the project ahead of schedule."</p>
+                    <p class="employer-name">Michael Chen</p>
+                    <p class="feedback-date">May 28, 2024</p>
+                </div>
+
+                <div class="feedback-box" style="margin-top: 20px;">
+                    <div class="rating">
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <span style="color: #3e3e3e;">4.0 / 5.0</span>
+                    </div>
+                    <p class="employer-feedback">"Consistently meets deadlines. Could benefit from more creative approaches to tasks."</p>
+                    <p class="employer-name">Priya Sharma</p>
+                    <p class="feedback-date">April 10, 2024</p>
+                </div>
+                </div>
+            </div>
+        </aside>
+        <main class="job-main">
+            <header siu="Job AI also has a vision powered chatbot which helps you with your job tasks, improving your efficiency and quality of work. It also features Resume AI and Interview AI." tou="10" class="job-header">
+                
+                <h2 data-intro="JobAI recommends a variety of part-time jobs that match your knowledge and skills!" data-step="1" class="ai-switch" id="aiSwitch">
+                    Job AI
+                    <i class="fas fa-angle-down ai-switch-icon" style="margin-left: 3px;"></i>
+                    <div class="ai-options" id="aiOptions">
+                        <a href="#" id="tutorAI">Tutor AI</a>
+                        <a href="#" id="quizAI">Quiz AI</a>
+                        <a href="#" id="Community">Community</a>
+                        <a href="#" id="UserJourneyFlow">User Flow</a>
+                    </div>
+                </h2>
+                <div style="display: flex;">
+                <p id="navhelp" style="justify-self: center; align-self: center; margin-right: 20px; animation: moveArrow 2s infinite; font-size: 15px;">Click here use Job Assist AI</p>
+                <div style="display: flex;">
+                    <div style="margin-right: 50px;" class="arrow-container">
+                        <div class="arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>    
+                <button onclick="startNewTour()" data-intro="A vision-powered chatbot, along with ResumeAI and InterviewAI designed to assist you with your jobs. Click the button above to explore it!" data-step="9" id="toggleChatBtn" style="background: none; border: none; color: white; cursor: pointer; font-size: 20px; animation: fadeInOut 2s infinite;">
+                    <i class="fas fa-comments"></i> Job Assist AI
+                </button>
+                </div>
+                <div style="margin-left: 20px;" id="app"></div>
+
+                </div>
+                
+            </header>
+            <div class="job-list" id="jobList" data-intro="Job recommendations are based on the knowledge and skills you acquired from TutorAI and validated through QuizAI." data-step="2">
+            </div>
+            <div class="chat-container" id="chatContainer">
+                <div class="chat-actions">
+                    <button siu="Upload your job files (.pdf, .xlsx, .pptx, .py, .html, .php, .docx) or other documents to receive assistance from JobAI." tou="11" id="uploadFileBtn"><i style="margin-right: 3px;" class="fas fa-file-upload"></i> Upload File</button>
+                    <input style="display: none;" type="file" id="fileUpload" class="file-upload">
+                    <button siu="Share your screen to utilize JobAI's vision capabilities, enabling it to assist you with your job tasks effectively." tou="12" id="shareScreenBtn" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fas fa-desktop"></i> Share Screen</button>
+                    <a href="resume_ai"><button siu="Use our ResumeAI to generate your entire resume with just a few clicks!" tou="13" id="resume" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fas fa-file-alt"></i> Try Resume AI</button></a>
+                    <a href="interview_ai"><button siu="Use our InterviewAI to prepare for your interview with an AI Interviewer on Live Video Call" tou="14" id="resume" style="margin-left: 8px;"><i style="margin-right: 3px;" class="fas fa-headset"></i> Try Interview AI</button></a>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai-message">
+                        <div class="ai-message-content">
+                            <p>Hello! I'm your <strong>Job AI</strong>. Share your screen or upload your work files to ask for job assistance. We can also prepare for job interviews and I can generate your resume too!</p>
+                            <div siu="Press this button to use text-to-speech." tou="15" class="sound-icon-wrapper">
+                                <i class="fas fa-volume-up"></i>
+                            </div>
+                        </div>
+                        <p style="font-size: 12px; margin-top: 10px; font-weight: 600;">(To prepare for an interview or generate a resume, just ask me!)</p>
+                    </div>
+                </div>
+                <style>
+                    #chatMessages {
+                  background-image: url('static/vocationalLight.png');
+                  background-repeat: no-repeat;
+                  background-position: center center;
+                  background-size: cover;
+                  position: relative;
+                  background-size: 200px 200px;
+                }
+                
+                .message {
+                  position: relative;
+                  z-index: 1;
+                }
+                </style>
+                <style>
+        .arrownew {
+            font-size: 24px;
+            position: absolute;
+            animation: updown 2s infinite;
+            bottom: 100px;
+            right: -50px
+        }
+
+        @keyframes updown {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(20px); }
+            100% { transform: translateY(0); }
+        }
+                </style>
+                
+                <div class="chat-input">
+                    <input siu="Type your message here" tou="16" type="text" id="userInput" placeholder="Type your message here...">
+                    <button siu="and hit Send!" tou="17" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+                    <button siu="Press this button to use voice input functionality." tou="18" class="mic-button" id="micBtn"><i class="fas fa-microphone"></i></button>
+                    <div id="arrownew" class="arrow-container">
+                        <div class="arrownew">
+                            <i style="color: #830C4F;" class="fas fa-arrow-down"></i>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        function googleTranslateElementInit() {
+                          new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+                        }
+                      </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
+                    <button siu="Press this button to attach uploaded files." tou="19" id="attachments-modal"><i class="fas fa-paperclip"></i></button>
+                    <button siu="Press this button to clear chat context." tou="20" id="clearContextBtn"><i class="fas fa-broom"></i></button>
+                    <div class="language-menu">
+                        <button onclick="qwe()" siu="Press this button to change language." tou="21" id="langchange"><i style="font-size: 20px;" class="fas fa-language"></i></button>
+                        <div class="language-options" id="languageOptions">
+                            <p align='center' style="color: #333; font-size: 12px; margin-top: 10px; margin-bottom: 5px; font-weight: bold;">Change TutorAI Language</p>
+                            <a class="sssqqw" onclick="alert('Changing the language to English'); txtt('Please change the language to English')" href="#">English</a>
+                            <a onclick="alert('Changing the language to Hindi'); txtt('Please change the language to Hindi')" href="#">हिन्दी (Hindi)</a>
+                            <a onclick="alert('Changing the language to Bengali'); txtt('Please change the language to Bengali')" href="#">বাংলা (Bengali)</a>
+                            <a onclick="alert('Changing the language to Telgu'); txtt('Please change the language to Telgu')" href="#">తెలుగు (Telugu)</a>
+                            <a onclick="alert('Changing the language to Marathi'); txtt('Please change the language to Marathi')" href="#">मराठी (Marathi)</a>
+                            <a onclick="alert('Changing the language to Tamil'); txtt('Please change the language to Tamil')" href="#">தமிழ் (Tamil)</a>
+                            <a onclick="alert('Changing the language to Gujarati'); txtt('Please change the language to Gujarati')" href="#">ગુજરાતી (Gujarati)</a>
+                            <a onclick="alert('Changing the language to Punjabi'); txtt('Please change the language to Punjabi')" href="#">ਪੰਜਾਬੀ (Punjabi)</a>
+                            <a onclick="txttask()" href="#">Others (Type)</a>
+                            <div style="display: flex; justify-content: center;">
+                                <div id="google_translate_element"><p align='center' style="color: #333; font-size: 12px; margin-top: 8px; margin-bottom: 5px; font-weight: bold;">Translate Whole Page</p></div>
+                            </div>
+<style>
+#google_translate_element{
+    margin-bottom: 15px;
+}
+.sssqqw{
+    background-color: #f1f1f1;
+}
+.goog-te-combo {
+    border-radius: 4px;
+    padding: 0 10px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    padding: 0 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    appearance: none; 
+    color: #333;
+    align-self: center;
+    justify-self: center !important;
+}
+
+#languageOptions .goog-te-combo {
+  width: 99%;
+  height: 35px;
+}
+                            </style>
+                        </div>
+                        <script>
+                            function txtt(lang){
+                                document.getElementById("userInput").value = lang
+                                sendMessage()
+                            }
+
+                            function qwe() {
+                                if(document.getElementById("languageOptions").style.display == 'block'){
+                                    document.getElementById("languageOptions").style.display = 'none'
+                                }
+                                else{
+                                    document.getElementById("languageOptions").style.display = 'block'
+                                }
+                            }
+
+                            window.addEventListener('click', (event) => {
+                                if (!event.target.closest('.language-menu')) {
+                                    document.getElementById("languageOptions").style.display = 'none';
+                                }
+                            });
+
+                            function txttask() {
+                                let langoth = prompt("Please type your preferred language of conversation", "Kannada/Odia/Malayalam/Punjabi/Assamese/Others");
+                                if(langoth !== null){
+                                    document.getElementById("userInput").value = `Please change the language to ${langoth}`
+                                    sendMessage()
+                                }
+                            }
+                        </script>
+                        
+                    </div>
+                                    </div>
+            </div>
+        </main>
+        <style>
+        .language-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .language-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 40000000000000000000000000000000;
+            right: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            bottom: 100%;
+            width: 200px;
+        }
+        .language-options a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+    
+        .language-options a:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+        </style>
+    </div>
+    <ul class="sidebar-list" id="fileList" style="font-size: 13px; display: none;"></ul>
+
+    <div id="fileModal" class="modal1">
+        <div class="modal1-content">
+          <h2 class="mh2">Select a file</h2>
+          <h3 id="noFilesHeading"><strong>No files found</strong></h3>
+          <p id="noFilesMessage">Please upload a file using the upload button above and then attach them using this option.</p>
+          <ul id="modalFileList" class="file-list">
+          </ul>
+          <button style="margin-top: 25px;" class="btn" onclick="document.getElementById('fileModal').style.display='none';">Done</button>
+        </div>
+      </div>
+
+    <style>
+        .cl-userButtonPopoverCard {
+            background-color: #9b0158;
+            color: white !important;
+        }
+        .cl-userButtonPopoverActionButtonText{
+            color: white;
+        }
+        .cl-navbar{
+            background-color: #f2e1eb;
+            border-radius: 16px;
+        }
+        .cl-internal-rx251b{
+            background-color: #f2e1eb;
+        }
+        .cl-pageScrollBox{
+            background-color: #f2e1eb;
+        }
+        .cl-internal-60laz0{
+            border-right: 1px solid rgb(131, 12, 79, 0.5);
+        }
+        .cl-internal-1yejcov{
+            color: white !important;
+        }
+        .cl-userPreviewSecondaryIdentifier{
+            color: white;
+        }
+        .cl-userButtonPopoverFooter{
+            display: none;
+        }
+        .cl-internal-b3fm6y{
+            display: none;
+        }
+        .cl-userButtonTrigger:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-headerTitle{
+            color: #830c4f;
+        }
+        .cl-internal-1e71drn{
+            color: #830c4f;
+        }
+        .cl-internal-141wpcl{
+            color: #830c4f;
+        }
+        .cl-scrollBox{
+            background-color: #f2e1eb;
+        }
+        .cl-internal-1xg0u4s{
+            border-bottom: 1px solid rgb(131, 12, 79, 0.6);
+        }
+        .cl-profileSectionPrimaryButton{
+            color: #830c4f;
+        }
+        .cl-profileSectionPrimaryButton:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-profileSectionPrimaryButton:active{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-profileSectionPrimaryButton:hover{
+            background-color: #f2e1eb;
+        }
+        .cl-navbarButton:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-accordionTriggerButton:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-badge{
+            color: #830c4f;
+            background-color: rgb(131, 12, 79, 0.2);
+        }
+        .cl-formButtonPrimary{
+            background-color: #830c4f;
+        }
+        .cl-formButtonPrimary .cl-formButtonReset{
+            background-color: #830c4f;
+        }
+        .cl-formButtonReset:hover{
+            background-color: rgb(131, 12, 79, 0.2);
+        }
+        .cl-formButtonReset{
+            color: #830c4f;
+        }
+        .cl-formButtonPrimary:hover{
+            background-color: #460429;
+        }
+        .cl-formButtonPrimary:active{
+            background-color: #460429;
+        }
+        .cl-formButtonReset:active{
+            background-color: rgb(131, 12, 79, 0.2);
+        }
+        .cl-profileSectionPrimaryButton:active{
+            background-color: #f2e1eb;
+        }
+        .cl-avatarImageActionsUpload{
+            color: #830c4f;
+        }
+        .cl-avatarImageActionsRemove{
+            color: #600639;
+        }
+        .cl-avatarImageActionsUpload:focus .cl-avatarImageActionsRemove:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-formFieldInput:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-internal-1sf6rji{
+            color: #830c4f
+        }
+        .cl-internal-1sf6rji:hover{
+            background-color: rgb(131, 12, 79, 0.2);
+        }
+        .cl-internal-f7yy9s:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-modalCloseButton{
+            color: #830c4f;
+        }
+        .cl-modalCloseButton:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-formButtonReset:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-formButtonPrimary:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-formFieldInput{
+            accent-color: #830c4f;
+        }
+        .cl-internal-1sf6rji:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-internal-1sf6rji:active{
+            background-color: #f2e1eb;
+        }
+        .cl-breadcrumbsItem:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-userPreviewSecondaryIdentifier{
+            color: #d1b2c2;
+        }
+    </style>
+    <style>
+        .skiptranslate > span {
+            display: none !important;
+        }
+        </style>
+    <div id="jobModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalJobTitle"></h2>
+            <p id="modalJobCompany" style="font-weight: 600; color: var(--primary-color);"></p>
+            <p id="modalJobDescription"></p>
+            <div id="modalJobTags"></div>
+            <button class="apply-btn">Apply Now</button>
+        </div>
+    </div>
+
+    <script>
+        function removePoweredBy() {
+          const targetNode = document.body;
+          const config = { childList: true, subtree: true };
+        
+          const callback = function(mutationsList, observer) {
+            for(let mutation of mutationsList) {
+              if (mutation.type === 'childList') {
+                const poweredByElement = document.querySelector('.goog-logo-link');
+                if (poweredByElement) {
+                  poweredByElement.remove();
+                }
+        
+                const disclaimer = document.querySelector('.goog-te-gadget');
+                if (disclaimer) {
+                  disclaimer.childNodes.forEach((node) => {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                      node.remove();
+                    }
+                  });
+                }
+              }
+            }
+          };
+        
+          const observer = new MutationObserver(callback);
+          observer.observe(targetNode, config);
+        }
+        
+        
+            </script>
+
+    <script>
+        const jobList = document.getElementById('jobList');
+        const chatContainer = document.getElementById('chatContainer');
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const toggleChatBtn = document.getElementById('toggleChatBtn');
+        const aiSwitch = document.getElementById('aiSwitch');
+        const aiOptions = document.getElementById('aiOptions');
+        const tutorAI = document.getElementById('tutorAI');
+        const quizAI = document.getElementById('quizAI');
+        const Community = document.getElementById('Community');
+        const modal = document.getElementById('jobModal');
+        const closeModal = document.getElementsByClassName('close')[0];
+        const shareScreenBtn = document.getElementById('shareScreenBtn');
+        const uploadFileBtn = document.getElementById('uploadFileBtn');
+        const fileUpload = document.getElementById('fileUpload');
+        const micBtn = document.getElementById('micBtn');
+        const fileList = document.getElementById('fileList');
+        const modal_file = document.getElementById('fileModal');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const languageLinks = languageOptions.querySelectorAll('a');
+
+
+        languageLinks.forEach(link => {
+    link.addEventListener('click', (event) => {
+        event.preventDefault();
+        languageLinks.forEach(otherLink => {
+            otherLink.style.backgroundColor = '#f1f1f100';
+        });
+        event.target.style.backgroundColor = '#f1f1f1';
+    });
+});
+
+        function showTypingIndicator() {
+    const typingElement = document.createElement('div');
+    typingElement.classList.add('message', 'ai-message');
+    typingElement.innerHTML = `
+        <div class="typing-indicator">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    `;
+    chatMessages.appendChild(typingElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+    const typingIndicatorElement = chatMessages.querySelector('.typing-indicator');
+    if (typingIndicatorElement) {
+        chatMessages.removeChild(typingIndicatorElement.parentNode);
+    }
+}
+
+
+const fileMap = new Map();
+
+function handleFileSelection(event) {
+  const fileInput = event.target;
+  if (fileInput.files.length > 0) {
+    for (let i = 0; i < fileInput.files.length; i++) {
+      const file = fileInput.files[i];
+      fileMap.set(file.name, file);
+    }
+    updateFileListModal();
+  }
+}
+
+document.querySelector('input[type="file"]').addEventListener('change', handleFileSelection);
+
+
+function updateFileListModal() {
+  const fileList = document.getElementById('modalFileList');
+  const noFilesMessage = document.getElementById('noFilesMessage');
+  const noFilesHeading = document.getElementById('noFilesHeading');
+
+  fileList.innerHTML = "";
+  
+  const fileNames = Array.from(fileMap.keys());
+
+  if (fileNames.length === 0) {
+    noFilesMessage.style.display = 'block';
+    noFilesHeading.style.display = 'block';
+  } else {
+    noFilesMessage.style.display = 'none';
+    noFilesHeading.style.display = 'none';
+
+    fileNames.forEach(fileName => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <input type="radio" name="selectedFile" value="${fileName}" />
+        ${fileName}
+      `;
+      fileList.appendChild(li);
+    });
+  }
+}
+
+
+document.getElementById('attachments-modal').addEventListener('click', () => {
+  const modal = document.getElementById('fileModal');
+  const fileList = document.getElementById('modalFileList');
+  const noFilesMessage = document.getElementById('noFilesMessage');
+  const noFilesHeading = document.getElementById('noFilesHeading');
+  
+  fileList.innerHTML = "";
+  noFilesMessage.style.display = 'none';
+  noFilesHeading.style.display = 'none';
+
+  const fileNames = Array.from(fileMap.keys());
+
+  if (fileNames.length === 0) {
+    noFilesMessage.style.display = 'block';
+    noFilesHeading.style.display = 'block';
+  } else {
+    noFilesMessage.style.display = 'none';
+    noFilesHeading.style.display = 'none';
+
+    fileNames.forEach(fileName => {
+      const li = document.createElement('li');
+
+      li.innerHTML = `
+        <input type="radio" name="selectedFile" value="${fileName}" />
+        ${fileName}
+      `;
+
+      fileList.appendChild(li);
+    });
+  }
+
+  modal.style.display = 'block';
+  document.getElementById("arrownew").style.display = "none";
+});
+
+document.querySelector('.close').addEventListener('click', () => {
+  document.getElementById('fileModal').style.display = 'none';
+});
+
+uploadFileBtn.addEventListener('click', () => {
+            fileUpload.click();
+        });
+    
+    fileUpload.addEventListener('change', (e) => {
+    const maxSize = 50 * 1024 * 1024;
+    const files = e.target.files;
+
+    if (files.length > 0) {
+        let fileNames = [];
+        let validFiles = true;
+
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].size > maxSize) {
+                validFiles = false;
+                break;
+            }
+            fileNames.push(files[i].name);
+        }
+
+        if (!validFiles) {
+            alert('Files must be 50 MB or smaller.');
+            e.target.value = '';
+            fileList.innerHTML = '';
+            return;
+        }
+
+        fileList.innerHTML = '';
+
+        fileNames.forEach(fileName => {
+            const li = document.createElement('li');
+            li.textContent = fileName;
+            fileList.appendChild(li);
+        });
+
+        document.getElementById("arrownew").style.display = 'block';
+
+        addMessage(`Uploaded files: ${fileNames.join(', ')}`, 'user-message');
+    } else {
+        fileList.innerHTML = 'No Files Uploaded';
+    }
+});
+
+    
+        aiSwitch.addEventListener('click', function(event) {
+            event.stopPropagation();
+            this.classList.toggle('active');
+            aiOptions.classList.toggle('show');
+        });
+    
+        tutorAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/TutorAI.html';
+        });
+    
+        quizAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/QuizAI.html';
+        });
+    
+        Community.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/Community.html';
+        });
+    
+        UserJourneyFlow.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/user-journey.html';
+        });
+    
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.ai-switch')) {
+                aiSwitch.classList.remove('active');
+                aiOptions.classList.remove('show');
+            }
+        });
+
+
+shareScreenBtn.addEventListener('click', async () => {
+    try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+
+        const screenShareContainer = document.createElement('div');
+        screenShareContainer.classList.add('sidebar-section1');
+        screenShareContainer.style.marginTop = '20px'
+
+        const title = document.createElement('h3');
+        title.innerText = 'Shared Screen';
+        screenShareContainer.appendChild(title);
+
+        const videoElement = document.createElement('video');
+        videoElement.srcObject = stream;
+        videoElement.autoplay = true;
+        videoElement.muted = true;
+        videoElement.classList.add('screen-share-video');
+
+        screenShareContainer.appendChild(videoElement);
+
+        const stopBtn = document.createElement('button');
+        stopBtn.innerText = 'Stop Sharing';
+        stopBtn.classList.add('stop-sharing-btn');
+        const tracks = stream.getTracks();
+
+        stopBtn.addEventListener('click', () => {
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+            screenShareContainer.remove();
+        });
+
+        screenShareContainer.appendChild(stopBtn);
+
+        const container = document.querySelector('.feedback-container');
+        container.parentNode.insertBefore(screenShareContainer, container.previousSibling);
+
+} catch (error) {
+        console.error('Error during screen sharing:', error);
+        alert('Failed to start screen sharing.');
+    }
+});
+
+
+
+
+        micBtn.addEventListener('click', () => {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+
+    micBtn.classList.add('listening');
+    micBtn.innerHTML = '<i class="fas fa-microphone"></i> Listening...';
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        userInput.value = transcript;
+        micBtn.classList.remove('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+    };
+
+    recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        alert('An error occurred with voice input. Please try again.');
+        micBtn.classList.remove('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+    };
+
+    recognition.onend = () => {
+        micBtn.classList.remove('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+    };
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("arrownew").style.display = 'none';
+    chatMessages.addEventListener('click', (event) => {
+        const soundIconWrapper = event.target.closest('.sound-icon-wrapper');
+        if (soundIconWrapper) {
+            event.stopPropagation();
+            const messageElement = soundIconWrapper.closest('.ai-message-content').querySelector('p');
+            const textToSpeak = messageElement ? messageElement.innerText : '';
+
+            if (typeof responsiveVoice !== 'undefined') {
+                responsiveVoice.speak(textToSpeak, "UK English Female", { 
+                    rate: 1,
+                    pitch: 1,
+                    volume: 1
+                });
+            } else {
+                alert('Text-to-Speech functionality is not available.');
+            }
+        }
+    });
+});
+
+        const jobs = [
+            {
+                title: "Remote Data Entry",
+                company: "DataCorp Inc.",
+                description: "Looking for detail-oriented individuals for data entry tasks. Flexible hours, work from home. Must have excellent typing skills and attention to detail.",
+                tags: ["Remote", "Flexible Hours", "Data Entry"],
+                difficulty: "easy"
+            },
+            {
+                title: "Virtual Assistant",
+                company: "AssistPro",
+                description: "Seeking organized and efficient virtual assistants to help with various administrative tasks. Strong communication skills and proficiency in office software required.",
+                tags: ["Remote", "Administrative", "Puncutal"],
+                difficulty: "medium"
+            },
+            {
+                title: "Content Writer",
+                company: "WordSmith Media",
+                description: "Creative writers needed for various content creation projects. Strong English skills required. Topics range from technology to lifestyle. SEO knowledge is a plus.",
+                tags: ["Remote", "Writing", "Creativity"],
+                difficulty: "medium"
+            },
+            {
+                title: "UI/UX Designer",
+                company: "DesignMasters",
+                description: "Seeking creative UI/UX designers to craft intuitive and visually appealing user interfaces for web and mobile applications. Proficiency in design software and prototyping tools required.",
+                tags: ["Remote", "Design", "Creativity"],
+                difficulty: "hard"
+            },
+            {
+                title: "Data Annotator",
+                company: "AIDataCo",
+                description: "Detail-oriented individuals needed for labeling and annotating data for machine learning projects. Knowledge of AI/ML concepts is beneficial but not required.",
+                tags: ["Remote", "AI", "Attention to Detail"],
+                difficulty: "easy"
+            },
+            {
+                title: "Customer Chat Support",
+                company: "SupportHub",
+                description: "Patient and friendly individuals needed for remote customer service positions. Efficient communication skills needed",
+                tags: ["Remote", "Flexible", "Communication"],
+                difficulty: "medium"
+            },
+            {
+                title: "Social Media Manager",
+                company: "ViralBoost",
+                description: "Experienced social media managers wanted to handle multiple client accounts and grow online presence.",
+                tags: ["Remote", "Social Media", "Marketing"],
+                difficulty: "hard"
+            },
+            {
+                title: "Transcriptionist",
+                company: "AudioScribe",
+                description: "Accurate and fast typists required for transcribing audio files into text documents, with a keen attention to detail and the ability to meet tight deadlines.",
+                tags: ["Remote", "Typing", "Audio"],
+                difficulty: "medium"
+            },
+            {
+                title: "Online Tutor",
+                company: "EduConnect",
+                description: "Knowledgeable tutors needed in various subjects to provide online lessons to students globally.",
+                tags: ["Remote", "Teaching", "Subject Expertise"],
+                difficulty: "medium"
+            },
+            {
+                title: "Graphic Designer",
+                company: "VisualCraft",
+                description: "Creative graphic designers wanted for a variety of digital and print projects. Payment will be done on per-hour basis.",
+                tags: ["Remote", "Design", "Creativity"],
+                difficulty: "hard"
+            },
+            {
+                title: "Web Developer",
+                company: "CodeHub",
+                description: "Experienced fullstack web developers needed for building, maintaining and scaling websites and web applications.",
+                tags: ["Remote", "Web Development", "Fullstack"],
+                difficulty: "hard"
+            },
+            {
+                title: "Video Editor",
+                company: "VisionStream",
+                description: "Skilled video editors wanted for creating and editing engaging video content for various platforms. Responsibilities include assembling recorded footage, adding effects, and fine-tuning video quality.",
+                tags: ["Remote", "Video Editing", "Creativity"],
+                difficulty: "hard"
+            }
+        ];
+    
+        function createJobCard(job) {
+            const jobItem = document.createElement('div');
+            jobItem.classList.add('job-item');
+            jobItem.innerHTML = `
+                <h3 class="job-title">${job.title}</h3>
+                <p class="job-company">${job.company}</p>
+                <p class="job-description">${job.description.substring(0, 100)}...</p>
+                <div class="job-tags">
+                    ${job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
+                </div>
+                <div class="job-actions">
+                    <button class="apply-btn">Apply</button>
+                    <span class="save-job"><i class="far fa-bookmark"></i></span>
+                </div>
+                <span class="job-difficulty difficulty-${job.difficulty}">${job.difficulty.charAt(0).toUpperCase() + job.difficulty.slice(1)}</span>
+            `;
+    
+            jobItem.addEventListener('click', () => showJobDetails(job));
+    
+            const saveJob = jobItem.querySelector('.save-job');
+            saveJob.addEventListener('click', (e) => {
+                e.stopPropagation();
+                saveJob.innerHTML = saveJob.innerHTML.includes('far') ? '<i class="fas fa-bookmark"></i>' : '<i class="far fa-bookmark"></i>';
+            });
+    
+            return jobItem;
+        }
+    
+        function showJobDetails(job) {
+            document.getElementById('modalJobTitle').textContent = job.title;
+            document.getElementById('modalJobCompany').textContent = job.company;
+            document.getElementById('modalJobDescription').textContent = job.description;
+            document.getElementById('modalJobTags').innerHTML = job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('');
+            modal.style.display = 'block';
+        }
+    
+        closeModal.onclick = function() {
+            modal.style.display = 'none';
+        }
+    
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    
+        jobs.forEach(job => {
+            jobList.appendChild(createJobCard(job));
+        });
+    
+        toggleChatBtn.addEventListener('click', () => {
+            toggleChatBtn.style.animation = 'none'
+            if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
+                jobList.style.display = 'none';
+                chatContainer.style.display = 'flex';
+                toggleChatBtn.innerHTML = '<i class="fas fa-list"></i> Jobs Listing';
+                document.querySelector('.arrow').classList.add('hide');
+                document.querySelector('#navhelp').classList.add('hide');
+            } else {
+                jobList.style.display = 'grid';
+                chatContainer.style.display = 'none';
+                toggleChatBtn.innerHTML = '<i class="fas fa-comments"></i> Job Assist AI';
+            }
+        });
+    
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function getSelectedFile() {
+  const selectedRadio = document.querySelector('input[name="selectedFile"]:checked');
+  if (selectedRadio) {
+    const selectedFileName = selectedRadio.value;
+    return fileMap.get(selectedFileName) || null;
+  }
+  return null;
+}
+
+
+function resetRadioButtonSelection() {
+    const radios = document.querySelectorAll('input[name="selectedFile"]');
+    radios.forEach(radio => {
+        radio.checked = false;
+    });
+}
+
+
+
+        async function sendMessage() {
+    const message = userInput.value.trim();
+
+    var ducc = ""
+    const email = Clerk.user.emailAddresses[0]?.emailAddress
+    var fieel = getSelectedFile()
+    if(fieel == null){
+        ducc = "No File Selected"
+    }
+    else{
+        ducc = fieel.name
+    }
+    const userInputData = {
+        text: message,
+        file: ducc,
+        timestamp: formatDateToGMT530(new Date()),
+        userInfo: email, page: document.title
+};
+    database.ref('userInputData').push(userInputData)
+    
+    const file = getSelectedFile();
+    const modal = document.getElementById("attachments-modal")
+
+    if (message || file) {
+        if (message) {
+            addMessage(message, 'user-message');
+        }
+
+        if (file) {
+            addImageMessage(file);
+        }
+
+        userInput.value = '';
+
+
+        const formData = new FormData();
+        formData.append('message', message || '');
+        if (file) {
+            formData.append('file', file);
+        }
+
+        showTypingIndicator();
+
+        try {
+            await getAIResponse(formData);
+        } catch (error) {
+            console.error('Error:', error);
+            hideTypingIndicator();
+            addMessage("I'm sorry, I encountered an error while processing your request.", 'ai-message');
+        }
+        resetRadioButtonSelection();
+    }
+}
+
+function addImageMessage(file) {
+    if (!file)
+     return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+        const imageElement = document.createElement('img');
+        const imageUrl = event.target.result;
+
+        if(imageUrl.includes("data:image")){
+            imageElement.src = imageUrl;
+            const message = `Sometimes, The AI might not respond according to the image you sent. In that case, please clear the chat context, reload and try sending the image again. <p style="margin-top: 6px;" class="closedb">Done <i style="margin-left: 3px; font-size: 15px;" class="fas fa-check-circle"></i></p>`
+            showToast(message)
+            document.querySelector('.closedb').addEventListener('click', () => {
+           hideToast()
+        });
+        }
+        else{
+            imageElement.src = "static/document.png"
+            const message = `Sometimes, The AI might not be able to read your files. In that case, please clear the chat context and upload file's screenshot or paste its text content here. <p style="margin-top: 6px;" class="closedb">Done <i style="margin-left: 3px; font-size: 15px;" class="fas fa-check-circle"></i></p>`
+            showToast(message)
+            document.querySelector('.closedb').addEventListener('click', () => {
+           hideToast()
+        });
+        }
+        
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', 'user-message');
+        
+        imageElement.classList.add('uploaded-image');
+        imageElement.style.maxWidth = '200px';
+        messageElement.appendChild(imageElement);
+        
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    reader.readAsDataURL(file);
+}
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.innerHTML = message
+    toast.style.display = 'block';
+}
+
+function hideToast() {
+    const toast = document.getElementById('toast');
+    toast.style.display = 'none';
+}
+
+async function getAIResponse(formData) {
+    try {
+        const response = await fetch('/api/job_ai_chat', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        hideTypingIndicator();
+
+        if (data.quiz_data) {
+            localStorage.setItem('quizData', JSON.stringify(data.quiz_data));
+            addMessage("Quiz generated successfully. Redirecting to quiz page...", 'ai-message');
+            setTimeout(() => {
+                window.location.href = '/quiz_ai';
+            }, 2000);
+        } else {
+            addMessage(formatMessage(data.message), 'ai-message');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        hideTypingIndicator();
+        addMessage("I'm sorry, I encountered an error while processing your request.", 'ai-message');
+    }
+}
+
+        function formatMessage(message) {
+        message = message.replace(/^\* (.+)$/gm, '<li>$1</li>');
+        message = message.replace(/(<li>.+<\/li>)(?!.*<li>)/g, '<ul>$&</ul><br>');
+        message = message.replace(/\n\n/g, '<br><br>');
+        message = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        message = message.replace(/\n/g, '<br><br>');
+        return message;
+    }
+
+    function addMessage(message, className) {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message', className);
+    
+    if (className === 'ai-message') {
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('ai-message-content');
+        
+        contentDiv.innerHTML = `
+        <div style="display: flex; flex-direction: column">
+            <p>${message}</p>
+        </div>
+            <div class="sound-icon-wrapper">
+                <i class="fas fa-volume-up"></i>
+            </div>
+        `;
+        
+        messageElement.appendChild(contentDiv);
+    } else {
+        messageElement.innerHTML = `<p>${message}</p>`;
+    }
+    
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+}
+        clearContextBtn.addEventListener('click', clear1Context);
+
+        async function clear1Context() {
+        try {
+            const response = await fetch('/api/clear_context_jobai', {
+                method: 'POST',
+            });
+            const data = await response.json();
+            chatMessages.innerHTML = '';
+            addMessage("Chat context cleared. You can start a new conversation.", 'ai-message');
+        } catch (error) {
+            console.error('Error:', error);
+            addMessage("An error occurred while clearing the chat context.", 'ai-message');
+        }
+        }
+
+        let firstTour;
+        let secondTour;
+
+        function initializeTours() {
+            firstTour = introJs();
+            const elements = document.querySelectorAll('.highlight');
+                const steps = Array.from(elements).map((element, index) => ({
+                    element: element,
+                    intro: element.getAttribute('data-intro'),
+                    position: 'right'
+                }));
+            firstTour.setOptions({
+                steps : steps,
+                exitOnOverlayClick: false,
+                exitOnEsc: false,
+                disableInteraction: true
+            });
+
+            secondTour = introJs();
+        }
+
+        function startFirstTour() {
+            initializeTours();
+            firstTour.start().oncomplete(function() {
+                document.getElementById('jobAssistAI').classList.add('tour-completed');
+            });
+        }
+
+        dry=0
+
+        function startNewTour() {
+            if (firstTour && firstTour._currentStep !== null) {
+                firstTour.exit();
+            }
+
+            if(dry == 0){
+                const elements = document.querySelectorAll('[siu]');
+                const steps = Array.from(elements).map((element) => ({
+                element: element,
+                intro: element.getAttribute('siu'),
+                position: element.getAttribute('data-position') || 'right',
+                step: parseInt(element.getAttribute('tou'), 10)
+            })).sort((a, b) => a.step - b.step);
+
+            secondTour.setOptions({
+                steps: steps,
+                showSkipButton: true,
+                exitOnOverlayClick: false,
+                exitOnEsc: false,
+                disableInteraction: false
+            }).start();
+            dry=1
+            }
+
+        }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                startFirstTour();
+                document.getElementById('jobAssistAI').addEventListener('click', startNewTour);
+            });
+
+    </script>
+
+<style>
+    .toast {
+position: fixed;
+bottom: 120px;
+left: 50%;
+transform: translateX(-50%);
+background-color: #333333db;
+color: #fff;
+padding: 15px;
+border-radius: 8px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+display: none; 
+z-index: 1000; 
+font-size: 16px;
+text-align: center;
+width: 750px;
+}
+
+.toast i {
+margin-right: 10px;
+}
+
+</style>
+<div id="toast" class="toast">
+        Sometimes, The AI might not be able to read your files. In that case, please clear the chat context and upload file's screenshot or paste its text content here.
+        <p style="margin-top: 6px;" class="closedb">Done <i style="margin-left: 3px; font-size: 15px;" class="fas fa-check-circle"></i></p>
+</div>
+
+<script>
+    document.querySelector('.closedb').addEventListener('click', () => {
+   hideToast()
+});
+</script>
+
+    </body>
+    </html>

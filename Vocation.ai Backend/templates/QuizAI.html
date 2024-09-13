@@ -1,0 +1,2681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="static/vocational (1).png">
+    <title>Vocation.ai - Quiz AI</title>
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "https://vocation-ai.web.app/mobile";
+        }
+    </script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script>
+
+var checker = 1;
+
+function demoDone(){
+
+}
+
+        const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+        };
+        firebase.initializeApp(firebaseConfig);
+      
+      
+          const database = firebase.database();
+        
+          function formatDateToGMT530(date) {
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      return date.toLocaleString('en-IN', options).replace(',', '');
+    }
+    
+          document.addEventListener('click', function(event) {
+            const element = event.target;
+            const email = Clerk.user.emailAddresses[0]?.emailAddress
+    
+            const clickData = {
+              tagName: element.tagName,
+              id: element.id || null,
+              classList: Array.from(element.classList).join(' ') || null,
+              textContent: element.textContent.trim() || null,
+              timestamp: formatDateToGMT530(new Date()),
+              userInfo: email, page: document.title
+            };
+            if(clickData.textContent == "Done"){
+                if(checker == 2 || checker == 4){
+                    demoDone()
+                }
+                checker+=1
+            }
+            database.ref('clicks').push(clickData)
+          });
+        </script>
+                <style>
+    
+                    .zoom-notification {
+                        --primary-color: #830c4f;
+                        --secondary-color: #f2e1eb;
+                        font-family: 'Arial', sans-serif;
+                        display: none;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(131, 12, 79, 0.95);
+                        z-index: 9999999999;
+                        justify-content: center;
+                        align-items: center;
+                        backdrop-filter: blur(10px);
+                    }
+            
+                    .zoom-content {
+                        background-color: white;
+                        padding: 40px;
+                        border-radius: 20px;
+                        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+                        text-align: center;
+                        max-width: 90%;
+                        width: 550px;
+                    }
+            
+                    .zoom-content h2 {
+                        color: var(--primary-color);
+                        margin-top: 0;
+                        font-size: 28px;
+                        margin-bottom: 20px;
+                    }
+            
+                    .zoom-content p {
+                        color: #333;
+                        font-size: 16px;
+                        line-height: 1.6;
+                    }
+            
+                    .key {
+                        display: inline-block;
+                        background-color: #f0f0f0;
+                        border: 2px solid #d0d0d0;
+                        border-radius: 8px;
+                        padding: 8px 15px;
+                        margin: 0 5px;
+                        font-family: 'Courier New', monospace;
+                        font-weight: bold;
+                        font-size: 18px;
+                        color: #333333;
+                        box-shadow: 0 4px 0 #d0d0d0;
+                        transition: all 0.1s ease;
+                        cursor: pointer;
+                        margin-top: 20px;
+                        margin-bottom: 10px;
+                    }
+            
+                    .key:active {
+                        transform: translateY(4px);
+                        box-shadow: 0 0 0 #d0d0d0;
+                    }
+            
+                    .icon-zoom {
+                        font-size: 48px;
+                        margin-bottom: 20px;
+                    }
+            
+                    .width-info {
+                        background-color: var(--secondary-color);
+                        border-radius: 10px;
+                        padding: 15px;
+                        margin-top: 20px;
+                        font-size: 14px;
+                        color: var(--primary-color);
+                    }
+            
+                    #currentWidth, #requiredWidth {
+                        font-weight: bold;
+                        font-size: 18px;
+                    }
+                </style>
+                <div class="zoom-notification" id="zoomNotification">
+                    <div class="zoom-content">
+                    <div class="icon-zoom">🔍</div>
+                    <h2>Please Adjust Your View</h2>
+                    <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+                    <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+                    <div class="width-info">
+                    <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+                    <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+                    </div>
+                    </div>
+                    </div>
+                    <script>
+                            const zoomNotification = document.getElementById('zoomNotification');
+                            const currentWidthSpan = document.getElementById('currentWidth');
+                    
+                            function checkViewportWidth() {
+                                const currentWidth = window.innerWidth;
+                                currentWidthSpan.textContent = currentWidth;
+                    
+                                if (currentWidth < 1430) {
+                                    zoomNotification.style.display = 'flex';
+                                } else {
+                                    zoomNotification.style.display = 'none';
+                                }
+                            }
+                    
+                            window.addEventListener('resize', checkViewportWidth);
+                            window.addEventListener('load', checkViewportWidth);
+                        </script>
+        <script
+        async
+        crossorigin="anonymous"
+        data-clerk-publishable-key="REMOVED"
+        src="REMOVED"
+        type="text/javascript">
+      </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #830c4f;
+            --secondary-color: #f39c12;
+            --text-color: #333;
+            --bg-color: #f2e1eb;
+            --card-bg: #ffffff;
+            --progress-bg: #e0e0e0;
+            --progress-fill: #0c8340;
+        }
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+        .preview-boxes {
+    display: flex;
+    gap: 10px;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 100000000000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup-content {
+    background-color: #f2e1eb00;
+    margin: 15% auto;
+    padding: 20px;
+    width: 400px;
+    text-align: center;
+}
+
+.loader {
+    border: 16px solid #e5e4e5;
+    border-radius: 50%;
+    border-top: 16px solid #830C4F;
+    width: 120px;
+    height: 120px;
+    animation: spin 1.5s linear infinite;
+    margin: 0 auto;
+}
+
+.modal_score {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal_score-content {
+            background-color: #f2e1eb;
+            margin: 15% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            color: #830c4f;
+            box-shadow: 0 10px 30px rgba(131, 12, 79, 0.2);
+            transform: translateY(20px);
+            animation: slideUp 0.3s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            to { transform: translateY(0); }
+        }
+
+        .close {
+            color: #830c4f;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #5a0930;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal_score h2 {
+            margin-bottom: 30px;
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .score-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #830c4f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #f2e1eb;
+            font-size: 3em;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border-radius: 50%;
+            border: 2px solid #f2e1eb;
+        }
+
+        .score-text {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        #retryButton {
+            background-color: #830c4f;
+            color: #f2e1eb;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        #retryButton:hover {
+            background-color: #a91b60;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(131, 12, 79, 0.3);
+        }
+
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+.modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #f2e1eb;
+            margin: 5% auto; 
+            padding: 20px; 
+            border: 1px solid #888; 
+            width: 80%; 
+            max-width: 500px; 
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .textbox-container {
+            margin-bottom: 20px;
+        }
+        .textbox-container input[type="text"] {
+            width: 100%;
+            max-width: 100%;
+            padding: 15px;
+            border: 2px solid #830c4f;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .textbox-container input[type="text"]:focus {
+            border-color: #5a0930;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+        .textbox-container p {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+        .send-button {
+            background-color: #830c4f;
+            color: #f2e1eb;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .send-button:hover {
+            background-color: #5a0930;
+        }
+        .send-icon {
+            margin-right: 8px;
+        }
+        .container {
+            text-align: center;
+        }
+
+.preview-boxes video {
+    width: 150px;
+    height: 100px;
+    border: 2px solid #830C4F;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(131, 12, 79, 0.2);
+}
+
+
+        .highlight {
+            padding: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+
+        .introjs-bullets ul li a.active {
+            background: var(--primary-color) !important;
+            box-shadow: 0 0 0 2px rgba(131, 12, 79, 0.3);
+        }
+
+        .introjs-bullets a {
+            background: #9f9b9b !important;
+            transition: background 0.3s ease;
+        }
+
+        .introjs-tooltip {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            color: #830c4f;
+            font-size: 18px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+            padding: 25px;
+            max-width: 350px;
+        }
+
+        .introjs-tooltiptext {
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        .introjs-tooltip h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #830c4f;
+        }
+
+        .introjs-tooltip p {
+            margin-bottom: 15px;
+        }
+
+        .introjs-button {
+            background-color: #830c4f;
+            color: #fff;
+            text-shadow: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            font-size: 14px;
+            border: 2px solid #830c4f;
+            margin: 5px;
+        }
+
+        .introjs-skipbutton {
+            color: #830c4f;
+            background-color: transparent;
+            border: 2px solid #830c4f;
+        }
+
+        .arrow-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow {
+            font-size: 24px;
+            position: absolute;
+            animation: moveArrow 2s infinite;
+        }
+
+        @keyframes moveArrow {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(20px); }
+            100% { transform: translateX(0); }
+        }
+
+        .button-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .introjs-button:hover {
+            background-color: #f2e1eb;
+            color: #830c4f;
+            border: 2px solid #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-button:focus {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            color: #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+        }
+
+        .introjs-tooltip .introjs-skipbutton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 26px;
+            text-align: center;
+            border: 2px solid #830c4f;
+            background-color: transparent;
+            color: #830c4f;
+            transition: all 0.3s ease;
+        }
+
+        .introjs-tooltip .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .introjs-arrow {
+            border-color: #830c4f;
+        }
+
+        .introjs-floating {
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .quiz-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: #830c4f;
+            color: #333;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .quiz-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .quiz-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .topics-to-recover {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .topics-to-recover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+
+        .topics-to-recover h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .topics-to-recover ol {
+            color: #333;
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .topics-to-recover li {
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .topics-to-recover li:hover {
+            cursor: pointer;
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .topics-to-recover li::before {
+            content: '\2022';
+            color: var(--primary-color);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-right: 0.5em;
+        }
+
+        .reward-points {
+            background: linear-gradient(135deg, #FF7F3E, #FFA07A);
+            color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .reward-points:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .streak-counter {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .streak-counter:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+
+        .reward-points h3 {
+            margin-bottom: 5px;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .badge {
+            background-color: #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        .quiz-timer {
+            background-color: #830C4F;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            width: max-content;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            box-shadow: 0 5px 15px rgba(131, 12, 79, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .quiz-timer:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(131, 12, 79, 0.2);
+            cursor: pointer;
+        }
+
+        .quizHead{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .ai-switch {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+        }
+
+        .ai-options {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            border-radius: 5px;
+            overflow: hidden;
+
+        }
+
+        .ai-options a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .ai-switch:hover {
+            transform: translateY(-2px);
+            z-index: 100000;
+        }
+    
+        .ai-options a:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+        
+        .show {
+            display: block;
+        }
+
+        .ai-switch.active::after {
+            transform: rotate(180deg);
+        }
+
+        .progress-box {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .progress-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .gd-box {
+            background-color: #ffffff;
+            color: #333333;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(131, 12, 79, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .gd-box li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 1.1em;
+            color: #555;
+            transition: all 0.2s ease;
+        }
+
+        .gd-box h1 {
+            color: #830C4F;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+
+        .gd-box li:hover {
+            color: #830C4F;
+            cursor: pointer;
+        }
+
+        .gd-box li::before {
+            content: "";
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            transition: all 0.2s ease;
+        }
+
+        .gd-box li:nth-child(1)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+        .gd-box li:nth-child(2)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+        .gd-box li:nth-child(3)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+        .gd-box li:nth-child(4)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+        .gd-box li:nth-child(5)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+        .gd-box li:nth-child(6)::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23830C4F"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+
+
+        .gd-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(131, 12, 79, 0.2);
+
+        }
+
+
+        .progress-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .progress-bar {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            background: linear-gradient(90deg, var(--primary-color), #b30c6f);
+            height: 100%;
+            border-radius: 10px;
+            width: 0;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .dashboard {
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-title {
+            font-size: 30px;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .dashboard-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .stat-card p {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+
+        .stat-card1 {
+            background-color: #830C4F;
+            border-radius: 18px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .stat-card1:hover{
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            background-color: #b22776;
+        }
+
+        .stat-card1 h3 {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .stat-card1 p {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .quiz-card {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .quiz-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .quiz-card p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .quiz-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .quiz-difficulty {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .difficulty-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .easy { background-color: #4CAF50; }
+        .medium { background-color: #FFC107; }
+        .hard { background-color: #F44336; }
+
+        .quiz-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: #f0f0f0;
+        }
+
+        .quiz-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), #b30c6f);
+            transition: width 0.5s ease;
+        }
+
+
+        .completed-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(76, 175, 80, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #4CAF50;
+        }
+
+        .tutor-ai-insights {
+            background-color: #ffffff;
+            color: #333333;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(131, 12, 79, 0.1);
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .tutor-ai-insights:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .tutor-ai-insights h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .insight-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .insight-item:hover {
+            color: var(--primary-color);
+        }
+
+        .insight-icon {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        .quiz-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .back-to-dashboard {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+            font-family: 'Poppins', 'sans-serif';
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.1; }
+        }
+
+        .ai-switch-icon {
+            animation: fadeInOut 2s infinite;
+        }
+
+        .ai-switch.active .ai-switch-icon {
+            animation: none;
+        }
+
+        .back-to-dashboard:hover {
+            background-color: #6b0a40;
+        }
+
+        .quiz-question {
+            background-color: #ffffff;
+            color: #333333;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(131, 12, 79, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .quiz-question:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .quiz-options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .quiz-options li {
+            margin: 10px 0;
+        }
+
+        .quiz-options label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #830c4f;
+        }
+
+        .quiz-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            font-size: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+            font-family: 'Poppins', 'sans-serif';
+        }
+
+        .quiz-submit:hover {
+            background-color: #6b0a40;
+        }
+    </style>
+</head>
+<body>
+    <div id="scoreModal" class="modal_score">
+        <div class="modal_score-content">
+            <h2>Quiz Results</h2>
+            <div class="score-container">
+                <div class="score-circle">
+                    <span class="score">4</span>
+                </div>
+            </div>
+            <p class="score-text"><span class="score">4</span></p>
+            <p style="font-size: 12px;" class="score-text"><span class="score1d"></span></p>
+            <button style="margin-top: 20px;" onclick="donee()" id="retryButton">Done</button>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener("load", async function () {
+            await Clerk.load();
+            function pam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        const redirectUrl = pam('redirect_url');
+
+
+            if (!Clerk.user) {
+                if (redirectUrl) {
+                    setTimeout(() => {
+                        window.location.href = 'authentication';
+                    }, 12000);
+                }
+
+                else{
+                    window.location.href = 'authentication';
+                } 
+            }
+
+            else {
+                document.getElementById("app").innerHTML = `
+                    <div id="user-button"></div>
+                `;
+
+                const userButtonDiv = document.getElementById("user-button");
+
+                Clerk.mountUserButton(userButtonDiv);
+            }
+        });
+    </script>
+<div id="quizStatusPopup" class="popup" style="display: none;">
+    <div class="popup-content">
+        <div id="popup-body">
+            <div id="loader" class="loader"></div>
+            <p id="popup-message" style="display: none;"></p>
+        </div>
+    </div>
+</div>
+
+</div>
+    <div class="quiz-container">
+        <div id="quizModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 style="margin-top: 15px;">Generate Quizzes & Flashcards</h2>
+                <div style="margin-top: 26px;" class="textbox-container">
+                    <input type="text" id="topicInput" placeholder="Enter a topic (max 10 words)" maxlength="100" oninput="validateInput()">
+                    <p id="charCount">0/10 words</p>
+                </div>
+                <div style="margin-bottom: 30px; margin-top: 10px;" class="radio-container">
+                    <label style="font-weight: 600;"><input style="accent-color: #830c4f;" type="radio" name="generationType" value="quiz" checked> Objective Quiz</label>
+                    <label style="font-weight: 600; margin-left: 20px;"><input style="accent-color: #830c4f;" type="radio" name="generationType" value="flashcards"> Flashcards</label>
+                    <label style="font-weight: 600; margin-left: 20px;"><input style="accent-color: #830c4f;" type="radio" name="generationType" value="subjective"> Subjective Quiz</label>
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <br>
+                    <button class="send-button">
+                        <i class="fas fa-wand-magic-sparkles send-icon"></i>Generate
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <div id="flashcardModal" class="modal1">
+            <div class="modal1-content flashcard-content">
+                <span class="close" onclick="closeFlashcardModal()">&times;</span>
+                <div id="flashcardContainer">
+                </div>
+                <p align="center">Tap to flip</p>
+                <p id="cardIndex" align="center">1 / 5</p>
+                <div style="display: flex; justify-content: center; align-items: center;">
+                <button class="nav-button" id="prevFlashcard"><i class="fas fa-arrow-left"></i></button>
+                <button class="nav-button" id="nextFlashcard"><i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <style>
+
+            
+.modal1 {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal1-content {
+    background-color: #f2e1eb;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+}
+
+ 
+
+.flashcard {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 250px;
+    margin: 20px auto;
+    perspective: 1000px;
+}
+
+.flashcard-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.flashcard-front,
+.flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 30px;
+}
+
+.flashcard-front {
+    background: #830C4F;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+}
+
+.flashcard-back {
+    background: #fff;
+    color: #000;
+    transform: rotateY(180deg);
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+}
+
+.flashcard.flip .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.nav-button {
+    background-color: #830c4f;
+    color: #f2e1eb;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.nav-button i {
+    margin: 0;
+}
+
+.nav-button:hover {
+    background-color: #6c093f;
+}
+
+.flip-message {
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+        </style>
+        <aside class="sidebar">
+            <div class="logo"><a href="https://vocation-ai.web.app/"><img src="static/Vocation.ai Logo (Horizontal cropped).png" style="height: 65px;"></a></div>
+            
+            <div class="reward-points" data-intro="Your Reward Points!" data-step="3">
+                <h3>Reward Points</h3>
+                <p id="pointsDisplay">500 pts</p>
+            </div>
+
+            <div class="badges" data-intro="Your Badges!" data-step="4">
+                <div class="badge" title="Quick Learner">🚀</div>
+                <div class="badge" title="Perfect Score">🏆</div>
+                <div class="badge" title="Streak Master">🔥</div>
+            </div>
+
+            <div data-intro="Your Daily Streaks!" data-step="5" class="streak-counter">
+                <h3>Current Streak</h3>
+                <p id="streakDisplay">5 days</p>
+            </div>
+
+            <div data-intro="Your progress, based on your previous quiz performances." data-step="6" class="progress-box">
+                <h3 style="cursor: pointer;">Last Assessments <i class="fas fa-angle-right"></i></h3>
+                <div class="module" style="color: black;">
+                    <p>Basic Algebra</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 80%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 10px;">
+                    <p>English Grammar</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 65%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 10px;">
+                    <p>MS Excel Basics</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 90%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div data-intro="This job readiness bar shows how much more you need to work before unlocking a job credit." data-step="7" class="progress-box">
+                <h3 style="cursor: pointer;">Job Readiness  <i class="fas fa-angle-right"></i></h3>
+                <div class="module" style="color: black;">
+                    <p>Data Entry</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 75%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 10px;">
+                    <p>Content Writing</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 60%;"></div>
+                    </div>
+                </div>
+                <div class="module" style="color: black; margin-top: 10px;">
+                    <p>Customer Service</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div data-intro="Topics you need to cover again." data-step="8" class="topics-to-recover">
+                <h3 style="cursor: pointer;">Weak Topics  <i class="fas fa-angle-right"></i></h3>
+                <ol style="color: #333;">
+                    <li>Multiplication - Arithmetic</li>
+                    <li>Writing Skills - English</li>
+                    <li>Tenses - Grammar</li>
+                    <li>Formula - Ms Excel</li>
+                </ol>
+            </div>
+        </aside>
+
+        <main class="quiz-main">
+            <header style="justify-content: space-between; display: flex;" siu="Let's explore the Quiz interface!" tou="11" class="quiz-header">
+                <h2 data-intro="QuizAI tests your knowledge and job readiness." data-step="1" class="ai-switch" id="aiSwitch">
+                    Quiz AI
+                    <i class="fas fa-angle-down ai-switch-icon" style="margin-left: 3px;"></i>
+                    <div class="ai-options" id="aiOptions">
+                        <a href="#" id="tutorAI">Tutor AI</a>
+                        <a href="#" id="jobAI">Job AI</a>
+                        <a href="#" id="Community">Community</a>
+                        <a href="#" id="UserJourneyFlow">User Flow</a>
+                    </div>
+                </h2>
+                <div id="app"></div>
+                <style>
+                    .cl-userButtonPopoverCard {
+                        background-color: #9b0158;
+                        color: white !important;
+                    }
+                    .cl-userButtonPopoverActionButtonText{
+                        color: white;
+                    }
+                    .cl-navbar{
+                        background-color: #f2e1eb;
+                        border-radius: 16px;
+                    }
+                    .cl-internal-rx251b{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-internal-60laz0{
+                        border-right: 1px solid rgb(131, 12, 79, 0.5);
+                    }
+                    .cl-pageScrollBox{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-internal-1yejcov{
+                        color: white !important;
+                    }
+                    .cl-userPreviewSecondaryIdentifier{
+                        color: white;
+                    }
+                    .cl-userButtonPopoverFooter{
+                        display: none;
+                    }
+                    .cl-internal-b3fm6y{
+                        display: none;
+                    }
+                    .cl-userButtonTrigger:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-headerTitle{
+                        color: #830c4f;
+                    }
+                    .cl-internal-1e71drn{
+                        color: #830c4f;
+                    }
+                    .cl-internal-141wpcl{
+                        color: #830c4f;
+                    }
+                    .cl-scrollBox{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-internal-1xg0u4s{
+                        border-bottom: 1px solid rgb(131, 12, 79, 0.6);
+                    }
+                    .cl-profileSectionPrimaryButton{
+                        color: #830c4f;
+                    }
+                    .cl-profileSectionPrimaryButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-profileSectionPrimaryButton:active{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-profileSectionPrimaryButton:hover{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-navbarButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-accordionTriggerButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-badge{
+                        color: #830c4f;
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-formButtonPrimary{
+                        background-color: #830c4f;
+                    }
+                    .cl-formButtonPrimary .cl-formButtonReset{
+                        background-color: #830c4f;
+                    }
+                    .cl-formButtonReset:hover{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-formButtonReset{
+                        color: #830c4f;
+                    }
+                    .cl-formButtonPrimary:hover{
+                        background-color: #460429;
+                    }
+                    .cl-formButtonPrimary:active{
+                        background-color: #460429;
+                    }
+                    .cl-formButtonReset:active{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-profileSectionPrimaryButton:active{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-avatarImageActionsUpload{
+                        color: #830c4f;
+                    }
+                    .cl-avatarImageActionsRemove{
+                        color: #600639;
+                    }
+                    .cl-avatarImageActionsUpload:focus .cl-avatarImageActionsRemove:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formFieldInput:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-internal-1sf6rji{
+                        color: #830c4f
+                    }
+                    .cl-internal-1sf6rji:hover{
+                        background-color: rgb(131, 12, 79, 0.2);
+                    }
+                    .cl-internal-f7yy9s:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-modalCloseButton{
+                        color: #830c4f;
+                    }
+                    .cl-modalCloseButton:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formButtonReset:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formButtonPrimary:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-formFieldInput{
+                        accent-color: #830c4f;
+                    }
+                    .cl-internal-1sf6rji:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-internal-1sf6rji:active{
+                        background-color: #f2e1eb;
+                    }
+                    .cl-breadcrumbsItem:focus{
+                        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+                    }
+                    .cl-userPreviewSecondaryIdentifier{
+                        color: #d1b2c2;
+                    }
+                </style>
+            </header>
+            <div class="dashboard" id="quizDashboard">
+                <div class="dashboard-header" data-intro="All quizzes and flashcards are automatically generated by QuizAI using the knowledge base. Questions are based on what you've learnt in TutorAI modules. QuizAI also monitors webcam activity, shared screen content, and tab switching to prevent cheating." data-step="2">
+                    <h2 class="dashboard-title">Your Quiz Journey <i class="fas fa-angle-right"></i></h2>
+                    <div class="dashboard-stats">
+                        <div style="margin-right: 50px;" class="arrow-container">
+                            <div class="arrow">
+                                <i style="color: #830C4F;" class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        <button data-intro="Start generating quizzes and flashcards!" data-step="10" onclick="openModal()" class="stat-card1">
+                            <h3 style="color: white; font-size: 20px;">Generate Now!</h3>
+                        </button>
+                        <div class="stat-card">
+                            <h3>15</h3>
+                            <p>Quizzes Completed</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>87%</h3>
+                            <p>Average Score</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>5</h3>
+                            <p>Day Streak</p>
+                        </div>
+                    </div>
+                </div>
+
+<script>
+        function validateInput() {
+            const input = document.getElementById('topicInput');
+            const charCount = document.getElementById('charCount');
+            const words = input.value.split(/\s+/).filter(Boolean);
+            if (words.length > 10) {
+                input.value = words.slice(0, 10).join(' ');
+            }
+            charCount.textContent = `${words.length}/10 words`;
+        }
+
+        function openModal() {
+            document.getElementById('quizModal').style.display = 'block';
+            document.querySelector('.arrow').classList.add('hide');
+        }
+
+        function closeModal() {
+            document.getElementById('quizModal').style.display = 'none';
+        }
+
+        function openFlashcardModal(topic) {
+    document.getElementById('flashcardModal').style.display = 'block';
+}
+
+function closeFlashcardModal() {
+    document.getElementById('flashcardModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    if (event.target == document.getElementById('quizModal')) {
+        closeModal();
+    } else if (event.target == document.getElementById('flashcardModal')) {
+        closeFlashcardModal();
+    }
+}
+
+
+
+                </script>
+                <div class="quiz-grid">
+                    <div class="quiz-card" data-quiz-id="1">
+                        <h3>Ms Excel - Formulae</h3>
+                        <p>Master essential Excel formulae to streamline your data tasks.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot easy"></span>
+                                Easy
+                            </span>
+                            <span>10 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 100%;"></div>
+                        </div>
+                        <div class="completed-overlay">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div onclick="startNewTour()" class="quiz-card" data-quiz-id="2">
+                        <h3>Arithmetic - Addition</h3>
+                        <p>Explore the basics of addition to enhance your arithmetic skills.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot medium"></span>
+                                Medium
+                            </span>
+                            <span>15 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                    <div onclick="startNewTour()" class="quiz-card" data-quiz-id="3">
+                        <h3>Arithmetic - Statistics</h3>
+                        <p>Delve into fundamental statistics concepts to boost arithmetic knowledge.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot medium"></span>
+                                Medium
+                            </span>
+                            <span>12 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div onclick="startNewTour()" class="quiz-card" data-quiz-id="4">
+                        <h3>UI/UX - Wireframing</h3>
+                        <p>Learn the essentials of wireframing to enhance your UI/UX designs.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot hard"></span>
+                                Hard
+                            </span>
+                            <span>20 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 30%;"></div>
+                        </div>
+                    </div>
+                    <div onclick="startNewTour()" class="quiz-card" data-quiz-id="5">
+                        <h3>English - Tenses</h3>
+                        <p>Master English tenses to improve your grammar and communication skills.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot easy"></span>
+                                Easy
+                            </span>
+                            <span>15 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="quiz-card" data-quiz-id="6">
+                        <h3>English - Vocabulary</h3>
+                        <p>Expand your English vocabulary for more effective communication and writing.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot hard"></span>
+                                Hard
+                            </span>
+                            <span>15 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 100%;"></div>
+                        </div>
+                        <div class="completed-overlay">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div onclick="startNewTour()" class="quiz-card" data-quiz-id="7">
+                        <h3>Arithmetic - Fractions</h3>
+                        <p>Master the basics of fractions and their operations.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot medium"></span>
+                                Medium
+                            </span>
+                            <span>12 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 40%;"></div>
+                        </div>
+                    </div>
+    
+                    <div class="quiz-card" data-quiz-id="8">
+                        <h3>Computer Basics - Hardware</h3>
+                        <p>Learn about essential computer hardware components.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot easy"></span>
+                                Easy
+                            </span>
+                            <span>10 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 100%;"></div>
+                        </div>
+                        <div class="completed-overlay">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+    
+                    <div onclick="startNewTour()" class="quiz-card" data-quiz-id="9">
+                        <h3>English - Idioms and Phrases</h3>
+                        <p>Enhance your English with common idioms and phrases.</p>
+                        <div class="quiz-meta">
+                            <span class="quiz-difficulty">
+                                <span class="difficulty-dot hard"></span>
+                                Hard
+                            </span>
+                            <span>15 questions</span>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>    
+                </div>
+                <div class="tutor-ai-insights" data-intro="TutorAI Insights!" data-step="9">
+                    <h3>TutorAI Insights <i class="fas fa-angle-right"></i></h3>
+                    <div class="insight-item">
+                        <i class="fas fa-lightbulb insight-icon"></i>
+                        <p>You're excelling in Arithmetic topics. Consider trying the advanced Multiplication quiz!</p>
+                    </div>
+                    <div class="insight-item">
+                        <i class="fas fa-chart-line insight-icon"></i>
+                        <p>Your time management skills have improved by 20% this week. Great job!</p>
+                    </div>
+                    <div class="insight-item">
+                        <i class="fas fa-user-graduate insight-icon"></i>
+                        <p>Based on your progress, you're ready for intermediate-level Ms Excel topics.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="quiz-content" id="quizContent">
+                <button class="back-to-dashboard" id="backToDashboard"><i class="fas fa-arrow-left" style="margin-right: 7px;"></i>Back to Dashboard</button>
+                <div siu="These are the basic quiz guidelines. QuizAI will monitor your shared screen content, tab switching and camera activity to prevent cheating." tou="12" class="gd-box">
+                    <h1 style="cursor: pointer;">Quiz Guidelines</h1>
+                    <ul>
+                        <li>Ensure your camera is on throughout the quiz.</li>
+                        <li>Keep your entire screen shared at all times.</li>
+                        <li>Avoid switching between tabs or applications.</li>
+                        <li>QuizAI will monitor all these activities and quiz will be automatically submitted if any cheating is found.</li>
+                        <li>Read each question carefully and select the best answer from the options provided.</li>
+                        <li>Once you are satisfied with your answers, click on the "Submit" button.</li>
+                    </ul>            
+                </div>
+                <div class="gd-box" style="margin-bottom: 39px;">
+                    <h1 style="cursor: pointer;">Start Proctoring</h1>
+                    <button siu="Start your webcam for proctoring" tou="13" class="back-to-dashboard" id="startCamera">Start Camera <i class="fas fa-video" style="margin-left: 7px;"></i></button>
+                    <button siu="Share your screen for proctoring" tou="14" style="margin-left: 10px;" class="back-to-dashboard" id="startScreenShare">Share Screen <i class="fas fa-desktop" style="margin-left: 7px;"></i></button>
+                    <div class="preview-boxes">
+                        <video id="cameraPreview" autoplay muted style="display: none;"></video>
+                        <video id="screenPreview" autoplay muted style="display: none;"></video>
+                    </div>
+                </div>
+                                
+                <div style="margin-bottom: 20px;" class="quizHead">
+                <div siu="Quiz Timer!" tou="15" class="quiz-timer" id="quizTimer"><i style="margin-right: 10px;" class="fas fa-clock"></i>Time remaining: 10:00</div>
+                <div siu="Questions Tracker!" tou="16" class="quiz-timer" id="quizTimer"><i style="margin-right: 10px;" class="fas fa-check-circle"></i>Questions Answered: 2/5</div>
+                <div siu="Questions saved for review." tou="17" class="quiz-timer" id="quizTimer"><i style="margin-right: 10px;" class="fas fa-bookmark"></i>Marked for Review: 4</div>
+                </div>
+                <div class="quiz-question" siu="Question Box!" tou="18">
+                    <h3>Question 1:</h3>
+                    <p>Which element has the chemical symbol 'O'?</p>
+                    <ul class="quiz-options">
+                        <li>
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                Oxygen
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                Gold
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                Silver
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q1" value="d">
+                                Hydrogen
+                            </label>
+                        </li>
+                    </ul>
+                    <style>
+                        .dob {
+                            color: #830c4fdc;
+                            cursor: pointer;
+                            font-size: 20px;
+                            transition: 0.3s;
+                        }
+
+                        .dob:hover {
+                            color: #6c003ddc;
+                            font-size: 22px;
+                        }
+                    </style>
+                    <div style="display: flex; justify-content: right;">
+                    <i class="far fa-bookmark dob"></i>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <h3>Question 2:</h3>
+                    <p>Which of the following is NOT a basic principle of effective time management?</p>
+                    <ul class="quiz-options">
+                        <li>
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Prioritizing tasks
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Setting goals
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                Multitasking constantly
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q2" value="d">
+                                Creating a schedule
+                            </label>
+                        </li>
+                    </ul>
+                    <div style="display: flex; justify-content: right;">
+                        <i class="far fa-bookmark dob"></i>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <h3>Question 3:</h3>
+                    <p>Which planet is known as the Red Planet?</p>
+                    <ul class="quiz-options">
+                        <li>
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Earth
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                Mars
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Jupiter
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q3" value="d">
+                                Venus
+                            </label>
+                        </li>
+                    </ul>
+                    <div style="display: flex; justify-content: right;">
+                        <i class="far fa-bookmark dob"></i>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <h3>Question 4:</h3>
+                    <p>Which of the following is an example of a strong password?</p>
+                    <ul class="quiz-options">
+                        <li>
+                            <label>
+                                <input type="radio" name="q4" value="a">
+                                password123
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q4" value="b">
+                                qwerty
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q4" value="c">
+                                P@ssw0rd!
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q4" value="d">
+                                abcdefgh
+                            </label>
+                        </li>
+                    </ul>
+                    <div style="display: flex; justify-content: right;">
+                        <i class="far fa-bookmark dob"></i>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <h3>Question 5:</h3>
+                    <p>What is the largest mammal in the world?</p>
+                    <ul class="quiz-options">
+                        <li>
+                            <label>
+                                <input type="radio" name="q5" value="b">
+                                Elephant
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q5" value="c">
+                                Blue Whale
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q5" value="d">
+                                Giraffe
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q5" value="d">
+                                Hippopotamus
+                            </label>
+                        </li>
+                    </ul>
+                    <div style="display: flex; justify-content: right;">
+                        <i class="far fa-bookmark dob"></i>
+                    </div>
+                </div>
+                <button siu="Hit 'Submit' when done!" tou="19" class="quiz-submit">Submit <i class="far fa-check-circle" style="margin-left: 1px;"></i></button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const quizDashboard = document.getElementById('quizDashboard');
+        const quizContent = document.getElementById('quizContent');
+        const backToDashboard = document.getElementById('backToDashboard');
+        const quizCards = document.querySelectorAll('.quiz-card');
+
+        const aiSwitch = document.getElementById('aiSwitch');
+        const aiOptions = document.getElementById('aiOptions');
+        const jobAI = document.getElementById('jobAI');
+        const tutorAI = document.getElementById('tutorAI');
+        const Community = document.getElementById('Community');
+
+        document.getElementById('startCamera').addEventListener('click', function() {
+    const cameraPreview = document.getElementById('cameraPreview');
+    const cameraButton = this;
+
+
+    if (cameraButton.textContent.trim() === 'Start Camera') {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                cameraPreview.srcObject = stream;
+                cameraPreview.style.display = 'block';
+                cameraButton.innerHTML = 'Stop Camera <i class="fas fa-video-slash" style="margin-left: 7px;"></i>';
+            })
+            .catch(err => {
+                alert('Camera access denied.');
+            });
+    } else {
+        if (cameraPreview.srcObject) {
+            cameraPreview.srcObject.getTracks().forEach(track => track.stop());
+            cameraPreview.style.display = 'none';
+        }
+        cameraButton.innerHTML = 'Start Camera <i class="fas fa-video" style="margin-left: 7px;"></i>';
+    }
+});
+
+document.getElementById('startScreenShare').addEventListener('click', function() {
+    const screenPreview = document.getElementById('screenPreview');
+    const screenButton = this;
+
+    if (screenButton.textContent.trim() === 'Share Screen') {
+        navigator.mediaDevices.getDisplayMedia({ video: true })
+            .then(stream => {
+                screenPreview.srcObject = stream;
+                screenPreview.style.display = 'block';
+                screenButton.innerHTML = 'Stop Screen Share <i class="fas fa-ban" style="margin-left: 7px;"></i>';
+            })
+            .catch(err => {
+                alert('Screen sharing denied.');
+            });
+    } else {
+        if (screenPreview.srcObject) {
+            screenPreview.srcObject.getTracks().forEach(track => track.stop());
+            screenPreview.style.display = 'none';
+        }
+        screenButton.innerHTML = 'Share Screen <i class="fas fa-desktop" style="margin-left: 7px;"></i>';
+    }
+});
+
+
+
+        aiSwitch.addEventListener('click', function(event) {
+            event.stopPropagation();
+            this.classList.toggle('active');
+            aiOptions.classList.toggle('show');
+        });
+
+        jobAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/JobAI.html';
+        });
+
+        tutorAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/TutorAI.html';
+        });
+
+        Community.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/Community.html';
+        });
+
+        UserJourneyFlow.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'https://vocation-ai.web.app/user-journey.html';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.ai-switch')) {
+                aiSwitch.classList.remove('active');
+                aiOptions.classList.remove('show');
+            }
+        });
+
+        quizCards.forEach(card => {
+            card.addEventListener('click', () => {
+                if (!card.querySelector('.completed-overlay')) {
+                    quizDashboard.style.display = 'none';
+                    quizContent.style.display = 'block';
+                }
+            });
+        });
+
+        backToDashboard.addEventListener('click', () => {
+            quizContent.style.display = 'none';
+            quizDashboard.style.display = 'block';
+        });
+
+        document.querySelector('.quiz-submit').addEventListener('click', function() {
+
+
+        document.getElementsByClassName("score")[0].textContent = "5"
+        
+        document.getElementsByClassName("score")[1].textContent = `Great job! You scored 5 out of 5`
+        
+        document.getElementsByClassName("score1d")[0].textContent = `This was a demo quiz, to get real scores, generate a quiz using "Generate Now" button.`
+        
+        document.getElementById("scoreModal").style.display = "block";
+
+        });
+        let firstTour;
+        let secondTour;
+
+        function initializeTours() {
+            firstTour = introJs();
+            const elements = document.querySelectorAll('.highlight');
+                const steps = Array.from(elements).map((element, index) => ({
+                    element: element,
+                    intro: element.getAttribute('data-intro'),
+                    position: 'right'
+                }));
+            firstTour.setOptions({
+                steps : steps,
+                exitOnOverlayClick: false,
+                exitOnEsc: false,
+                disableInteraction: true
+            });
+
+            secondTour = introJs();
+        }
+
+        function startFirstTour() {
+            initializeTours();
+            firstTour.start().oncomplete(function() {
+                document.getElementById('jobAssistAI').classList.add('tour-completed');
+            });
+        }
+
+        dry=0
+
+        function startNewTour() {
+            if (firstTour && firstTour._currentStep !== null) {
+                firstTour.exit();
+            }
+
+            if(dry == 0){
+                const elements = document.querySelectorAll('[siu]');
+                const steps = Array.from(elements).map((element) => ({
+                element: element,
+                intro: element.getAttribute('siu'),
+                position: element.getAttribute('data-position') || 'right',
+                step: parseInt(element.getAttribute('tou'), 10)
+            })).sort((a, b) => a.step - b.step);
+
+            secondTour.setOptions({
+                steps: steps,
+                showSkipButton: true,
+                exitOnOverlayClick: false,
+                exitOnEsc: false,
+                disableInteraction: false
+            }).start();
+            dry=1
+            }
+
+        }
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const quizData = JSON.parse(localStorage.getItem('quizData'));
+    if (quizData) {
+        const quizCard = createQuizCard(quizData);
+        document.querySelector('.quiz-grid').appendChild(quizCard);
+
+        quizCard.addEventListener('click', () => {
+            displayQuizQuestions(quizData);
+        });
+
+        localStorage.removeItem('quizData');
+    }
+});
+
+function createQuizCard(quizData) {
+    const quizCard = document.createElement('div');
+    quizCard.classList.add('quiz-card');
+    quizCard.dataset.quizId = Date.now();
+
+    quizCard.innerHTML = `
+        <h3>${quizData.title}</h3>
+        <p>${quizData.description}</p>
+        <div class="quiz-meta">
+            <span class="quiz-difficulty">
+                <span class="difficulty-dot ${quizData.difficulty}"></span>
+                ${quizData.difficulty.charAt(0).toUpperCase() + quizData.difficulty.slice(1)}
+            </span>
+            <span>${quizData.questions.length} questions</span>
+        </div>
+        <div class="quiz-progress">
+            <div class="quiz-progress-bar" style="width: 0%;"></div>
+        </div>
+    `;
+
+    return quizCard;
+}
+
+function displayFlashcards(flashcards) {
+    const flashcardContainer = document.getElementById('flashcardContainer');
+    flashcardContainer.innerHTML = '';
+
+    flashcards.forEach((flashcard, index) => {
+        const flashcardElement = document.createElement('div');
+        flashcardElement.classList.add('flashcard');
+
+        flashcardElement.innerHTML = `
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <p>${flashcard.front}</p>
+                </div>
+                <div class="flashcard-back">
+                    <p>${flashcard.back}</p>
+                </div>
+            </div>
+        `;
+
+        flashcardElement.addEventListener('click', () => {
+            flashcardElement.classList.toggle('flip');
+        });
+
+        flashcardContainer.appendChild(flashcardElement);
+    });
+
+    currentFlashcardIndex = 0;
+    updateFlashcardDisplay();
+}
+
+
+function updateFlashcardDisplay() {
+    const flashcards = document.querySelectorAll('.flashcard');
+    const cardIndex = document.getElementById("cardIndex")
+    flashcards.forEach((flashcard, index) => {
+        flashcard.style.display = (index === currentFlashcardIndex) ? 'block' : 'none';
+        cardIndex.innerHTML = `${currentFlashcardIndex+1}/5`
+    });
+}
+
+function openStatusPopup() {
+    const popup = document.getElementById('quizStatusPopup');
+    const loader = document.getElementById('loader');
+    const message = document.getElementById('popup-message');
+
+    popup.style.display = 'block';
+    loader.style.display = 'block';
+    message.style.display = 'none';
+}
+
+function closeStatusPopup() {
+    const popup = document.getElementById('quizStatusPopup');
+    popup.style.display = 'none';
+}
+
+function generateContent() {
+    const topic = document.getElementById('topicInput').value;
+    const generationType = document.querySelector('input[name="generationType"]:checked').value;
+
+    const quizFlashInput = topic.trim();
+    const email = Clerk.user.emailAddresses[0]?.emailAddress
+
+    const userInputData = {
+        quizFlashInput: quizFlashInput,
+        timestamp: formatDateToGMT530(new Date()),
+        userInfo: email, page: document.title,
+        generationType: generationType.trim()
+};
+    database.ref('userInputData').push(userInputData)
+
+    openStatusPopup();
+
+    function navigateToLearningPage(mainTopic) {
+    const encodedMainTopic = encodeURIComponent(mainTopic);
+    window.location.href = `subjective_quiz_ai?topic=${encodedMainTopic}`;
+}
+const requestBody = generationType === 'quiz' ? { topic: topic } : { topic: topic };
+let apiEndpoint;
+
+switch (generationType) {
+    case 'quiz':
+        apiEndpoint = '/api/generate_quiz';
+        break;
+    case 'flashcards':
+        apiEndpoint = '/api/generate_flashcards';
+        break;
+    case 'subjective':
+        navigateToLearningPage(topic)
+        break;
+    default:
+        throw new Error('Invalid generationType');
+}
+
+
+    fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+    })
+    .then(response => response.json())
+    .then(data => {
+        const loader = document.getElementById('loader');
+        const message = document.getElementById('popup-message');
+        const popup = document.getElementById('quizStatusPopup');
+
+        loader.style.display = 'none';
+        message.style.display = 'none';
+        popup.style.display = 'none';
+
+        if (generationType === 'quiz') {
+            if (data.quiz_data) {
+                displayQuizCard(data.quiz_data);
+                closeModal();
+                message.innerHTML = "Quiz generated! Scroll down to see it.";
+                document.querySelector('.quiz-grid').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                message.innerHTML = data.error || "An error occurred.";
+            }
+        } else {
+            if (data.flashcards) {
+                displayFlashcards(data.flashcards);
+                openFlashcardModal();
+            } else {
+                message.innerHTML = data.error || "An error occurred.";
+            }
+        }
+    })
+    .catch(error => {
+        const loader = document.getElementById('loader');
+        const message = document.getElementById('popup-message');
+
+        loader.style.display = 'none';
+        message.style.display = 'block';
+        message.innerHTML = "An error occurred. Please try again later.";
+        console.error('Error:', error);
+    });
+}
+
+
+
+document.querySelector('.send-button').addEventListener('click', generateContent);
+
+function displayQuizCard(quizData) {
+    const quizGrid = document.querySelector('.quiz-grid');
+    const quizCard = createQuizCard(quizData);
+    
+    quizCard.addEventListener('click', () => {
+        displayQuizQuestions(quizData);
+    });
+
+    quizGrid.appendChild(quizCard);
+}
+
+let currentFlashcardIndex = 0;
+
+document.getElementById('prevFlashcard').addEventListener('click', () => {
+    const flashcards = document.querySelectorAll('.flashcard');
+    currentFlashcardIndex = Math.max(currentFlashcardIndex - 1, 0);
+    updateFlashcardDisplay();
+});
+
+document.getElementById('nextFlashcard').addEventListener('click', () => {
+    const flashcards = document.querySelectorAll('.flashcard');
+    currentFlashcardIndex = Math.min(currentFlashcardIndex + 1, flashcards.length - 1);
+    updateFlashcardDisplay();
+});
+
+
+function donee() {
+    document.getElementById('quizContent').style.display = 'none';
+        document.getElementById('quizDashboard').style.display = 'block';
+        document.getElementById("scoreModal").style.display = 'none'
+    }
+
+function displayQuizQuestions(quizData) {
+    const quizContent = document.getElementById('quizContent');
+    quizContent.innerHTML = '';
+
+    const backButton = document.createElement('button');
+    backButton.classList.add('back-to-dashboard');
+    backButton.innerHTML = '<i class="fas fa-arrow-left" style="margin-right: 7px;"></i>Back to Dashboard';
+    backButton.addEventListener('click', () => {
+        quizContent.style.display = 'none';
+        document.getElementById('quizDashboard').style.display = 'block';
+    });
+    quizContent.appendChild(backButton);
+
+    const quizHeader = document.createElement('div');
+    quizHeader.innerHTML = `
+        <div siu="These are the basic quiz guidelines. QuizAI will monitor your shared screen content, tab switching and camera activity to prevent cheating." tou="12" class="gd-box">
+            <h1 style="cursor: pointer;">Quiz Guidelines</h1>
+            <ul>
+                <li>Ensure your camera is on throughout the quiz.</li>
+                <li>Keep your entire screen shared at all times.</li>
+                <li>Avoid switching between tabs or applications.</li>
+                <li>QuizAI will monitor all these activities and quiz will be automatically submitted if any cheating is found.</li>
+                <li>Read each question carefully and select the best answer from the options provided.</li>
+                <li>Once you are satisfied with your answers, click on the "Submit" button.</li>
+            </ul>            
+        </div>
+        <div class="gd-box" style="margin-bottom: 39px;">
+            <h1 style="cursor: pointer;">Start Proctoring</h1>
+            <button siu="Start your webcam for proctoring" tou="13" class="back-to-dashboard" id="startCamera">Start Camera <i class="fas fa-video" style="margin-left: 7px;"></i></button>
+            <button siu="Share your screen for proctoring" tou="14" style="margin-left: 10px;" class="back-to-dashboard" id="startScreenShare">Share Screen <i class="fas fa-desktop" style="margin-left: 7px;"></i></button>
+            <div class="preview-boxes">
+                <video id="cameraPreview" autoplay muted style="display: none;"></video>
+                <video id="screenPreview" autoplay muted style="display: none;"></video>
+            </div>
+        </div>
+        <div style="margin-bottom: 20px;" class="quizHead">
+            <div siu="Quiz Timer!" tou="15" class="quiz-timer" id="quizTimer"><i style="margin-right: 10px;" class="fas fa-clock"></i>Time remaining: 10:00</div>
+            <div siu="Questions Tracker!" tou="16" class="quiz-timer" id="quizTracker"><i style="margin-right: 10px;" class="fas fa-check-circle"></i>Questions Answered: 0/${quizData.questions.length}</div>
+            <div siu="Questions saved for review." tou="17" class="quiz-timer" id="quizReview"><i style="margin-right: 10px;" class="fas fa-bookmark"></i>Marked for Review: 0</div>
+        </div>
+    `;
+    quizContent.appendChild(quizHeader);
+
+    quizData.questions.forEach((question, index) => {
+        const questionElement = document.createElement('div');
+        questionElement.classList.add('quiz-question');
+        questionElement.innerHTML = `
+            <h3>Question ${index + 1}:</h3>
+            <p>${question.question}</p>
+            <ul class="quiz-options">
+                ${question.options.map((option, optionIndex) => `
+                    <li>
+                        <label>
+                            <input type="radio" name="q${index}" value="${String.fromCharCode(97 + optionIndex)}">
+                            ${option}
+                        </label>
+                    </li>
+                `).join('')}
+            </ul>
+        `;
+        quizContent.appendChild(questionElement);
+    });
+
+    const submitButton = document.createElement('button');
+    submitButton.classList.add('quiz-submit');
+    submitButton.innerHTML = 'Submit <i class="far fa-check-circle" style="margin-left: 1px;"></i>';
+    submitButton.addEventListener('click', () => {
+    let score = 0;
+    const modalscr = document.getElementById("scoreModal");
+    window.onclick = function(event) {
+    if (event.target === modalscr) {
+        modalscr.style.display = "none";
+    }
+}
+
+document.getElementsByClassName("close")[0].onclick = function() {
+document.getElementById("quizModal").style.display = 'none'
+}
+
+    quizData.questions.forEach((question, index) => {
+        const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+
+        if (selectedOption) {
+            const parentLabel = selectedOption.closest('label');
+            const labelText = parentLabel ? parentLabel.textContent.trim() : null;
+
+            if (labelText === question.correct_answer) {
+                score++;
+            }
+        } else {
+            console.warn(`No option selected for question ${index + 1}`);
+        }
+    });
+
+    document.getElementsByClassName("score")[0].textContent = score
+    document.getElementsByClassName("score1d")[0].style.display = "none"
+    if (score > 2){
+        document.getElementsByClassName("score")[1].textContent = `Great job! You scored ${score} out of 5`
+    }
+    else if(score == 0){
+        document.getElementsByClassName("score")[1].textContent = `Retry :) You scored ${score} out of 5`
+    }
+    else{
+        document.getElementsByClassName("score")[1].textContent = `Nice Try! You scored ${score} out of 5`
+    }
+
+    modalscr.style.display = "block";
+
+
+    const email = Clerk.user.emailAddresses[0]?.emailAddress
+    const userInputData = {
+        score: score,
+        state: "Quiz Submitted",
+        timestamp: formatDateToGMT530(new Date()),
+        userInfo: email, page: document.title,
+};
+    database.ref('userInputData').push(userInputData)
+    
+
+
+
+
+});
+
+    quizContent.appendChild(submitButton);
+
+    document.getElementById('startCamera').addEventListener('click', function() {
+        const cameraPreview = document.getElementById('cameraPreview');
+        const cameraButton = this;
+
+        if (cameraButton.textContent.trim() === 'Start Camera') {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    cameraPreview.srcObject = stream;
+                    cameraPreview.style.display = 'block';
+                    cameraButton.innerHTML = 'Stop Camera <i class="fas fa-video-slash" style="margin-left: 7px;"></i>';
+                })
+                .catch(err => {
+                    alert('Camera access denied.');
+                });
+        } else {
+            if (cameraPreview.srcObject) {
+                cameraPreview.srcObject.getTracks().forEach(track => track.stop());
+                cameraPreview.style.display = 'none';
+            }
+            cameraButton.innerHTML = 'Start Camera <i class="fas fa-video" style="margin-left: 7px;"></i>';
+        }
+    });
+
+    document.getElementById('startScreenShare').addEventListener('click', function() {
+        const screenPreview = document.getElementById('screenPreview');
+        const screenButton = this;
+
+        if (screenButton.textContent.trim() === 'Share Screen') {
+            navigator.mediaDevices.getDisplayMedia({ video: true })
+                .then(stream => {
+                    screenPreview.srcObject = stream;
+                    screenPreview.style.display = 'block';
+                    screenButton.innerHTML = 'Stop Screen Share <i class="fas fa-desktop-slash" style="margin-left: 7px;"></i>';
+                })
+                .catch(err => {
+                    alert('Screen share access denied.');
+                });
+        } else {
+            if (screenPreview.srcObject) {
+                screenPreview.srcObject.getTracks().forEach(track => track.stop());
+                screenPreview.style.display = 'none';
+            }
+            screenButton.innerHTML = 'Share Screen <i class="fas fa-desktop" style="margin-left: 7px;"></i>';
+        }
+    });
+    document.getElementById('quizDashboard').style.display = 'none';
+    quizContent.style.display = 'block';
+}
+
+
+
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                startFirstTour();
+                document.getElementById('jobAssistAI').addEventListener('click', startNewTour);
+            });
+
+    </script>
+    </body>
+</html>

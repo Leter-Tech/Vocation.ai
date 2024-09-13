@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../static/vocational (1).png">
+    <title>Vocation.ai - To-Do List AI</title>
+    <meta name="google" content="notranslate">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "https://vocation-ai.web.app/mobile";
+        }
+    </script>
+    <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="REMOVED"
+    src="REMOVED"
+    type="text/javascript">
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f2e1eb;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #830c4f;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .task-input {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        #taskInput {
+            flex-grow: 1;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #830c4f;
+            border-radius: 30px 0 0 30px;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(131, 12, 79, 0.1);
+        }
+
+        button {
+            background-color: #830c4f;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 0 25px 25px 0;
+            outline: none;
+        }
+        button:hover {
+            background-color: #6a0a40;
+            box-shadow: 0 4px 6px rgba(131, 12, 79, 0.1);
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loader {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .loader::after {
+            content: "";
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 5px solid #f2e1eb;
+            border-top: 5px solid #830c4f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .generate-btn, .add-btn {
+            background-color: #830c4f;
+            color: #fff;
+            border: none;
+            padding: 15px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .generate-btn {
+            border-radius: 0 25px 25px 0;
+        }
+
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+        .add-btn {
+            border-radius: 25px;
+            margin-left: 10px;
+        }
+
+        .generate-btn:hover, .add-btn:hover {
+            background-color: #6a0a40;
+        }
+
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .task-item {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(131, 12, 79, 0.1);
+            border: 2px solid #e6c5d6;
+        }
+
+        .addtask-item {
+            background-color: #ffffffb4;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(131, 12, 79, 0.1);
+            border: 2px dashed #e6c5d6;
+            cursor: pointer;
+        }
+
+        .addtask-item:hover {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(131, 12, 79, 0.1);
+            border: 2px dashed #830c4fc4;
+            cursor: pointer;
+        }
+
+        .addtask-item:hover .task1-text{
+            color: #830c4f;
+            flex-grow: 1;
+            font-size: 20px;
+        }
+
+        .task1-text {
+            color: #830c4faa;
+            flex-grow: 1;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .task1-text:hover {
+            color: #830c4f;
+            flex-grow: 1;
+            font-size: 20px;
+        }
+
+
+        .task-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(131, 12, 79, 0.2);
+        }
+
+        .task-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #830c4f;
+            border-radius: 50%;
+            margin-right: 20px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .task-checkbox:checked {
+            background-color: #830c4f;
+        }
+
+        .task-checkbox:checked::after {
+            content: '\2714';
+            font-size: 20px;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .task-text {
+            flex-grow: 1;
+            font-size: 20px;
+            margin-right: 20px;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            color: #830c4f;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+        }
+
+        .delete-btn:hover {
+            background-color: transparent;
+            color: #830c4f;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+            box-shadow: none;
+        }
+
+        .new-add-btn {
+            position: fixed;
+            bottom: 45px;
+            right: 45px;
+            background-color: #830c4f;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(131, 12, 79, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: blink 1s infinite;
+        }
+        .new-add-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(131, 12, 79, 0.4);
+        }
+        @keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+        .delete-btn:hover {
+            color: #6a0a40;
+            transform: scale(1.1);
+        }
+
+        .completed .task-text {
+            text-decoration: line-through;
+            color: #888;
+        }
+        @font-face {
+            font-family: Gidiff;
+            src: url("../static/GlacialIndifference-Regular.otf") format("opentype");
+        }
+    </style>
+</head>
+<body>
+    <style>
+        .cl-userButtonPopoverCard {
+            background-color: #9b0158;
+            color: white !important;
+        }
+        .cl-navbar{
+            background-color: #f2e1eb;
+            border-radius: 16px;
+        }
+        .cl-internal-rx251b{
+            background-color: #f2e1eb;
+        }
+        .cl-pageScrollBox{
+            background-color: #f2e1eb;
+        }
+        .cl-userButtonPopoverActionButtonText{
+            color: white;
+        }
+        .cl-internal-60laz0{
+            border-right: 1px solid rgb(131, 12, 79, 0.5);
+        }
+        .cl-internal-1yejcov{
+            color: white !important;
+        }
+        .cl-userPreviewSecondaryIdentifier{
+            color: white;
+        }
+        .cl-userButtonPopoverFooter{
+            display: none;
+        }
+        .cl-internal-b3fm6y{
+            display: none;
+        }
+        .cl-userButtonTrigger:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-headerTitle{
+            color: #830c4f;
+        }
+        .cl-internal-1e71drn{
+            color: #830c4f;
+        }
+        .cl-internal-141wpcl{
+            color: #830c4f;
+        }
+        .cl-scrollBox{
+            background-color: #f2e1eb;
+        }
+        .cl-internal-1xg0u4s{
+            border-bottom: 1px solid rgb(131, 12, 79, 0.6);
+        }
+        .cl-profileSectionPrimaryButton{
+            color: #830c4f;
+        }
+        .cl-profileSectionPrimaryButton:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-profileSectionPrimaryButton:active{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-profileSectionPrimaryButton:hover{
+            background-color: #f2e1eb;
+        }
+        .cl-navbarButton:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-accordionTriggerButton:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-badge{
+            color: #830c4f;
+            background-color: rgb(131, 12, 79, 0.2);
+        }
+        .cl-formButtonPrimary{
+            background-color: #830c4f;
+        }
+        .cl-formButtonPrimary .cl-formButtonReset{
+            background-color: #830c4f;
+        }
+        .cl-formButtonReset:hover{
+            background-color: rgb(131, 12, 79, 0.2);
+        }
+        .cl-formButtonReset{
+            color: #830c4f;
+        }
+        .cl-formButtonPrimary:hover{
+            background-color: #460429;
+        }
+        .cl-formButtonPrimary:active{
+            background-color: #460429;
+        }
+        .cl-formButtonReset:active{
+            background-color: rgb(131, 12, 79, 0.2);
+        }
+        .cl-profileSectionPrimaryButton:active{
+            background-color: #f2e1eb;
+        }
+        .cl-avatarImageActionsUpload{
+            color: #830c4f;
+        }
+        .cl-avatarImageActionsRemove{
+            color: #600639;
+        }
+        .cl-avatarImageActionsUpload:focus .cl-avatarImageActionsRemove:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-formFieldInput:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-internal-1sf6rji{
+            color: #830c4f
+        }
+        .cl-internal-1sf6rji:hover{
+            background-color: rgb(131, 12, 79, 0.2);
+        }
+        .cl-internal-f7yy9s:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-modalCloseButton{
+            color: #830c4f;
+        }
+        .cl-modalCloseButton:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-formButtonReset:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-formButtonPrimary:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-formFieldInput{
+            accent-color: #830c4f;
+        }
+        .cl-internal-1sf6rji:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-internal-1sf6rji:active{
+            background-color: #f2e1eb;
+        }
+        .cl-breadcrumbsItem:focus{
+            box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+        }
+        .cl-userPreviewSecondaryIdentifier{
+            color: #d1b2c2;
+        }
+    </style>
+    <div style="display: flex; justify-content: right; align-items: center;">
+        <div style="margin: 8px;" id="app"></div>
+        </div>
+    <div class="container">
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <img onclick="window.location.href='https://vocation-ai.web.app'" src="../static/vocational (1).png" style="width: 20%; height: 20%; cursor: pointer;">
+            </div>
+            <a style="text-decoration: none;" href="https://vocation-ai.web.app/"><h1 style="margin-top: 0px; font-family: Gidiff; font-size: 60px; margin-bottom: 10px; text-align: center;">Vocation.ai</h1></a>
+            <h1 style="margin-top: 0px; font-size: 30px; color: var(--text-color); text-align: center;">To-Do List AI</h1>
+            <div class="task-input">
+                <input type="text" id="taskInput" placeholder="Enter your tasks or schedule...">
+                <button class="generate-btn">Generate <i style="margin-left: 3px;" class="fas fa-wand-magic-sparkles"></i></button>
+            </div>
+            <div id="loader" class="loader"></div>
+        <ul id="taskList" class="task-list"></ul>
+    </div>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+<script>
+let currentUser;
+
+window.addEventListener("load", async function () {
+    await Clerk.load();
+
+    function pam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    const redirectUrl = pam('redirect_url');
+
+    if (!Clerk.user) {
+        if (redirectUrl) {
+            setTimeout(() => {
+                window.location.href = 'authentication';
+            }, 12000);
+        } else {
+            window.location.href = 'authentication';
+        }
+    } else {
+        document.getElementById("app").innerHTML = `
+            <div id="user-button"></div>
+        `;
+
+        const userButtonDiv = document.getElementById("user-button");
+        Clerk.mountUserButton(userButtonDiv);
+        initializeApp();
+    }
+});
+
+const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+};
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+function formatDateToGMT530(date) {
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      return date.toLocaleString('en-IN', options).replace(',', '');
+    }
+
+        document.addEventListener('click', function(event) {
+            const element = event.target;
+            const email = Clerk.user.emailAddresses[0]?.emailAddress
+    
+            const clickData = {
+              tagName: element.tagName,
+              id: element.id || null,
+              classList: Array.from(element.classList).join(' ') || null,
+              textContent: element.textContent.trim() || null,
+              timestamp: formatDateToGMT530(new Date()),
+              userInfo: email, page: document.title
+            };
+            if(clickData.textContent == "Done"){
+                if(checker == 2 || checker == 4){
+                    demoDone()
+                }
+                checker+=1
+            }
+            database.ref('clicks').push(clickData)
+          });
+
+function initializeApp() {
+    loadTasks();
+}
+
+function addTask() {
+    
+    const taskInput = document.getElementById('taskInput');
+    const taskText = taskInput.value.trim();
+    const email = Clerk.user.emailAddresses[0]?.emailAddress
+
+const userInputData = {
+    todoManualInput: taskText,
+    todoType: "Manual",
+    timestamp: formatDateToGMT530(new Date()),
+    userInfo: email, page: document.title,
+};
+database.ref('userInputData').push(userInputData)
+    if (taskText) {
+        const email = Clerk.user.emailAddresses[0]?.emailAddress;
+        const taskData = {
+            text: taskText,
+            completed: false,
+            timestamp: new Date().toISOString(),
+            userEmail: email
+        };
+
+        database.ref('tasks').push(taskData)
+            .then(() => {
+                taskInput.value = '';
+                loadTasks();
+            })
+            .catch((error) => {
+                console.error("Error adding task: ", error);
+                alert('An error occurred while adding the task. Please try again.');
+            });
+    } else {
+        var a1 = prompt("Enter Task:", "Task Description")
+        if(a1 == "" || a1 == null){
+            alert("Please enter a task description before submitting.")
+        }
+        else{
+                    const userInputData = {
+    todoManualInput: a1,
+    todoType: "Manual",
+    timestamp: formatDateToGMT530(new Date()),
+    userInfo: email, page: document.title,
+};
+database.ref('userInputData').push(userInputData)
+
+        const taskData1 = {
+            text: a1,
+            completed: false,
+            timestamp: new Date().toISOString(),
+            userEmail: email
+        };
+
+        database.ref('tasks').push(taskData1)
+            .then(() => {
+                taskInput.value = '';
+                loadTasks();
+            })
+            .catch((error) => {
+                console.error("Error adding task: ", error);
+                alert('An error occurred while adding the task. Please try again.');
+            });
+        }
+
+            
+    }
+}
+
+var taskPermData = ""
+
+function generateTodos() {
+    const taskInput = document.getElementById('taskInput');
+    const taskText = taskInput.value.trim();
+    if (taskText) {
+        document.getElementById('loader').style.display = 'block';
+
+        fetch('/api/generate_todos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ tasks: taskText })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('loader').style.display = 'none';
+            if (data.todos && Array.isArray(data.todos)) {
+                taskPermData = data.todos
+                data.todos.forEach(todo => {
+                    if (todo.task) { 
+                        const email = Clerk.user.emailAddresses[0]?.emailAddress;
+                        const taskData = {
+                            text: todo.task,
+                            completed: false,
+                            timestamp: new Date().toISOString(),
+                            userEmail: email
+                        };
+
+                        database.ref('tasks').push(taskData)
+                            .catch((error) => {
+                                console.error("Error adding task from AI: ", error);
+                            });
+                    }
+                });
+                loadTasks();
+                const email = Clerk.user.emailAddresses[0]?.emailAddress
+
+const userInputData = {
+    todosAIGenerated: taskPermData,
+    todoType: "AI Generated",
+    todoInputForAI: taskText,
+    timestamp: formatDateToGMT530(new Date()),
+    userInfo: email, page: document.title,
+};
+database.ref('userInputData').push(userInputData)
+            } else {
+                alert('No tasks generated from the input.');
+            }
+        })
+        .catch((error) => {
+            document.getElementById('loader').style.display = 'none';
+            console.error("Error generating tasks: ", error);
+            alert('An error occurred while generating tasks. Please try again.');
+        });
+    } else {
+        alert('Please enter a task description to generate tasks.');
+    }
+}
+
+function loadTasks() {
+    const email = Clerk.user.emailAddresses[0]?.emailAddress;
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = '';
+
+    database.ref('tasks').orderByChild('userEmail').equalTo(email).once('value')
+        .then((snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+                const taskData = childSnapshot.val();
+                const taskItem = createTaskItem(taskData, childSnapshot.key);
+                taskList.appendChild(taskItem);
+            });
+            const li = document.createElement('li');
+            li.className = 'addtask-item';
+            li.addEventListener("click", addTask)
+            li.innerHTML = `
+               <div class="task1-text" style="display: flex; align-items: center; justify-content: center;">
+        <i style="margin-right: 8px;" class="fas fa-plus-circle"></i>Add Task
+        </div>
+    `;
+    taskList.appendChild(li);
+
+        })
+        .catch((error) => {
+            console.error("Error loading tasks: ", error);
+        });
+}
+
+function createTaskItem(taskData, taskId) {
+    const li = document.createElement('li');
+    li.className = 'task-item' + (taskData.completed ? ' completed' : '');
+    li.innerHTML = `
+        <input type="checkbox" class="task-checkbox" ${taskData.completed ? 'checked' : ''} onchange="toggleTask('${taskId}', this.checked)">
+        <span class="task-text">${taskData.text}</span>
+        <button class="delete-btn" onclick="deleteTask('${taskId}')"><i class="fas fa-trash-alt"></i></button>
+    `;
+    return li;
+}
+
+function toggleTask(taskId, completed) {
+    database.ref('tasks/' + taskId).update({ completed: completed })
+        .then(() => {
+            loadTasks();
+        })
+        .catch((error) => {
+            console.error("Error updating task: ", error);
+            alert('An error occurred while updating the task. Please try again.');
+        });
+}
+
+function deleteTask(taskId) {
+    if (confirm('Are you sure you want to delete this task?')) {
+        database.ref('tasks/' + taskId).remove()
+            .then(() => {
+                loadTasks();
+            })
+            .catch((error) => {
+                console.error("Error deleting task: ", error);
+                alert('An error occurred while deleting the task. Please try again.');
+            });
+    }
+}
+
+document.querySelector('.generate-btn').addEventListener('click', generateTodos);
+
+    </script>
+</body>
+</html>

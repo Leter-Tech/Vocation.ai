@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="vocational (1).png">
+    <title>Vocation.ai - User Journey</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+    };
+    firebase.initializeApp(firebaseConfig);
+  
+  
+      const database = firebase.database();
+    
+      function formatDateToGMT530(date) {
+  const options = {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  };
+  return date.toLocaleString('en-IN', options).replace(',', '');
+}
+
+      document.addEventListener('click', function(event) {
+        const element = event.target;
+
+        const clickData = {
+          tagName: element.tagName,
+          id: element.id || null,
+          classList: Array.from(element.classList).join(' ') || null,
+          textContent: element.textContent.trim() || null,
+          timestamp: formatDateToGMT530(new Date()), page: document.title
+        };
+        database.ref('clicks').push(clickData)
+      });
+    </script>
+    <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "mobile.html";
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        @font-face {
+            font-family: Gidiff;
+            src: url("GlacialIndifference-Regular.otf") format("opentype");
+        }
+
+        :root {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            --background-color: #fff;
+            --text-color: #333;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+        .container {
+            background-color: var(--background-color);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(131, 12, 78, 0.1);
+            max-width: 600px;
+            width: 100%;
+            transition: all 0.3s ease;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background-color: #a50f62;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(131, 12, 78, 0.2);
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: var(--secondary-color);
+            border-radius: 50px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 10px;
+            background-color: var(--primary-color);
+            border-radius: 50px;
+            transition: width 0.3s ease;
+        }
+
+        .skill-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        #jobRecommendation {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+        }
+
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            display: none;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section.active {
+            opacity: 1;
+            transform: translateY(0);
+            display: flex;
+            flex-grow: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+    <div class="container">
+        <a href="index.html" style="text-decoration: none; color: #830c4e;">
+        <div>
+            
+        <div style="display: flex; align-items: center; justify-content: center;">
+        <img src="vocational (1).png" style="height: 100px; width: 100px;" align="center"></div>
+        <h1 style="font-family: Gidiff;">Vocation.ai</h1>
+    
+    </div></a>
+        <div id="welcome" class="section active">
+            <h1>User Journey Flow</h1>
+            <p>Welcome to the User Journey Demo! Let's walk through each step of the user flow together!<p>
+            <div class="btn-container">
+                <button class="btn" onclick="startLearning()">Start User Flow</button>
+                <a href="TutorAI.html" style="text-decoration: none; color: #fff;"><button class="btn">Try Out Vocation.ai</button></a>
+            </div>
+        </div>
+        <div id="learning" class="section">
+            <h2>Learning with Tutor AI</h2>
+            <p>Click on subjects to learn and improve your skills:</p>
+            <div class="btn-container">
+                <button class="btn" onclick="learn('arithmetic')">Learn Arithmetic</button>
+                <button class="btn" onclick="learn('english')">Learn English</button>
+                <button class="btn" onclick="learn('computer')">Learn Computer</button>
+            </div>
+            <div id="skills" class="progress-container"></div>
+            <div class="btn-container">
+                <button class="btn" onclick="assess()">Take Assessment</button>
+            </div>
+        </div>
+        <div id="assessment" class="section">
+            <h2>Skill Assessment with Quiz AI</h2>
+            <p>Your skills have been assessed:</p>
+            <div id="assessedSkills" class="progress-container"></div>
+            <div class="btn-container">
+                <button class="btn" onclick="recommend()">Get Job Recommendation</button>
+            </div>
+        </div>
+        <div id="recommendation" class="section">
+            <h2>Job AI Recommendation</h2>
+            <p>Based on your skills, we recommend the following job:</p>
+            <div id="jobRecommendation"></div>
+            <br>
+            <div class="btn-container">
+                <button class="btn" onclick="resetDemo()">Restart Demo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let skills = { arithmetic: 0, english: 0, computer: 0 };
+        let currentStep = 'welcome';
+        document.getElementById('learning').style.display = 'none'
+        document.getElementById('assessment').style.display = 'none'
+        document.getElementById('recommendation').style.display = 'none'
+
+        function startLearning() {
+            transition('welcome', 'learning');
+            updateSkillsDisplay();
+        }
+
+        function learn(subject) {
+            skills[subject] = Math.min(skills[subject] + 1, 5);
+            updateSkillsDisplay();
+        }
+
+        function updateSkillsDisplay() {
+            let skillsHtml = '';
+            for (let subject in skills) {
+                skillsHtml += `
+                    <div class="skill-label">
+                        <span>${subject.charAt(0).toUpperCase() + subject.slice(1)}:</span>
+                        <span>${skills[subject]}/5</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${(skills[subject] / 5) * 100}%"></div>
+                    </div>
+                `;
+            }
+            document.getElementById('skills').innerHTML = skillsHtml;
+        }
+
+        function assess() {
+            transition('learning', 'assessment');
+            let assessedSkillsHtml = '';
+            for (let subject in skills) {
+                assessedSkillsHtml += `
+                    <div class="skill-label">
+                        <span>${subject.charAt(0).toUpperCase() + subject.slice(1)}:</span>
+                        <span>${skills[subject]}/5</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${(skills[subject] / 5) * 100}%"></div>
+                    </div>
+                `;
+            }
+            document.getElementById('assessedSkills').innerHTML = assessedSkillsHtml;
+        }
+
+        function recommend() {
+            transition('assessment', 'recommendation');
+
+            const entries = Object.entries(skills);
+            const maxSkills = entries.reduce((acc, [key, value]) => {
+                if (value > (acc.length > 0 ? acc[0][1] : -Infinity)) {
+                    return [[key, value]];
+                } else if (value === (acc.length > 0 ? acc[0][1] : -Infinity)) {
+                    acc.push([key, value]);
+                }
+                return acc;
+            }, []);
+
+            const jobMap = {
+                arithmetic: 'Freelance Accounting',
+                english: 'Content Writer',
+                computer: 'IT Support Technician'
+            };
+
+            const jobRecommendationElement = document.getElementById('jobRecommendation');
+            if (maxSkills.length === 0 || (maxSkills.length === 1 && maxSkills[0][1] === 0)) {
+                jobRecommendationElement.textContent = 'No jobs recommended';
+            } else if (maxSkills.every(([_, value]) => value === 0)) {
+                jobRecommendationElement.textContent = 'No jobs allowed, practice more!';
+            } else {
+                const jobRecommendations = maxSkills.map(([skill]) => jobMap[skill]);
+                jobRecommendationElement.textContent = jobRecommendations.join(', ');
+            }
+        }
+
+        function resetDemo() {
+            skills = { arithmetic: 0, english: 0, computer: 0 };
+            transition('recommendation', 'welcome');
+        }
+
+        function transition(from, to) {
+            document.getElementById(from).classList.remove('active');
+            setTimeout(() => {
+                document.getElementById(from).style.display = 'none';
+                document.getElementById(to).style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById(to).classList.add('active');
+                }, 50);
+            }, 500);
+        }
+    </script>
+</body>
+</html>

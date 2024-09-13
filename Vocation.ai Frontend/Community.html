@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="vocational (1).png">
+    <title>Vocation.ai - Community</title>
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="REMOVED"
+    src="REMOVED"
+    type="text/javascript">
+  </script>
+    <script>
+        window.addEventListener("load", async function () {
+            await Clerk.load();
+            function pam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        const redirectUrl = pam('redirect_url');
+
+        
+
+            if (!Clerk.user) {
+                if (redirectUrl) {
+                    setTimeout(() => {
+                        window.location.href = 'authentication.html';
+                    }, 12000);
+                }
+
+                else{
+                    window.location.href = 'authentication.html';
+                } 
+            }
+
+            else {
+                document.getElementById("app").innerHTML = `
+                    <div id="user-button"></div>
+                `;
+
+                const userButtonDiv = document.getElementById("user-button");
+
+                Clerk.mountUserButton(userButtonDiv, {
+                afterSignOutUrl: '/authentication.html'
+            });
+            }
+        });
+    </script>
+
+<style>
+    .cl-userButtonPopoverCard {
+        background-color: #9b0158;
+        color: white !important;
+    }
+    .cl-userButtonPopoverActionButtonText{
+        color: white;
+    }
+    .cl-navbar{
+        background-color: #f2e1eb;
+        border-radius: 16px;
+    }
+    .cl-internal-rx251b{
+        background-color: #f2e1eb;
+    }
+    .cl-internal-60laz0{
+        border-right: 1px solid rgb(131, 12, 79, 0.5);
+    }
+    .cl-pageScrollBox{
+        background-color: #f2e1eb;
+    }
+    .cl-internal-1yejcov{
+        color: white !important;
+    }
+    .cl-userPreviewSecondaryIdentifier{
+        color: white;
+    }
+    .cl-userButtonPopoverFooter{
+        display: none;
+    }
+    .cl-internal-b3fm6y{
+        display: none;
+    }
+    .cl-userButtonTrigger:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-headerTitle{
+        color: #830c4f;
+    }
+    .cl-internal-1e71drn{
+        color: #830c4f;
+    }
+    .cl-internal-141wpcl{
+        color: #830c4f;
+    }
+    .cl-scrollBox{
+        background-color: #f2e1eb;
+    }
+    .cl-internal-1xg0u4s{
+        border-bottom: 1px solid rgb(131, 12, 79, 0.6);
+    }
+    .cl-profileSectionPrimaryButton{
+        color: #830c4f;
+    }
+    .cl-profileSectionPrimaryButton:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-profileSectionPrimaryButton:active{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-profileSectionPrimaryButton:hover{
+        background-color: #f2e1eb;
+    }
+    .cl-navbarButton:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-accordionTriggerButton:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-badge{
+        color: #830c4f;
+        background-color: rgb(131, 12, 79, 0.2);
+    }
+    .cl-formButtonPrimary{
+        background-color: #830c4f;
+    }
+    .cl-formButtonPrimary .cl-formButtonReset{
+        background-color: #830c4f;
+    }
+    .cl-formButtonReset:hover{
+        background-color: rgb(131, 12, 79, 0.2);
+    }
+    .cl-formButtonReset{
+        color: #830c4f;
+    }
+    .cl-formButtonPrimary:hover{
+        background-color: #460429;
+    }
+    .cl-formButtonPrimary:active{
+        background-color: #460429;
+    }
+    .cl-formButtonReset:active{
+        background-color: rgb(131, 12, 79, 0.2);
+    }
+    .cl-profileSectionPrimaryButton:active{
+        background-color: #f2e1eb;
+    }
+    .cl-avatarImageActionsUpload{
+        color: #830c4f;
+    }
+    .cl-avatarImageActionsRemove{
+        color: #600639;
+    }
+    .cl-avatarImageActionsUpload:focus .cl-avatarImageActionsRemove:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-formFieldInput:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-internal-1sf6rji{
+        color: #830c4f
+    }
+    .cl-internal-1sf6rji:hover{
+        background-color: rgb(131, 12, 79, 0.2);
+    }
+    .cl-internal-f7yy9s:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-modalCloseButton{
+        color: #830c4f;
+    }
+    .cl-modalCloseButton:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-formButtonReset:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-formButtonPrimary:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-formFieldInput{
+        accent-color: #830c4f;
+    }
+    .cl-internal-1sf6rji:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-internal-1sf6rji:active{
+        background-color: #f2e1eb;
+    }
+    .cl-breadcrumbsItem:focus{
+        box-shadow: 0 0 0 2px rgba(220, 70, 155, 0.514);
+    }
+    .cl-userPreviewSecondaryIdentifier{
+        color: #d1b2c2;
+    }
+</style>
+
+
+<script>
+
+var checker = 1;
+
+function demoDone(){
+    const communityMainElement = document.querySelector('.community-content');
+    const sidebar = document.querySelector('.sidebar');
+    communityMainElement.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        sidebar.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+}
+
+    const firebaseConfig = {
+Credentials: "ALL CREDENTIALS HAVE BEEN REMOVED"
+    };
+    firebase.initializeApp(firebaseConfig);
+  
+  
+      const database = firebase.database();
+    
+      function formatDateToGMT530(date) {
+  const options = {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  };
+  return date.toLocaleString('en-IN', options).replace(',', '');
+}
+
+      document.addEventListener('click', function(event) {
+        const element = event.target;
+
+        const clickData = {
+          tagName: element.tagName,
+          id: element.id || null,
+          classList: Array.from(element.classList).join(' ') || null,
+          textContent: element.textContent.trim() || null,
+          timestamp: formatDateToGMT530(new Date()), page: document.title
+        };
+        if(clickData.textContent == "Done"){
+                if(checker > 1){
+                    demoDone()
+                }
+                checker+=1
+            }
+        database.ref('clicks').push(clickData)
+      });
+    </script>
+    <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            window.location.href = "mobile.html";
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #830c4f;
+            --secondary-color: #f39c12;
+            --text-color: #333;
+            --bg-color: #f4f4f4;
+            --sidebar-bg: #830c4f;
+        }
+
+        .highlight {
+            padding: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+
+        .introjs-bullets ul li a.active {
+            background: var(--primary-color) !important;
+            box-shadow: 0 0 0 2px rgba(131, 12, 79, 0.3);
+        }
+
+        .introjs-bullets a {
+            background: #9f9b9b !important;
+            transition: background 0.3s ease;
+        }
+
+        .introjs-tooltip {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            color: #830c4f;
+            font-size: 18px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+            padding: 25px;
+            max-width: 350px;
+        }
+
+        .introjs-tooltiptext {
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        .introjs-tooltip h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #830c4f;
+        }
+
+        .introjs-tooltip p {
+            margin-bottom: 15px;
+        }
+
+        .introjs-button {
+            background-color: #830c4f;
+            color: #fff;
+            text-shadow: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            font-size: 14px;
+            border: 2px solid #830c4f;
+            margin: 5px;
+        }
+
+        .introjs-skipbutton {
+            color: #830c4f;
+            background-color: transparent;
+            border: 2px solid #830c4f;
+        }
+
+        .introjs-button:hover {
+            background-color: #f2e1eb;
+            color: #830c4f;
+            border: 2px solid #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-button:focus {
+            background-color: #f2e1eb;
+            border: 2px solid #830c4f;
+            color: #830c4f;
+            box-shadow: 0 2px 8px rgba(131, 12, 79, 0.2);
+        }
+
+        .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+        }
+
+        .introjs-tooltip .introjs-skipbutton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 26px;
+            text-align: center;
+            border: 2px solid #830c4f;
+            background-color: transparent;
+            color: #830c4f;
+            transition: all 0.3s ease;
+        }
+
+        .introjs-tooltip .introjs-skipbutton:hover {
+            background-color: #830c4f;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .introjs-arrow {
+            border-color: #830c4f;
+        }
+
+        .introjs-floating {
+            border: 2px solid #830c4f;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(131, 12, 79, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .community-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 320px;
+            background-color: var(--sidebar-bg);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .community-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+        }
+
+        .community-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .community-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: #f2e1eb;
+        }
+
+        .doubt-post {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .doubt-post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .doubt-post h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .doubt-post .meta {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .doubt-post .content {
+            margin-bottom: 15px;
+        }
+
+        .doubt-post .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .doubt-post .actions button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .doubt-post .actions button:hover {
+            background-color: #631a42;
+        }
+
+        .new-doubt-form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .new-doubt-form h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .new-doubt-form textarea {
+            font-family: 'Poppins', 'sans-serif';
+            width: 100%;
+            height: 150px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .new-doubt-form input {
+            font-family: 'Poppins', 'sans-serif';
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .new-doubt-form select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .new-doubt-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .new-doubt-form button:hover {
+            background-color: #6b0a40;
+        }
+
+        .info-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .info-box h4 {
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+            font-size: 1em;
+        }
+
+        .info-box p {
+            color: #fff;
+            font-size: 1.1em;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .popular-topics {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .popular-topics h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .popular-topics ul {
+            list-style-type: none;
+            cursor: pointer;
+        }
+
+        .popular-topics li {
+            background-color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 5px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .popular-topics li:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .helper-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .helper-info h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .helper-card {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .helper-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .helper-card h4 {
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .helper-card p {
+            font-size: 0.9em;
+        }
+
+        .community-stats {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .community-stats:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .community-stats h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .community-stats p {
+            margin-bottom: 5px;
+        }
+
+        .community-stats span {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .ai-switch {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ai-options {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .ai-options a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .ai-switch:hover {
+            transform: translateY(-2px);
+            z-index: 100000;
+        }
+    
+        .ai-options a:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+
+        .show {
+            display: block;
+        }
+
+        .ai-switch.active::after {
+            transform: rotate(180deg);
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.1; }
+        }
+
+        .ai-switch-icon {
+            animation: fadeInOut 2s infinite;
+        }
+
+        .ai-switch.active .ai-switch-icon {
+            animation: none;
+        }
+
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    transition: opacity 0.3s ease;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #830c4f;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#replyText {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+
+
+#sendReply {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#sendReply:hover {
+    background-color: #631a42;
+}
+
+    </style>
+</head>
+<body>
+    <style>
+    
+        .zoom-notification {
+            --primary-color: #830c4f;
+            --secondary-color: #f2e1eb;
+            font-family: 'Arial', sans-serif;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(131, 12, 79, 0.95);
+            z-index: 9999999999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+        }
+
+        .zoom-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .zoom-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .key {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            box-shadow: 0 4px 0 #d0d0d0;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .key:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d0d0d0;
+        }
+
+        .icon-zoom {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .width-info {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        #currentWidth, #requiredWidth {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <div class="zoom-notification" id="zoomNotification">
+        <div class="zoom-content">
+        <div class="icon-zoom">🔍</div>
+        <h2>Please Adjust Your View</h2>
+        <p style="font-size: 14px;">For the best experience, press these keys together on your keyboard:</p>
+        <p><span class="key">CTRL</span> and <span class="key">-</span></p>
+        <div class="width-info">
+        <p>Current width: <span id="currentWidth"></span><strong>px</strong></p>
+        <p>Required width: <span id="currentWidth">1430</span><strong>px</strong></p>
+        </div>
+        </div>
+        </div>
+        <script>
+                const zoomNotification = document.getElementById('zoomNotification');
+                const currentWidthSpan = document.getElementById('currentWidth');
+        
+                function checkViewportWidth() {
+                    const currentWidth = window.innerWidth;
+                    currentWidthSpan.textContent = currentWidth;
+        
+                    if (currentWidth < 1430) {
+                        zoomNotification.style.display = 'flex';
+                    } else {
+                        zoomNotification.style.display = 'none';
+                    }
+                }
+        
+                window.addEventListener('resize', checkViewportWidth);
+                window.addEventListener('load', checkViewportWidth);
+            </script>
+    <div class="community-container">
+        <aside class="sidebar">
+            <div class="logo"><a href="index.html"><img src="Vocation.ai Logo (Horizontal cropped).png" style="height: 65px;"></a></div>
+            
+            <div data-intro="View your profile statistics." data-step="8" class="info-box">
+                <h2 style="color: var(--secondary-color); margin-bottom: 3px; cursor: pointer;">Your Profile <i class="fas fa-angle-right"></i></h2>
+                <p>Reputation: <span style="color: var(--secondary-color);">1428</span></p>
+                <p>Doubts: <span style="color: var(--secondary-color);">126</span></p>
+                <p>Answers: <span style="color: var(--secondary-color);">54</span></p>
+            </div>
+
+            <div data-intro="View the most trending topics in the community." data-step="9" class="popular-topics">
+                <h3 style="cursor: pointer;">Trending Topics <i class="fas fa-angle-right"></i></h3>
+                <ul>
+                    <li>Python Programming</li>
+                    <li>Data Structures</li>
+                    <li>Web Development</li>
+                    <li>Machine Learning</li>
+                    <li>Calculus</li>
+                </ul>
+            </div>
+
+            <div data-intro="Top helpers will be recognised for their contribution!" data-step="10" class="helper-info">
+                <h3 style="cursor: pointer;">Top Helpers <i class="fas fa-angle-right"></i></h3>
+                <div class="helper-card">
+                    <h4>Nia Rao (Tech Admin)</h4>
+                    <p>Expertise: Web Development, Python</p>
+                </div>
+                <div class="helper-card">
+                    <h4>Raj Singh (Peer Educator)</h4>
+                    <p>Expertise: Data Structures, Algorithms</p>
+                </div>
+                <div class="helper-card">
+                    <h4>Mira Jain (Mentor)</h4>
+                    <p>Expertise: Machine Learning, Mathematics</p>
+                </div>
+            </div>
+
+            <div data-intro="Performing students will be celebrated every month to inspire others!" data-step="11" class="helper-info">
+                <h3 style="cursor: pointer;">Top Students <i class="fas fa-angle-right"></i></h3>
+                <div class="helper-card">
+                    <h4>Karan Malhotra</h4>
+                    <p>TutorAI Modules: 54</p>
+                    <p>QuizAI Avg Score: 96%</p>
+                    <p>JobAI Jobs: 16</p>
+                </div>
+                <div class="helper-card">
+                    <h4>Tara Subramanian</h4>
+                    <p>TutorAI Modules: 48</p>
+                    <p>QuizAI Avg Score: 95.4%</p>
+                    <p>JobAI Jobs: 12</p>
+                </div>
+                <div class="helper-card">
+                    <h4>Siddharth Joshi</h4>
+                    <p>TutorAI Modules: 36</p>
+                    <p>QuizAI Avg Score: 92.1%</p>
+                    <p>JobAI Jobs: 14</p>
+                </div>
+            </div>
+
+            <div data-intro="View the community statistics!" data-step="12" class="community-stats">
+                <h3 style="cursor: pointer;">Community Stats <i class="fas fa-angle-right"></i></h3>
+                <p>Total Members: <span>1,36,476</span></p>
+                <p>Doubts Resolved: <span>14,246</span></p>
+                <p>Active Discussions: <span>1,246</span></p>
+            </div>
+        </aside>
+<div id="replyModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="rt" style="margin-bottom: 10px;">Replies for Post</h2>
+        <div id="postReplies"></div>
+        <textarea style="font-family: 'Poppins'; resize: vertical;" id="replyText" placeholder="Type your reply here..."></textarea>
+        <button id="sendReply">Send <i style="margin-left: 4px;" class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+        <main class="community-main">
+            <header class="community-header">
+                <h2 data-intro="The Community Forum enables students to share their learnings, clarify doubts, and provide feedback. Students receive support from alumni, technical admins, and academic mentors." data-step="1" class="ai-switch" id="aiSwitch">
+                    Community Forum
+                    <i class="fas fa-angle-down ai-switch-icon" style="margin-left: 3px;"></i>
+                    <div class="ai-options" id="aiOptions">
+                        <a href="#" id="tutorAI">Tutor AI</a>
+                        <a href="#" id="jobAI">Job AI</a>
+                        <a href="#" id="quizAI">Quiz AI</a>
+                        <a href="#" id="UserJourneyFlow">User Flow</a>
+                    </div>
+                </h2>
+                <div id="app"></div>
+
+            </header>
+            <div class="community-content">
+                <div class="new-doubt-form">
+                    <h3 style="font-size: 21px;">Create a New Post</h3>
+                    <input type="text" data-intro="Type your post title here." data-step="2" placeholder="Type your post title..." style="background-color: #f1f3f5;">
+                    <textarea class="ddda" data-intro="Type your doubts, feedbacks, queries or learnings here." data-step="3" placeholder="Type your post content here..." style="background-color: #f1f3f5; resize: vertical;"></textarea>
+                    <select data-intro="Select post category" data-step="4" style="background-color: #f1f3f5;">
+                        <option  value="">Select post category</option>
+                        <option value="academic">Academic</option>
+                        <option value="technical">Technical</option>
+                    </select>
+                    <button data-intro="and post!" data-step="5" style="margin-top: 10px; font-weight: 770;" onclick="postDoubt()">Post Now <i style="margin-left: 4px;" class="fas fa-chevron-right"></i></button>
+                </div>
+
+                <div onclick="if (event.target.tagName !== 'A') alert('This discussion has been marked as closed by the admin. Create a new post to use replies. 🔒')" postid="post1" style="cursor: pointer;" data-intro="You can view other posts and discussions here." data-step="6" class="doubt-post">
+                    <div class="actions">
+                    <h3>Introducing V.ai Live 🎉</h3>
+                    <i style="color: #830c4f;" class="fas fa-thumbtack"></i>
+                    </div>
+                    <div data-intro="View author name, post category and time of posting." data-step="7" class="meta">Posted by: Admin | Type: Announcement | 1 hour ago</div>
+                    <div class="content">
+                        We’re thrilled to announce a fantastic new feature that’s set to transform your study experience experience—introducing <span style="color: #830c4f; font-weight: 800;">V.ai Live!</span> This feature provides you with access to a live, 24/7 study room which you can join anytime for real-time learning and collaboration via video call and chat with other fellow students of VocationAI. Try now: <a href="Vai-Live.html" style="color: #830c4f; font-weight: bold;">V.ai Live</a>
+                    </div>
+                    <div class="actions">
+                        <button><i style="margin-right: 4px;" class="fas fa-reply"></i> Reply</button>
+                        <span>264 Replies</span>
+                    </div>
+                </div>
+
+                <div onclick="alert('This discussion has been marked as closed by the admin. Create a new post to use replies. 🔒')" postid="post2" style="cursor: pointer;" data-intro="You can view other posts and discussions here." data-step="6" class="doubt-post">
+                    <h3>How to implement a binary search tree in Python?</h3>
+                    <div data-intro="View author name, post category and time of posting." data-step="7" class="meta">Posted by: Riya Suri | Type: Academic | 2 hours ago</div>
+                    <div class="content">
+                        I'm struggling with implementing a binary search tree in Python. Can someone provide a basic implementation or point me to some good resources?
+                    </div>
+                    <div class="actions">
+                        <button><i style="margin-right: 4px;" class="fas fa-reply"></i> Reply</button>
+                        <span>12 Replies</span>
+                    </div>
+                </div>
+
+                <div onclick="alert('This discussion has been marked as closed by the admin. Create a new post to use replies. 🔒')" postid="post3" style="cursor: pointer;" class="doubt-post">
+                    <h3>Having trouble logging in my Vocation.ai account</h3>
+                    <div class="meta">Posted by: Aarav Chatterjee | Type: Technical | 5 hours ago</div>
+                    <div class="content">
+                        My Vocation.ai account is getting logged out again and again despite clearing site cookies and cache. Is this problem only with me or with someone else too?
+                    </div>
+                    <div class="actions">
+                        <button><i style="margin-right: 4px;" class="fas fa-reply"></i> Reply</button>
+                        <span>1 Reply</span>
+                    </div>
+                </div>
+
+                <div onclick="alert('This discussion has been marked as closed by the admin. Create a new post to use replies. 🔒')" postid="post4" style="cursor: pointer;" class="doubt-post">
+                    <h3>Understanding the concept of limits in calculus</h3>
+                    <div class="meta">Posted by: Devansh Pandey | Type: Academic | 1 day ago</div>
+                    <div class="content">
+                        I'm having trouble grasping the concept of limits in calculus. Can someone provide a simple explanation or some examples to help me understand better?
+                    </div>
+                    <div class="actions">
+                        <button><i style="margin-right: 4px;" class="fas fa-reply"></i> Reply</button>
+                        <span>14 Replies</span>
+                    </div>
+                </div>
+
+                <div onclick="alert('This discussion has been marked as closed by the admin. Create a new post to use replies. 🔒')" postid="post5" style="cursor: pointer;" class="doubt-post">
+                    <h3>Finding LCM of 3 numbers</h3>
+                    <div class="meta">Posted by: Tanvi Mehta | Type: Academic | 2 days ago</div>
+                    <div class="content">
+                        How do you solve the problem of finding the least common multiple (LCM) of three numbers, for example, 12, 15, and 20?
+                    </div>
+                    <div class="actions">
+                        <button><i style="margin-right: 4px;" class="fas fa-reply"></i> Reply</button>
+                        <span>4 Replies</span>
+                    </div>
+                </div>
+                <div onclick="alert('This discussion has been marked as closed by the admin. Create a new post to use replies. 🔒')" postid="adasd" style="cursor: pointer;" class="doubt-post">
+                    <h3>Slow responses by TutorAI</h3>
+                    <div class="meta">Posted by: Shreya Nair | Type: Technical | 6 days ago</div>
+                    <div class="content">
+                        TutorAI responses are very slow on my device, is there any option to optimize it for low RAM devices?
+                    </div>
+                    <div class="actions">
+                        <button><i style="margin-right: 4px;" class="fas fa-reply"></i> Reply</button>
+                        <span>2 Replies</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+function loadExistingPosts() {
+    database.ref('communityPosts').once('value', (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+            const postData = childSnapshot.val();
+            const postId = childSnapshot.key;
+            
+            database.ref(`replies/${postId}`).once('value', (replySnapshot) => {
+                const replyCount = replySnapshot.numChildren();
+                postData.replyCount = replyCount;
+                createPostCard(postData);
+            });
+        });
+    });
+}
+function openReplyModal(postId) {
+    const modal = document.getElementById('replyModal');
+    const postReplies = document.getElementById('postReplies');
+    const rt = document.getElementById('rt');
+    
+    database.ref(`replies/${postId}`).once('value', (snapshot) => {
+        postReplies.innerHTML = '';
+        const postElement = document.querySelector(`[postid="${postId}"]`);
+        const titleElement = postElement.querySelector('h3').textContent;
+
+        rt.innerHTML = `Replies for <span style="color: #830c4f">${titleElement}</span>`;
+        let replyCount = 0;
+        snapshot.forEach((childSnapshot) => {
+            const replyData = childSnapshot.val();
+            postReplies.innerHTML += `<p style="margin-bottom: 10px;"><strong>${replyData.author}:</strong> ${replyData.text}</p>`;
+            replyCount++;
+        });
+        
+        const replyCountElement = document.getElementById(`replyCount-${postId}`);
+        replyCountElement.textContent = `${replyCount} Replies`;
+    });
+
+    modal.setAttribute('data-post-id', postId);
+    modal.style.display = "block";
+}
+
+
+document.querySelector('.close').onclick = function() {
+    document.getElementById('replyModal').style.display = "none";
+}
+
+window.onclick = function(event) {
+            const modal = document.getElementById('replyModal');
+            if (event.target == modal) {
+                document.getElementById('replyModal').style.display = "none";
+            }
+        }
+
+        document.getElementById('sendReply').onclick = function() {
+    const modal = document.getElementById('replyModal');
+    const postId = modal.getAttribute('data-post-id');
+    const replyText = document.getElementById('replyText').value;
+
+    if (replyText.trim()) {
+        const newReplyKey = database.ref().child('replies').push().key;
+        const replyData = {
+            text: replyText,
+            author: Clerk.user.firstName || "Anonymous",
+            timestamp: Date.now()
+        };
+
+        database.ref(`replies/${postId}/${newReplyKey}`).set(replyData, (error) => {
+            if (error) {
+                alert('Error posting reply: ' + error.message);
+            } else {
+                const postReplies = document.getElementById('postReplies');
+                postReplies.innerHTML += `<p style="margin-bottom: 10px;"><strong>${replyData.author}:</strong> ${replyData.text}</p>`;
+                document.getElementById('replyText').value = '';
+                
+                const replyCountElement = document.getElementById(`replyCount-${postId}`);
+                const currentCount = parseInt(replyCountElement.textContent);
+                replyCountElement.textContent = `${currentCount + 1} Replies`;
+            }
+        });
+    } else {
+        alert('Reply text cannot be empty');
+    }
+}
+
+function postDoubt() {
+    const title = document.querySelector('input[type="text"]').value;
+    const doubt = document.querySelector('.ddda').value;
+    const category = document.querySelector('select').value;
+
+    if(title !== "" & doubt !== "" & category !== ""){
+        const confirmMessage = "Please confirm that your post does not include any inappropriate or prohibited content. Remember, your post will be visible to the entire community and archived in our database.";
+    const confirm = window.prompt(confirmMessage, "Yes, I confirm");
+    const email = Clerk.user.emailAddresses[0]?.emailAddress
+    const username = Clerk.user.fullname || Clerk.user.firstName || 'Anonymous';
+
+    if (confirm && confirm.toLowerCase() === "yes, i confirm") {
+        const newPostKey = database.ref().child('communityPosts').push().key;
+        const postData = {
+            id: newPostKey,
+            title: title,
+            doubt: doubt,
+            category: category,
+            author: username,
+            timestamp: Date.now(),
+            email: email
+        };
+
+        database.ref(`communityPosts/${newPostKey}`).set(postData, (error) => {
+            if (error) {
+                alert('Error posting doubt: ' + error.message);
+            } else {
+                createPostCard(postData);
+                document.querySelector('input[type="text"]').value = '';
+                document.querySelector('.ddda').value = '';
+                document.querySelector('select').value = '';
+                const communityMainElement = document.querySelector('.community-content');
+                communityMainElement.scrollTo({
+                    top: communityMainElement.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    } else {
+        alert('Please accept the acknowledgement to post.');
+    }
+    }
+
+    else{
+        alert("Please fill in all fields before posting.")
+    }
+}
+
+function createPostCard(postData) {
+    const communityContent = document.querySelector('.community-content');
+    const postCard = document.createElement('div');
+    postCard.classList.add('doubt-post');
+    postCard.setAttribute('postid', postData.id);
+    postCard.setAttribute('db11', "fl");
+
+    const postHtml = `
+    <div style="cursor: pointer;" class="post-content" onclick="openReplyModal('${postData.id}')">
+        <h3>${postData.title}</h3>
+        <div class="meta">Posted by: ${postData.author} | Type: ${postData.category} | ${formatTimestamp(postData.timestamp)}</div>
+        <div class="content">${postData.doubt}</div>
+        <div class="actions">
+            <button onclick="openReplyModal('${postData.id}')"><i style="margin-right: 4px;" class="fas fa-reply"></i> Reply</button>
+            <span id="replyCount-${postData.id}">${postData.replyCount || 0} Replies</span>
+        </div>
+    </div>
+    `;
+
+    postCard.innerHTML = postHtml;
+    communityContent.insertBefore(postCard, communityContent.lastChild);
+}
+
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+    });
+}
+
+        const aiSwitch = document.getElementById('aiSwitch');
+        const aiOptions = document.getElementById('aiOptions');
+
+        aiSwitch.addEventListener('click', function(event) {
+            event.stopPropagation();
+            this.classList.toggle('active');
+            aiOptions.classList.toggle('show');
+        });
+
+        tutorAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'TutorAI.html';
+        });
+
+        UserJourneyFlow.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'user-journey.html';
+        });
+
+        jobAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'JobAI.html';
+            
+        });
+
+        quizAI.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = 'QuizAI.html';
+            
+        });
+
+        function Answer() {
+            alert("You can reply to posts using this button.")
+        }
+
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.ai-switch')) {
+                aiSwitch.classList.remove('active');
+                aiOptions.classList.remove('show');
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            loadExistingPosts()
+        const elements = document.querySelectorAll('.highlight');
+        const steps = Array.from(elements).map((element, index) => ({
+            element: element,
+            intro: element.getAttribute('data-intro'),
+            position: 'right'
+        }));
+
+        introJs().setOptions({
+            steps: steps,
+            showSkipButton: true
+        }).start();
+    });
+    </script>
+</body>
