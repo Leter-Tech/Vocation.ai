@@ -80,5 +80,4 @@ Empowering rural India's youth through AI driven education and employment soluti
         classDef mainNode fill:#830C4F,stroke:#fff,color:#fff;
         classDef database fill:#e1e1e1,stroke:#333,stroke-width:2px;
         classDef feature fill:#830C4F,stroke:#6a0a3f,color:#fff;
-        
-        ```
+```
