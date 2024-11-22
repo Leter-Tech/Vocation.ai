@@ -290,7 +290,7 @@ Explore Vocation.ai’s complete strategy, impact, and technology in detail: [Re
 
 ## 🙏 Thank You
 
-Vocation.ai is on a mission to empower India's youth through AI driven education and employment solutions. We bridge the gap between learning and earning, fostering nation's development and individual growth. Together, we can uplift communities, break down barriers, and foster a society where everyone has the opportunity to thrive.
+Vocation.ai is on a mission to empower India's youth through AI-driven education and employment solutions. We bridge the gap between learning and earning, fostering nation's development and individual growth. Together, we can uplift communities, break down barriers, and foster a society where everyone has the opportunity to thrive.
 
 ---
 
