@@ -276,7 +276,7 @@ Additionally, the lack of career counselling and mentorship means that many youn
 
 ## 🎯 Read Pitchdeck
 
-Explore Vocation.ai’s complete strategy, impact, and technology in detail: [View Pitchdeck >](https://vocation-ai.web.app/Vocation.ai%20Pitchdeck.pdf)
+Explore Vocation.ai’s complete strategy, impact, and technology in detail: [Read Pitchdeck >](https://vocation-ai.web.app/Vocation.ai%20Pitchdeck.pdf)
 
 ## 🎉 Future Plans:
 
