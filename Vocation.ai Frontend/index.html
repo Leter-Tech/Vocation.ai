@@ -170,13 +170,48 @@
             border-radius: 10px;
         }
 
-        .video-container iframe {
+        #custom-video-player {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border: none;
+            z-index: 2;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #video-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .play-button {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background-color: rgb(255, 215, 0, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            color: #830C4F;
+        }
+
+        .play-button i {
+            color: white;
+            font-size: 30px;
+            margin-left: 5px;
+        }
+
+        #custom-video-player:hover .play-button {
+            background-color: rgb(255, 215, 0, 1);
+            transform: scale(1.1);
         }
 
         .cta-button {
@@ -594,7 +629,18 @@
             <a style="margin-left: 8px;" href="TutorAI.html" class="cta-button">Try Out Vocation.ai <i style="margin-left: 5px;" class="fas fa-arrow-right"></i></a>
         </div>
         <div class="video-container">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/oL_QWSuHcKQ?si=Tsqy3aiSnZdHLWWk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>    
+            <div id="custom-video-player">
+                <img src="t.png" id="video-thumbnail" alt="Video Thumbnail">
+                <div class="play-button">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
+            <iframe id="youtube-iframe" width="560" height="315" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
+                    src="about:blank" 
+                    data-src="https://www.youtube.com/embed/rG7YtrI7rXA?enablejsapi=1"
+                    title="YouTube video player" frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
     </section>
 
@@ -736,6 +782,13 @@
                 right: 0;
             }
         </style>
+
+<style>
+    ::selection {
+        background-color: #FFD700;
+        color: #830C4F;
+    }
+</style>
         
             <div class="features-container">
                 <div class="ai-connection"></div>
@@ -997,6 +1050,32 @@
                 }
             })
         })
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const customPlayer = document.getElementById('custom-video-player');
+            const iframe = document.getElementById('youtube-iframe');
+            let videoInitialized = false;
+            
+            customPlayer.addEventListener('click', function(event) {
+                event.stopPropagation();
+                
+                customPlayer.style.display = 'none';
+                
+                if (!videoInitialized) {
+                    let iframeSrc = iframe.getAttribute('data-src');
+                    
+                    if (iframeSrc.indexOf('autoplay=1') === -1) {
+                        iframeSrc += (iframeSrc.indexOf('?') !== -1 ? '&' : '?') + 'autoplay=1';
+                    }
+                    
+                    iframe.setAttribute('src', iframeSrc);
+                    videoInitialized = true;
+                } else {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
+            });
+        });
     </script>
 </body>
 </html>
