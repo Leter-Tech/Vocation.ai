@@ -294,4 +294,15 @@ Vocation.ai is on a mission to empower India's youth through AI-driven education
 
 ---
 
+## 🛡️ License
+
+This project is shared publicly for learning and inspiration purposes only.
+
+❌ You may **NOT** copy, reuse, redistribute, or modify this code.  
+✅ You may view and learn from the code.
+
+Copyright © | All rights reserved
+
+---
+
 Built with ❤️ for India's bright future.
